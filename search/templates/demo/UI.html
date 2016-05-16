@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/search/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="fa fa-bars fa-2x"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <img src="../../static/search/images/can.png" alt="logo hình lá cần">
+                        <span class="span-header-for-middle">Get Hi Travel</span>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
+                        <li><a id="a-domistic-page" href="{% url 'search:domestic' %}">Domestic</a></li>
+                        <li><a id="a-internal-page" href="javascript:void(0)">International</a></li>
+                        <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
+                        <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container main">
+        <!-- form se duoc gui thong qua ajax -->
+        <!-- <form id="myForm">
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="from">From:</label>
+                    <input type="text" class="form-control" id="from" name="from" placeholder="Location...">
+                </div>
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="to">To:</label>
+                    <input type="text" class="form-control" id="to" name="to" placeholder="Location...">
+                </div>
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="price">Way:</label>
+                    <select class="form-control" id="price" name="price">
+                        <option value="ascending">One Way (Một chiều)</option>
+                        <option value="descending">Turn Back (Hai chiều)</option>
+                    </select>
+                </div>
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="stops">Stops:</label>
+                    <select class="form-control" id="stops" name="stops">
+                        <option value="null">Any</option>
+                        <option value="0">Nonstop</option>
+                        <option value="1">Up to 1 stop</option>
+                        <option value="2">Up to 2 stops</option>
+                    </select>
+                </div>
+                
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="outbound">Outbound time:</label>
+                    <input type="date" class="form-control" id="outbound" name="outbound" placeholder="Date...">
+                </div>
+                <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <label class="control-label" for="return">Return time:</label>
+                    <input type="date" class="form-control" id="return" name="return" placeholder="Date...">
+                </div>
+            </div>
+            <div class="row center-block text-center">
+                <button type="submit" class="btn btn-success btn-my-search-style" id="search" name="search">Search</button>
+            </div>
+        </form> -->
+        <div class="div-panel">
+            <marquee> THIS IS SPARTA</marquee>
+        </div>
+        <div id="list-way">
+            {% if way_list %}
+                
+            {% else %}
+            <p> Something wrong, go back and JOHN CENA</p>
+            {% endif %}
+        </div>
+        <div id="result">
+            {% if ticket_list %}
+            <p class="rs-title">Kết quả</p>
+            <div class="rs-div-group">
+                <p>Group 1</p>
+                <div class="rs-div-result">
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                </div>
+                <p>Group 2</p>
+                <div class="rs-div-result">
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                    <ul class="rs-ul">
+                        <li>Giờ đi</li>
+                        <li>Ngày đi</li>
+                        <li>Loại vé</li>
+                        <li>Loại ghế</li>
+                        <li>Hãng</li>
+                        <li>Giá</li>
+                        <li><a href="#">Đặt vé</a></li>
+                    </ul>
+                </div>
+            </div>
+            {% else %}
+            <p>Hãy bắt đầu tìm kiếm để có được kết quả</p>
+            {% endif %}
+        </div>
+    </div>
+    <footer class="container-fluid text-center footer-my-style">
+        <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
+    </footer>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        test()
+    });
+    function test(){
+        var d = new Date();
+        var day = d.getDate() + 1;
+        var year = d.getYear() + 1900;
+        var mon = d.getMonth() + 1;
+        var time;
+        if(day < 10 && mon < 10){
+            time = year + '-0' + mon + '-0' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else if(day < 10 && mon > 10){
+            time = year + '-' + mon + '-0' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else if(day > 10 && mon < 10){
+            time = year + '-0' + mon + '-' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else {
+            time = year + '-' + mon + '-' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+    }
+    </script>
+</body>
+</html>

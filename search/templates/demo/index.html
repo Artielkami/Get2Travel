@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+{% load get2_extras %}
+<html lang="en">
+<head>
+    <title>Domestic flight</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/search/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="fa fa-bars fa-2x"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="../../static/search/images/can.png" alt="logo hình lá cần">
+                    <span class="span-header-for-middle">Get Hi Travel</span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
+                    <li><a id="a-domistic-page" href="javascript:void(0)">Domestic</a></li>
+                    <li><a id="a-internal-page" href="javascript:void(0)">International</a></li>
+                    <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
+                    <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container main">
+    <!-- form se duoc gui thong qua ajax -->
+    <form id="myForm">
+        <div class="row">
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="from">From:</label>
+                <!--<input type="text" class="form-control" id="from" name="from" placeholder="Location...">-->
+                <select name="departure_port" id="from" class="form-control">
+                    <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
+                    <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
+                    <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
+                    <option class="pickFlightStart" value="DLI"> Đà Lạt (DLI)</option>
+                    <option class="pickFlightStart" value="DIN"> Điện Biên Phủ (DIN)</option>
+                    <option class="pickFlightStart" value="HPH"> Hải Phòng (HPH)</option>
+                    <option class="pickFlightStart" value="HAN"> Hà Nội (HAN)</option>
+                    <option class="pickFlightStart" value="SGN"> Hồ Chí Minh (SGN)</option>
+                    <option class="pickFlightStart" value="HUI"> Huế (HUI)</option>
+                    <option class="pickFlightStart" value="CXR"> Nha Trang (CXR)</option>
+                    <option class="pickFlightStart" value="PQC"> Phú Quốc (PQC)</option>
+                    <option class="pickFlightStart" value="PXU"> Pleiku (PXU)</option>
+                    <option class="pickFlightStart" value="UIH"> Qui Nhơn (UIH)</option>
+                    <option class="pickFlightStart" value="VKG"> Rạch Giá (VKG)</option>
+                    <option class="pickFlightStart" value="VII"> Vinh (VII)</option>
+                    <option class="pickFlightStart" value="TBB"> Tuy Hòa (TBB)</option>
+                    <option class="pickFlightStart" value="VCL"> Chu Lai (VCL)</option>
+                    <option class="pickFlightStart" value="VDH"> Đồng Hới (VDH)</option>
+                    <option class="pickFlightStart" value="VCS"> Côn Đảo (VCS)</option>
+                    <option class="pickFlightStart" value="THD"> Thanh Hóa (THD)</option>
+                    <option class="pickFlightStart" value="VCA"> Cần Thơ (VCA)</option>
+                    <option class="pickFlightStart" value="CAH"> Cà Mau (CAH)</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="to">To:</label>
+                <!--<input type="text" class="form-control" id="to" name="to" placeholder="Location...">-->
+                <select name="arrival_port" id="to" class="form-control">
+                    <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
+                    <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
+                    <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
+                    <option class="pickFlightStart" value="DLI"> Đà Lạt (DLI)</option>
+                    <option class="pickFlightStart" value="DIN"> Điện Biên Phủ (DIN)</option>
+                    <option class="pickFlightStart" value="HPH"> Hải Phòng (HPH)</option>
+                    <option class="pickFlightStart" value="HAN"> Hà Nội (HAN)</option>
+                    <option class="pickFlightStart" value="SGN"> Hồ Chí Minh (SGN)</option>
+                    <option class="pickFlightStart" value="HUI"> Huế (HUI)</option>
+                    <option class="pickFlightStart" value="CXR"> Nha Trang (CXR)</option>
+                    <option class="pickFlightStart" value="PQC"> Phú Quốc (PQC)</option>
+                    <option class="pickFlightStart" value="PXU"> Pleiku (PXU)</option>
+                    <option class="pickFlightStart" value="UIH"> Qui Nhơn (UIH)</option>
+                    <option class="pickFlightStart" value="VKG"> Rạch Giá (VKG)</option>
+                    <option class="pickFlightStart" value="VII"> Vinh (VII)</option>
+                    <option class="pickFlightStart" value="TBB"> Tuy Hòa (TBB)</option>
+                    <option class="pickFlightStart" value="VCL"> Chu Lai (VCL)</option>
+                    <option class="pickFlightStart" value="VDH"> Đồng Hới (VDH)</option>
+                    <option class="pickFlightStart" value="VCS"> Côn Đảo (VCS)</option>
+                    <option class="pickFlightStart" value="THD"> Thanh Hóa (THD)</option>
+                    <option class="pickFlightStart" value="VCA"> Cần Thơ (VCA)</option>
+                    <option class="pickFlightStart" value="CAH"> Cà Mau (CAH)</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" id="div-way">
+                <label class="control-label" for="way">Way:</label>
+                <select class="form-control" id="way" name="way" onchange="rt_show()">
+                    <option value="1">One Way (Một chiều)</option>
+                    <option value="2">Turn Back (Hai chiều)</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="stops">Stops:</label>
+                <select class="form-control" id="stops" name="stops">
+                    <option value="0">Any</option>
+                    <option value="1">Nonstop</option>
+                    <option value="2">Up to 1 stop</option>
+                    <option value="3">Up to 2 stops</option>
+                </select>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="outbound">Outbound time:</label>
+                <input type="date" class="form-control" id="outbound" name="goday" placeholder="Date...">
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" id="div-return">
+                <label class="control-label" for="return">Return time:</label>
+                <input type="date" class="form-control" id="return" name="return" placeholder="Date...">
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="adult">Adult: (> 12 years old)</label>
+                <select class="form-control" id="adult" name="adult">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">10</option>
+                    <option value="12">10</option>
+                    <option value="13">10</option>
+                    <option value="14">10</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="child">Child: (2 - 12 years old)</label>
+                <select class="form-control" id="child" name="child">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                </select>
+            </div>
+            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <label class="control-label" for="babe">Babe: (< 2 years old)</label>
+                <select class="form-control" id="babe" name="babe">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+        <div class="row center-block text-center">
+            <button type="submit" class="btn btn-success btn-my-search-style" id="search" name="search">Search</button>
+        </div>
+    </form>
+    <div id="result">
+        {% if item_list %}
+        <p class="rs-title">Kết quả</p>
+        <div class="rs-div-group">
+            <div class="rs-div-result">
+                <table class="ticket-list-table">
+                    <tr class="tr-tik-header">
+                        <th class="th-time-go">Giờ đi</th>
+                        <th class="th-day-go">Ngày đi</th>
+                        <th class="th-dep">Điểm đi</th>
+                        <th class="th-des">Điểm đến</th>
+                        <th class="th-ticket-type">Loại vé</th>
+                        <th class="th-sit-type">Loại ghế</th>
+                        <th class="th-carrier">Hãng</th>
+                        <th class="price">Giá (1000 VND)</th>
+                        <th class="th-place">Đặt vé</th>
+                    </tr>
+                    {% for ticket in item_list %}
+                    <tr class="tr-tik">
+                        <td>{{ ticket.departure_time.time }}</td>
+                        <td>{{ ticket.departure_time.date }}</td>
+                        <td>{{ ticket.departure_port }}</td>
+                        <td>{{ ticket.arrival_port }}</td>
+                        <td>{{ ticket.ticket_type|ticket_type}}</td>
+                        <td>{{ ticket.sit_class}}</td>
+                        <td>{{ ticket.carrier }}</td>
+                        <td>{{ ticket.price}}</td>
+                        <td><a href="javascript:void(0)">Đặt vé</a></td>
+                    {% endfor %}
+                </tr>
+                </table>
+
+            </div>
+
+        </div>
+        {% else %}
+        <p>Hãy bắt đầu tìm kiếm để có được kết quả</p>
+        {% endif %}
+    </div>
+</div>
+<footer class="container-fluid text-center footer-my-style">
+    <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
+</footer>
+<script type="text/javascript">
+    $(document).ready(function () {
+        test();
+
+    });
+    function rt_show() {
+        if($('#way').val() == '1'){
+            $('#div-return').css('visibility', 'hidden');
+        } else {
+            $('#div-return').css('visibility', 'visible');
+        }
+    }
+    function test() {
+        var d = new Date();
+        var day = d.getDate() + 1;
+        var year = d.getYear() + 1900;
+        var mon = d.getMonth() + 1;
+        var time;
+        if (day < 10 && mon < 10) {
+            time = year + '-0' + mon + '-0' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else if (day < 10 && mon > 10) {
+            time = year + '-' + mon + '-0' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else if (day > 10 && mon < 10) {
+            time = year + '-0' + mon + '-' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+        else {
+            time = year + '-' + mon + '-' + day;
+            $('#outbound').val(time);
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
