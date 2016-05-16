@@ -27,7 +27,7 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
                     <li><a id="a-domistic-page" href="javascript:void(0)">Domestic</a></li>
-                    <li><a id="a-internal-page" href="javascript:void(0)">International</a></li>
+                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>
                     <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
                     <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
                 </ul>
@@ -37,7 +37,7 @@
 </header>
 <div class="container main">
     <!-- form se duoc gui thong qua ajax -->
-    <form id="myForm">
+    <form id="myForm" method="get" action="">
         <div class="row">
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="from">From:</label>
@@ -165,6 +165,7 @@
             </div>
         </div>
         <div class="row center-block text-center">
+            {% csrf_token %}
             <button type="submit" class="btn btn-success btn-my-search-style" id="search" name="search">Search</button>
         </div>
     </form>

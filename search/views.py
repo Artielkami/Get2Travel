@@ -6,15 +6,17 @@ from django.shortcuts import render_to_response, render, redirect
 from .models import Ticket
 from .forms import Search
 from .main import Main
+# import pytz
 # Create your views here.
 
 
 def index(request):
     if request.method == 'GET':
         print 'search'
-        main = Main()
+        # main = Main()
         search_form = Search(request.GET)
-        lst_result = main.get_by_date(search_form.go_date)[:5]
+        # lst_result = main.get_by_date(search_form.go_date)[:10]
+        lst_result = Ticket.objects.all()
         return render(request,
                       'demo/index.html',
                       {
@@ -56,3 +58,9 @@ def domestic(request):
                       {
                           'item_list': lst_result
                       })
+
+
+def insert_db_ticket(request):
+    main = Main()
+    main.make_some_db()
+    return redirect('/domestic')
