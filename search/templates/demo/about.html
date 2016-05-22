@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/search/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Domestic flight</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="fa fa-bars fa-2x"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="../../static/search/images/can.png" alt="logo hình lá cần">
+                    <span class="span-header-for-middle">Get Hi Travel</span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
+                    <li><a id="a-domestic-page" href="javascript:void(0)">Domestic</a></li>
+                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>
+                    <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
+                    <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container main">
+    <h1 class="text-uppercase">About us</h1>
+    <div class="row col-xs-12 col-sm-12">
+        <h3><span class="brand-name">Get Hi Travel</span> cùng bay nào!</h3>
+        <p><strong>GetHiTravel</strong> là website chuyên cung cấp dịch vụ đặt chỗ và bán vé máy bay trực tuyến của
+            nhiều hãng hàng
+            không trong nước và quốc tế. Với giao diện thân thiện, dễ thao tác, <strong>GetHiTravel</strong> không chỉ
+            giúp khách hàng
+            nhanh chóng lựa chọn được hành trình đi lại tối ưu nhất mà còn chọn được giá vé tốt trong tháng, so sánh
+            được giá vé giữa các hãng hàng không, đặt và mua được vé trực tuyến. Ưu điểm vượt trội nhất của <strong>GetHiTravel</strong>
+            đó chính là chợ vé máy bay trực tuyến đầu tiên tại Việt Nam.</p>
+        <p><strong>GetHiTravel</strong> đang nỗ lực để trở thành địa chỉ bán vé máy bay tin cậy nhất và có nhiều dịch vụ
+            giá trị gia
+            tăng nhất cho khách hàng. Hãy ủng hộ chúng tôi và giúp chúng tôi trở thành nhà cung cấp dịch vụ tốt nhất cho
+            các bạn.</p>
+        <div>
+            <p><strong>GetHiTravel</strong> hướng đến 5 điểm mạnh của mình, bao gồm:</p>
+            <ul>
+                <li>Giá cả cạnh tranh.</li>
+                <li>Dịch vụ chất lượng, tư vấn nhiệt tình, chuyên nghiệp.</li>
+                <li>Cung cấp công cụ tìm kiếm ưu việt, đặc biệt với hệ thống giữ chỗ vé máy bay tự động.</li>
+                <li>Đơn giản hóa các thao tác đặt dịch vụ, giúp khách hàng mua hàng nhanh chóng và dễ dàng.</li>
+                <li>Đa dạng về hình thức thanh toán, thanh toán an toàn, linh hoạt.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row col-xs-12 col-sm-12">
+        <h3>Hãy trải nghiệm và cảm nhận sự khác biệt chỉ có ở <span class="brand-name">Get Hi Travel</span></h3>
+        <ol>
+            <li>Giá vé không thể tốt hơn:</li>
+            <p>Giá vé nội địa và quốc tế rẻ hơn do <strong>GetHiTravel</strong> là đại lý chính thức của các hãng hàng
+                không giá rẻ như Tiger
+                Air, VietJet Air…</p>
+            <li>Hệ thống so sánh giá vé thông minh:</li>
+            <p>Flynow giúp quý khách dễ dàng so sánh giá vé giữa các Hãng cho cùng một hành trình, Giá vé được cập nhật
+                liên tục và thông tin "Giá vé tốt trong tháng" chỉ có tại <strong>GetHiTravel</strong>.</p>
+            <li>Chợ vé trực tuyến:</li>
+            <p>Là chợ vé trực tuyến đầu tiên và là địa chỉ tin cậy để chuyển nhượng vé - mua vé với mức giá tốt
+                nhất.</p>
+            <li>Tốc độ xử lý nhanh, hình thức thông tin đa dạng:</li>
+            <p>Hệ thống xử lý đơn hàng tối ưu với đội ngũ IT giàu kinh nghiệm.</p>
+            <li>Đội ngũ tư vấn viên chuyên nghiệp:</li>
+            <p>Giải đáp, hỗ trợ thông tin chỉ ít phút sau khi đặt vé trực tuyến hoặc qua điện thoại.</p>
+            <li>Thanh toán nhanh chóng, tiện lợi:</li>
+            <p>Phương thức thanh toán linh hoạt và theo lựa chọn của khách hàng.</p>
+        </ol>
+    </div>
+</div>
+<footer class="container-fluid text-center footer-my-style">
+    <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
+</footer>
+</body>
+</html>

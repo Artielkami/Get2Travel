@@ -1,3 +1,6 @@
+body {
+    font-size:1.5em;
+}
 .navbar {
     margin-bottom: 0;
     background-color: #f4511e;
@@ -34,6 +37,7 @@
 
 .main {
     margin-top: 70px;
+    margin-bottom:50px;
 }
 .span-header-for-middle {
     vertical-align: top;
@@ -54,8 +58,10 @@
 .footer-my-style {
     position: fixed;
     bottom: 0px;
+    height:auto;
     width: 100%;
     background-color: #999999;
+    padding:10px;
 }
 .footer-my-style p {
     margin-bottom: 0px;
@@ -99,4 +105,14 @@
 }
 #result {
     margin-bottom: 35px;
+}
+/* This under is belong to about.html and contact.html */
+.main .row .brand-name {
+    color:#ff7800;
+    font-weight:bold;
+    font-size:30px;
+}
+.main .row ol > li {
+    font-weight:bold;
+    font-style:italic;
 }

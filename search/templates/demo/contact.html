@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../../static/search/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Domestic flight</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="fa fa-bars fa-2x"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <img src="../../static/search/images/can.png" alt="logo hình lá cần">
+                    <span class="span-header-for-middle">Get Hi Travel</span>
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
+                    <li><a id="a-domestic-page" href="javascript:void(0)">Domestic</a></li>
+                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>
+                    <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
+                    <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container main">
+    <h1 class="text-uppercase">Contact us</h1>
+    <p>Quý khách vui lòng liên hệ với <strong>GetHiTravel</strong> theo địa chỉ dưới đây hoặc gửi tin nhắn cho chúng tôi
+        theo biểu mẫu bên
+        dưới.</p>
+    <div class="row col-xs-12 col-sm-12">
+        <h3>Thông tin liên hệ <span class="brand-name">Get Hi Travel</span></h3>
+        <ul>
+            <li><strong>Trụ sở:</strong> Tầng 9, tòa nhà Công đoàn Ngân hàng Việt Nam, Duy Tân, Cầu Giấy, HN</li>
+            <li><strong>Văn Phòng TP. HCM:</strong> Tầng 7 - Tòa nhà MB Bank - 538 CMT8 - Phường 11 - Quận 3, TP. HCM</li>
+            <li><strong>Chi nhánh 2:</strong> Tầng L tòa nhà indochina - số 04 Nguyễn Đình Chiểu P Đa Kao, Quận 1, TP HCM</li>
+            <li><strong>Chi nhánh Indonesia:</strong> Menara BCA 50th Floor. Jl. MH Thamrin no. 1 Jakarta 10310, Indonesia</li>
+            <li><strong>Chi nhánh Singapore:</strong> UOB Plaza 1, 80 Raffles Place, Level 36, Singapore 048624</li>
+            <li><strong>Điện thoại:</strong> (04) 38 363 666 l (08) 3993 4825 l Hotline: 0966 97 8686 l 0932 247 000</li>
+            <li><strong>Email:</strong> contact@gethitravel.vn</li>
+        </ul>
+    </div>
+    <div class="row col-xs-12 col-sm-12">
+        <h3>Gửi tin nhắn cho <span class="brand-name">Get Hi Travel</span></h3>
+        <form name="contactForm" method="get">
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label class="control-label" for="name">Tên bạn</label>
+                    <input class="form-control" id="name" type="text" name="name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-4">
+                    <label class="control-label" for="email">Email của bạn</label>
+                    <input class="form-control" id="email" type="email" name="email">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-12 col-sm-8">
+                    <label class="control-label" for="request">Yêu cầu</label>
+                    <textarea class="form-control" id="request" name="request" rows="5" cols="5"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-1 col-sm-1">
+                    <input class="form-control btn-warning" type="submit" name="submit" value="Gửi">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<footer class="container-fluid text-center footer-my-style">
+    <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
+</footer>
+</body>
+</html>
