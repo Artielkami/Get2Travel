@@ -35,20 +35,36 @@ def index(request):
         return HttpResponse(template.render(context, request))
 
 
+def about_page(request):
+    return render(request, 'demo/about.html')
+
+
+def contact_page(request):
+    return render(request, 'demo/contact.html')
+
+
 def domestic(request):
-    depart = request.GET.get('departure_port')
-    print depart
-    if depart:
+    if request.GET.get('departure'):
         main = Main()
         search_form = Search(request.GET)
         if search_form.is_valid():
             clean_data = search_form.cleaned_data
-            lst_result = main.get_by_date(clean_data.go_date)[:5]
-            return render(request,
+            lst_result = main.get_ticket(dep=clean_data['departure'],
+                                         arr=clean_data['arrival'],
+                                         go_day=clean_data['go_day'])
+            if lst_result:
+                return render(request,
                           'demo/index.html',
                           {
                               'item_list': lst_result
                           })
+            else:
+                return_msg = 'Không tìm thấy kết quả'
+                return render(request,
+                              'demo/index.html',
+                              {
+                                  'return_msg': return_msg
+                              })
         else:
             return redirect('/domestic')
     else:

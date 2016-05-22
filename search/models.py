@@ -11,6 +11,7 @@ import datetime
 class Airport(models.Model):
     code = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=60)
+    router = models.CharField(max_length=100, default='xxx')
     is_del = models.BooleanField(default=False)
 
     def __str__(self):

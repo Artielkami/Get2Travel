@@ -26,10 +26,10 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
-                    <li><a id="a-domestic-page" href="javascript:void(0)">Domestic</a></li>
+                    <li><a id="a-domestic-page" href="{% url 'search:domestic' %}">Domestic</a></li>
                     <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>
-                    <li><a id="a-about-page" href="javascript:void(0)">About</a></li>
-                    <li><a id="a-contact-page" href="javascript:void(0)">Contact</a></li>
+                    <li><a id="a-about-page" href="{% url 'search:about' %}">About</a></li>
+                    <li><a id="a-contact-page" href="{% url 'search:contact' %}">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -42,7 +42,7 @@
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="from">From:</label>
                 <!--<input type="text" class="form-control" id="from" name="from" placeholder="Location...">-->
-                <select name="departure_port" id="from" class="form-control">
+                <select name="departure" id="from" class="form-control">
                     <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
                     <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                     <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
@@ -70,7 +70,7 @@
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="to">To:</label>
                 <!--<input type="text" class="form-control" id="to" name="to" placeholder="Location...">-->
-                <select name="arrival_port" id="to" class="form-control">
+                <select name="arrival" id="to" class="form-control">
                     <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
                     <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                     <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
@@ -114,11 +114,11 @@
 
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="outbound">Outbound time:</label>
-                <input type="date" class="form-control" id="outbound" name="goday" placeholder="Date...">
+                <input type="date" class="form-control" id="outbound" name="go_day" placeholder="Date...">
             </div>
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4" id="div-return">
                 <label class="control-label" for="return">Return time:</label>
-                <input type="date" class="form-control" id="return" name="return" placeholder="Date...">
+                <input type="date" class="form-control" id="return" name="rt_day" placeholder="Date...">
             </div>
 
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -201,7 +201,11 @@
 
         </div>
         {% else %}
-        <p>Hãy bắt đầu tìm kiếm để có được kết quả</p>
+            {% if return_msg %}
+                <p>{{ return_msg }}</p>
+            {% else %}
+            <p>Hãy bắt đầu tìm kiếm để có được kết quả</p>
+            {% endif %}
         {% endif %}
     </div>
 </div>
@@ -211,13 +215,40 @@
 <script type="text/javascript">
     $(document).ready(function () {
         test();
-
+        rt_day();
     });
     function rt_show() {
         if($('#way').val() == '1'){
             $('#div-return').css('visibility', 'hidden');
         } else {
             $('#div-return').css('visibility', 'visible');
+        }
+    }
+    function rt_day() {
+        var d = new Date();
+        var day = d.getDate() + 3;
+        var year = d.getYear() + 1900;
+        var mon = d.getMonth() + 1;
+        var time;
+        if (day < 10 && mon < 10) {
+            time = year + '-0' + mon + '-0' + day;
+            $('#return').val(time);
+            return false;
+        }
+        else if (day < 10 && mon > 10) {
+            time = year + '-' + mon + '-0' + day;
+            $('#return').val(time);
+            return false;
+        }
+        else if (day > 10 && mon < 10) {
+            time = year + '-0' + mon + '-' + day;
+            $('#return').val(time);
+            return false;
+        }
+        else {
+            time = year + '-' + mon + '-' + day;
+            $('#return').val(time);
+            return false;
         }
     }
     function test() {
