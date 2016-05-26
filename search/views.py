@@ -6,6 +6,7 @@ from django.shortcuts import render_to_response, render, redirect
 from .models import Ticket
 from .forms import Search
 from .main import Main
+from dataAdapter import DataAdapter
 # import pytz
 # Create your views here.
 
@@ -54,10 +55,10 @@ def domestic(request):
                                          go_day=clean_data['go_day'])
             if lst_result:
                 return render(request,
-                          'demo/index.html',
-                          {
-                              'item_list': lst_result
-                          })
+                              'demo/index.html',
+                              {
+                                  'item_list': lst_result
+                              })
             else:
                 return_msg = 'Không tìm thấy kết quả'
                 return render(request,
@@ -76,7 +77,11 @@ def domestic(request):
                       })
 
 
+def update_routes(request):
+    DataAdapter.make_routes()
+    return redirect('/domestic')
+
+
 def insert_db_ticket(request):
-    main = Main()
-    main.make_some_db()
+    DataAdapter.make_some_db()
     return redirect('/domestic')

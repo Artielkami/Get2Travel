@@ -26,10 +26,11 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
-                    <li><a id="a-domestic-page" href="{% url 'search:domestic' %}">Domestic</a></li>
-                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>
-                    <li><a id="a-about-page" href="{% url 'search:about' %}">About</a></li>
-                    <li><a id="a-contact-page" href="{% url 'search:contact' %}">Contact</a></li>
+                    <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a></li>
+{#                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>#}
+{#                    <li><a id="a-ud-routes" title="Update the routes" href="{% url 'search:update_routes' %}">Upgrade</a></li>#}
+                    <li><a id="a-about-page" title="Trang About" href="{% url 'search:about' %}">About</a></li>
+                    <li><a id="a-contact-page" title="Trang Contact" href="{% url 'search:contact' %}">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -108,7 +109,6 @@
                     <option value="0">Any</option>
                     <option value="1">Nonstop</option>
                     <option value="2">Up to 1 stop</option>
-                    <option value="3">Up to 2 stops</option>
                 </select>
             </div>
 

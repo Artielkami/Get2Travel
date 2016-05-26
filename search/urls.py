@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     # ex: /search/
     url(r'^$', views.domestic, name='index'),
+    url(r'^updateRoutes/$', views.update_routes, name='update_routes'),
     url(r'^about/$', views.about_page, name='about'),
     url(r'^contact/$', views.contact_page, name='contact'),
     url(r'^domestic/$', views.domestic, name='domestic'),

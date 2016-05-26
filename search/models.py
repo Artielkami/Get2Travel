@@ -36,7 +36,7 @@ class DomesticRegion(models.Model):
 class MiddlePort(models.Model):
     depart_port = models.CharField(max_length=5)
     arrival_port = models.CharField(max_length=5)
-    middle_port = models.CharField(max_length=5)
+    middle_port = models.CharField(max_length=100)
     is_del = models.BooleanField(default=False)
 
 
