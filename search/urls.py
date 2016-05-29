@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^updateRoutes/$', views.update_routes, name='update_routes'),
     url(r'^about/$', views.about_page, name='about'),
     url(r'^contact/$', views.contact_page, name='contact'),
+    url(r'^delete/$', views.del_all_ticket, name='delete'),
     url(r'^domestic/$', views.domestic, name='domestic'),
     url(r'^insert/$', views.insert_db_ticket, name='insert_db_ticket')
 

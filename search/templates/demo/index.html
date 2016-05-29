@@ -29,6 +29,7 @@
                     <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a></li>
 {#                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>#}
 {#                    <li><a id="a-ud-routes" title="Update the routes" href="{% url 'search:update_routes' %}">Upgrade</a></li>#}
+{#                    <li><a id="a-del-page" title="Delete all ticket" href="{% url 'search:delete' %}">Delete</a></li>#}
                     <li><a id="a-about-page" title="Trang About" href="{% url 'search:about' %}">About</a></li>
                     <li><a id="a-contact-page" title="Trang Contact" href="{% url 'search:contact' %}">Contact</a></li>
                 </ul>
@@ -166,32 +167,28 @@
         </div>
     </form>
     <div id="result">
-        {% if item_list %}
+        {% if item_list and quan %}
         <p class="rs-title">Kết quả</p>
         <div class="rs-div-group">
             <div class="rs-div-result">
                 <table class="ticket-list-table">
                     <tr class="tr-tik-header">
+                        <th class="th-time-come">Mã chuyến bay</th>
                         <th class="th-time-go">Giờ đi</th>
-                        <th class="th-day-go">Ngày đi</th>
-                        <th class="th-dep">Điểm đi</th>
-                        <th class="th-des">Điểm đến</th>
+                        <th class="th-time-come">Giờ đến</th>
+                        <th class="th-time-come">Hãng</th>
                         <th class="th-ticket-type">Loại vé</th>
-                        <th class="th-sit-type">Loại ghế</th>
-                        <th class="th-carrier">Hãng</th>
                         <th class="price">Giá (1000 VND)</th>
                         <th class="th-place">Đặt vé</th>
                     </tr>
                     {% for ticket in item_list %}
                     <tr class="tr-tik">
+                        <td>{{ ticket.flight_code}}</td>
                         <td>{{ ticket.departure_time.time }}</td>
-                        <td>{{ ticket.departure_time.date }}</td>
-                        <td>{{ ticket.departure_port }}</td>
-                        <td>{{ ticket.arrival_port }}</td>
-                        <td>{{ ticket.ticket_type|ticket_type}}</td>
-                        <td>{{ ticket.sit_class}}</td>
+                        <td>{{ ticket.arrival_time.time }}</td>
                         <td>{{ ticket.carrier }}</td>
-                        <td>{{ ticket.price}}</td>
+                        <td>{{ ticket.sit_class|clat}}</td>
+                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe %}</td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>
                     {% endfor %}
                 </tr>
@@ -226,9 +223,13 @@
     }
     function rt_day() {
         var d = new Date();
-        var day = d.getDate() + 3;
+        d.setDate(3);
+        var day = d.getDate();
         var year = d.getYear() + 1900;
         var mon = d.getMonth() + 1;
+        if(day == 1 || day == 2 || day == 3){
+            mon += 1;
+        }
         var time;
         if (day < 10 && mon < 10) {
             time = year + '-0' + mon + '-0' + day;

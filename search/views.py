@@ -50,14 +50,25 @@ def domestic(request):
         search_form = Search(request.GET)
         if search_form.is_valid():
             clean_data = search_form.cleaned_data
+            quantity = {'adult':clean_data['adult'],
+                        'child':clean_data['child'],
+                        'babe':clean_data['babe']}
             lst_result = main.get_ticket(dep=clean_data['departure'],
                                          arr=clean_data['arrival'],
-                                         go_day=clean_data['go_day'])
+                                         way=clean_data['way'],
+                                         stop=clean_data['stops'],
+                                         go_day=clean_data['go_day'],
+                                         rt_day=clean_data['rt_day'],
+                                         adult=clean_data['adult'],
+                                         child=clean_data['child'],
+                                         babe=clean_data['babe']
+                                         )
             if lst_result:
                 return render(request,
                               'demo/index.html',
                               {
-                                  'item_list': lst_result
+                                  'item_list': lst_result,
+                                  'quan':quantity
                               })
             else:
                 return_msg = 'Không tìm thấy kết quả'
@@ -69,11 +80,14 @@ def domestic(request):
         else:
             return redirect('/domestic')
     else:
-        lst_result = Ticket.objects.order_by('price')[:6]
+        # lst_result = Ticket.objects.order_by('price')[:6]
+        lst_result = None
+        search = None
         return render(request,
                       'demo/index.html',
                       {
-                          'item_list': lst_result
+                          'item_list': lst_result,
+                          'is_search': search
                       })
 
 
@@ -84,4 +98,9 @@ def update_routes(request):
 
 def insert_db_ticket(request):
     DataAdapter.make_some_db()
+    return redirect('/domestic')
+
+
+def del_all_ticket(request):
+    DataAdapter.del_all_ticket()
     return redirect('/domestic')

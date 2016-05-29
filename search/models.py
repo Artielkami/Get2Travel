@@ -25,6 +25,10 @@ class Carrier(models.Model):
     code = models.CharField(max_length=9)
     name = models.CharField(max_length=70)
     type = models.CharField(max_length=9)
+    is_del = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id) + '_' + unicode(self.code) + '_' + unicode(self.name)
 
 
 class DomesticRegion(models.Model):
@@ -38,6 +42,9 @@ class MiddlePort(models.Model):
     arrival_port = models.CharField(max_length=5)
     middle_port = models.CharField(max_length=100)
     is_del = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.id) + '_' + unicode(self.depart_port) + '_' + unicode(self.arrival_port)
 
 
 class Ticket(models.Model):
@@ -59,14 +66,22 @@ class Ticket(models.Model):
     )
     departure_time = models.DateTimeField(null=True, blank=True)
     arrival_time = models.DateTimeField(null=True, blank=True)
-    price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    ticket_type = models.CharField(max_length=25, default='Normal')
-    sit_class = models.CharField(max_length=20, default='Trevaler')
-    carrier = models.CharField(max_length=5, default='Aiur')
+    price_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    price_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    price_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+    ticket_type = models.CharField(max_length=50, default=None, null=True)
+    sit_class = models.CharField(max_length=20, default='business')
+    carrier = models.CharField(max_length=5, default='vna')
+    description = models.CharField(max_length=1000, default=None, null=True)
+    flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
 
-    # type = ADU, CHI, SEN
-    # sit_type = FIRST, BUSINESS, NORMAL
+    # carrier = vna, vja, pja
+    # type = flex, standard, save, none
+    # sit_class = FIRST, BUSINESS, ECONOMY, SAVE
 
     def save(self, *args, **kwargs):
         if not self.arrival_time:

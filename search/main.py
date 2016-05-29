@@ -16,7 +16,7 @@ class Main (object):
                                          arrival_port=arr,
                                          departure_time__range=(datetime.datetime.combine(go_day, datetime.time.min),
                                                                 datetime.datetime.combine(go_day, datetime.time.max))
-                                         ).order_by('price')[:10]
+                                         ).order_by('price_adult')[:10]
         else:
             return Ticket.objects.all()[:10]
 

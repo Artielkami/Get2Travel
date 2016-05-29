@@ -5,6 +5,26 @@ from django import template
 register = template.Library()
 
 
+@register.simple_tag(name='price')
+def makeprice(quan, pr1, pr2, pr3):
+    price = quan['adult']*pr1 + quan['child']*pr2 + quan['babe']*pr3
+    return price
+
+
+@register.filter(name='clat')
+def clat(value):
+    if value == 'save':
+        return 'Siêu tiết kiệm'
+    elif value == 'first':
+        return 'Hạng nhất'
+    elif value == 'business':
+        return 'Thương gia'
+    elif value == 'economy':
+        return 'Phổ thông'
+    else:
+        return 'Đặc biệt'
+
+
 @register.filter(name='ticket_type')
 def cut(value):
     if value == 'ADU':
