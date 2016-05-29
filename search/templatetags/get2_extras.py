@@ -6,8 +6,9 @@ register = template.Library()
 
 
 @register.simple_tag(name='price')
-def makeprice(quan, pr1, pr2, pr3):
-    price = quan['adult']*pr1 + quan['child']*pr2 + quan['babe']*pr3
+def makeprice(quan, pr1, pr2, pr3, ft1, ft2, ft3):
+    price = quan['adult']*pr1 + quan['child']*pr2 + quan['babe']*pr3 + \
+            ft1 + ft2 + ft3
     return price
 
 

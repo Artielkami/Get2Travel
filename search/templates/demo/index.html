@@ -101,7 +101,7 @@
                 <label class="control-label" for="way">Way:</label>
                 <select class="form-control" id="way" name="way" onchange="rt_show()">
                     <option value="1">One Way (Một chiều)</option>
-                    <option value="2">Turn Back (Hai chiều)</option>
+                    <option value="2">Round Trip (Khứ rồi)</option>
                 </select>
             </div>
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -122,7 +122,18 @@
                 <input type="date" class="form-control" id="return" name="rt_day" placeholder="Date...">
             </div>
 
-            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
+                <label class="control-label" for="type-ticket">Loại vé</label>
+                <select class="form-control" id="type-ticket" name="ttype">
+                    <option value="all">Bất kì</option>
+                    <option value="save">Giá rẻ</option>
+                    <option value="economy">Phổ thông</option>
+                    <option value="business">Thương gia</option>
+                    <option value="first">Hạng nhất</option>
+                </select>
+            </div>
+
+            <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <label class="control-label" for="adult">Adult: (> 12 years old)</label>
                 <select class="form-control" id="adult" name="adult">
                     <option value="1">1</option>
@@ -137,7 +148,7 @@
                     <option value="10">10</option>
                 </select>
             </div>
-            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <label class="control-label" for="child">Child: (2 - 12 years old)</label>
                 <select class="form-control" id="child" name="child">
                     <option value="0">0</option>
@@ -150,7 +161,7 @@
                     <option value="7">7</option>
                 </select>
             </div>
-            <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="form-group col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <label class="control-label" for="babe">Babe: (< 2 years old)</label>
                 <select class="form-control" id="babe" name="babe">
                     <option value="0">0</option>
@@ -170,6 +181,8 @@
         {% if item_list and quan %}
         <p class="rs-title">Kết quả</p>
         <div class="rs-div-group">
+
+            <p><strong>Chiều đi: từ {{ places.dep }} đi {{ places.arr }}, {{ dates.go }}</strong></p>
             <div class="rs-div-result">
                 <table class="ticket-list-table">
                     <tr class="tr-tik-header">
@@ -188,14 +201,43 @@
                         <td>{{ ticket.arrival_time.time }}</td>
                         <td>{{ ticket.carrier }}</td>
                         <td>{{ ticket.sit_class|clat}}</td>
-                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe %}</td>
+                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe ticket.fee_tax_adult ticket.fee_tax_child ticket.fee_tax_babe %}</td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>
+                    </tr>
                     {% endfor %}
-                </tr>
                 </table>
 
             </div>
 
+            {% if rt_list %}
+                <p></p>
+                <p><strong>Chiều về: từ {{ places.arr }} về {{ places.dep }} {{ dates.back }}</strong></p>
+                <div class="rs-div-result">
+                <table class="ticket-list-table">
+                    <tr class="tr-tik-header">
+                        <th class="th-time-come">Mã chuyến bay</th>
+                        <th class="th-time-go">Giờ đi</th>
+                        <th class="th-time-come">Giờ đến</th>
+                        <th class="th-time-come">Hãng</th>
+                        <th class="th-ticket-type">Loại vé</th>
+                        <th class="price">Giá (1000 VND)</th>
+                        <th class="th-place">Đặt vé</th>
+                    </tr>
+                    {% for rt in rt_list %}
+                    <tr class="tr-tik">
+                        <td>{{ rt.flight_code}}</td>
+                        <td>{{ rt.departure_time.time }}</td>
+                        <td>{{ rt.arrival_time.time }}</td>
+                        <td>{{ rt.carrier }}</td>
+                        <td>{{ rt.sit_class|clat}}</td>
+                        <td>{% price quan rt.price_adult rt.price_child rt.price_babe rt.fee_tax_adult rt.fee_tax_child rt.fee_tax_babe %}</td>
+                        <td><a href="javascript:void(0)">Đặt vé</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+            {% endif %}
         </div>
         {% else %}
             {% if return_msg %}

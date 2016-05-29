@@ -3,7 +3,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render_to_response, render, redirect
-from .models import Ticket
+from .models import Ticket, Airport
 from .forms import Search
 from .main import Main
 from dataAdapter import DataAdapter
@@ -53,21 +53,41 @@ def domestic(request):
             quantity = {'adult':clean_data['adult'],
                         'child':clean_data['child'],
                         'babe':clean_data['babe']}
+            dates = {'go':clean_data['go_day'],
+                     'back':clean_data['rt_day']}
+            places = {'dep':Airport.objects.get(code=clean_data['departure']).name,
+                      'arr': Airport.objects.get(code=clean_data['arrival']).name}
             lst_result = main.get_ticket(dep=clean_data['departure'],
                                          arr=clean_data['arrival'],
                                          way=clean_data['way'],
                                          stop=clean_data['stops'],
                                          go_day=clean_data['go_day'],
-                                         rt_day=clean_data['rt_day'],
-                                         adult=clean_data['adult'],
-                                         child=clean_data['child'],
-                                         babe=clean_data['babe']
+                                         rt_day=clean_data['rt_day']
                                          )
             if lst_result:
+                if clean_data['way'] == 2:
+                    rt_result = main.get_ticket(dep=clean_data['arrival'],
+                                                arr=clean_data['departure'],
+                                                way=clean_data['way'],
+                                                stop=clean_data['stops'],
+                                                go_day=clean_data['rt_day'],
+                                                rt_day=clean_data['rt_day']
+                                                )
+                    return render(request,
+                                  'demo/index.html',
+                                  {
+                                      'item_list': lst_result,
+                                      'rt_list': rt_result,
+                                      'places': places,
+                                      'dates': dates,
+                                      'quan': quantity
+                                  })
                 return render(request,
                               'demo/index.html',
                               {
                                   'item_list': lst_result,
+                                  'dates':dates,
+                                  'places': places,
                                   'quan':quantity
                               })
             else:

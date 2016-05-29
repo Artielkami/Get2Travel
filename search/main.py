@@ -10,8 +10,8 @@ class Main (object):
     """Lõi xử lý chính"""
 
     @staticmethod
-    def get_ticket(dep, arr, go_day, rt_day='xxx', way=1, stop=0, adult=1, child=0, babe=0):
-        if way == 1:
+    def get_ticket(dep, arr, go_day, rt_day='xxx', way=1, stop=0, ttype='all'):
+        if ttype == 'all':
             return Ticket.objects.filter(departure_port=dep,
                                          arrival_port=arr,
                                          departure_time__range=(datetime.datetime.combine(go_day, datetime.time.min),
