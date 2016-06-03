@@ -1,0 +1,118 @@
+body {
+    font-size:1.5em;
+}
+.navbar {
+    margin-bottom: 0;
+    background-color: #f4511e;
+    z-index: 9999;
+    border: 0;
+    font-size: 12px !important;
+    line-height: 1.42857143 !important;
+    letter-spacing: 4px;
+    border-radius: 0;
+}
+.navbar li:nth-child(n+2) {
+    border-left: solid 1px #000000;
+}
+.navbar li a, .navbar .navbar-brand {
+    color: #fff !important;
+}
+
+.navbar-nav li a:hover, .navbar-nav li.active a {
+    color: #f4511e !important;
+    background-color: #fff !important;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.navbar-brand img {
+    position: relative;
+    display: inline;
+    height: 43px;
+    top: -10px;
+}
+
+.main {
+    margin-top: 70px;
+    margin-bottom:50px;
+}
+.span-header-for-middle {
+    vertical-align: top;
+    font-style: italic;
+    font-family: sans-serif;
+}
+.my-nav-text-style {
+    font-weight: bolder;
+}
+.btn-my-search-style {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: bolder;
+    font-size: 1.6em;
+}
+.footer-my-style {
+    position: fixed;
+    bottom: 0px;
+    height:auto;
+    width: 100%;
+    background-color: #999999;
+    padding:10px;
+}
+.footer-my-style p {
+    margin-bottom: 0px;
+}
+#result {
+    margin-top: 20px;
+    background-color: #E0BFDC;
+    padding: 15px;
+}
+#result .rs-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+.rs-ul li {
+    display: inline-block;
+    list-style-type: none;
+    padding-right: 20px;
+}
+.ticket-list-table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+.tr-tik-header {
+    background-color: white;
+}
+.ticket-list-table th,td {
+    text-align: center;
+}
+.ticket-list-table th,td {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.tr-tik {
+    margin-bottom: 3px;
+    margin-top: 3px;
+}
+#div-return {
+    visibility: hidden;
+}
+#result {
+    margin-bottom: 35px;
+}
+/* This under is belong to about.html and contact.html */
+.main .row .brand-name {
+    color:#ff7800;
+    font-weight:bold;
+    font-size:30px;
+}
+.main .row ol > li {
+    font-weight:bold;
+    font-style:italic;
+}
