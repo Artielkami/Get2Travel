@@ -73,7 +73,7 @@ class Ticket(models.Model):
     fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    ticket_type = models.CharField(max_length=50, null=True, blank=True, default=None)
+    ticket_type = models.CharField(max_length=50, null=False, default=None)
     sit_class = models.CharField(max_length=20, default='business')
     carrier = models.CharField(max_length=5, default='vna')
     description = models.CharField(max_length=1000, default=None, null=True)

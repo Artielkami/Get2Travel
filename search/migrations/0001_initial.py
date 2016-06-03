@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
                 ('departure_time', models.DateTimeField(blank=True, null=True)),
                 ('arrival_time', models.DateTimeField(blank=True, null=True)),
                 ('price', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
-                ('ticket_type', models.CharField(default='Normal', max_length=25)),
+                ('ticket_type', models.CharField(default='Normal', max_length=25, null=True)),
                 ('sit_class', models.CharField(default='Trevaler', max_length=20)),
                 ('carrier', models.CharField(default='Aiur', max_length=5)),
                 ('date_created', models.DateTimeField(default=django.utils.timezone.now)),
