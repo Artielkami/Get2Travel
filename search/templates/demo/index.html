@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load get2_extras %}
+{% load staticfiles %}
 <html lang="en">
 <head>
     <title>Domestic flight</title>
@@ -20,7 +21,7 @@
                     <span class="fa fa-bars fa-2x"></span>
                 </button>
                 <a class="navbar-brand" href="#">
-                    <img src="../../static/search/images/can.png" alt="logo hình lá cần">
+                    <img src="{% static 'search/images/can.png' %}" alt="logo hình lá cần">
                     <span class="span-header-for-middle">Get Hi Travel</span>
                 </a>
             </div>

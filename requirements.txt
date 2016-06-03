@@ -14,3 +14,4 @@ requests==2.10.0
 texttable==0.8.4
 timezones==1.9.6
 virtualenv==15.0.1
+gunicorn==19.6.0
