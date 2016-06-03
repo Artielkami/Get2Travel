@@ -229,7 +229,7 @@
                         <td>{{ rt.flight_code}}</td>
                         <td>{{ rt.departure_time.time }}</td>
                         <td>{{ rt.arrival_time.time }}</td>
-                        <td>{{ rt.carrier }}</td>
+                        <td>{{ rt.carrier|carrier }}</td>
                         <td>{{ rt.sit_class|clat}}</td>
                         <td>{% price quan rt.price_adult rt.price_child rt.price_babe rt.fee_tax_adult rt.fee_tax_child rt.fee_tax_babe %}</td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>

@@ -12,6 +12,16 @@ def makeprice(quan, pr1, pr2, pr3, ft1, ft2, ft3):
     return price
 
 
+@register.filter(name='carrier')
+def carrier(value):
+    if value == 'pja':
+        return 'JetStar'
+    elif value == 'vna':
+        return 'VN Airline'
+    else:
+        return 'VietJet'
+
+
 @register.filter(name='clat')
 def clat(value):
     if value == 'save':
