@@ -74,7 +74,7 @@ class DataAdapter(object):
             pr3 = 0 if typ == 'save' else 100*rr(1,2)
             ft1 = pr1*38/100
             ft2 = pr2*29/100
-            ft3 = 100*rr(0,1) + pr3*1/10
+            ft3 = 100*rr(0, 1) + pr3*1/10
             t = Ticket(departure_port=ap(pk=in1),
                        arrival_port=ap(pk=in2),
                        departure_time=date + td1,

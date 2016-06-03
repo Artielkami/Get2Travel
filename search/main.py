@@ -14,6 +14,7 @@ class Main (object):
         if ttype == 'all':
             return Ticket.objects.filter(departure_port=dep,
                                          arrival_port=arr,
+                                         ticket_type=ttype,
                                          departure_time__range=(datetime.datetime.combine(go_day, datetime.time.min),
                                                                 datetime.datetime.combine(go_day, datetime.time.max))
                                          ).order_by('price_adult')[:10]

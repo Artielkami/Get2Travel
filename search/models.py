@@ -11,6 +11,7 @@ import datetime
 class Airport(models.Model):
     code = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=60)
+    sname = models.CharField(max_length=50, default=None)
     router = models.CharField(max_length=100, default='xxx')
     is_del = models.BooleanField(default=False)
 
@@ -72,7 +73,7 @@ class Ticket(models.Model):
     fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    ticket_type = models.CharField(max_length=50, default=None, null=True)
+    ticket_type = models.CharField(max_length=50, null=True, blank=True, default=None)
     sit_class = models.CharField(max_length=20, default='business')
     carrier = models.CharField(max_length=5, default='vna')
     description = models.CharField(max_length=1000, default=None, null=True)

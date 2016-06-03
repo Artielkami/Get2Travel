@@ -11,6 +11,7 @@ from dataAdapter import DataAdapter
 # Create your views here.
 
 
+# this one predecate
 def index(request):
     if request.method == 'GET':
         print 'search'
@@ -61,6 +62,7 @@ def domestic(request):
                                          arr=clean_data['arrival'],
                                          way=clean_data['way'],
                                          stop=clean_data['stops'],
+                                         ttype=clean_data['ttype'],
                                          go_day=clean_data['go_day'],
                                          rt_day=clean_data['rt_day']
                                          )
@@ -70,6 +72,7 @@ def domestic(request):
                                                 arr=clean_data['departure'],
                                                 way=clean_data['way'],
                                                 stop=clean_data['stops'],
+                                                ttype=clean_data['ttype'],
                                                 go_day=clean_data['rt_day'],
                                                 rt_day=clean_data['rt_day']
                                                 )
