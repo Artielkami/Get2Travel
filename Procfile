@@ -1,0 +1,1 @@
+web: gunicorn Get2Travel.wsgi --log-file -

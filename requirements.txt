@@ -1,0 +1,17 @@
+Django==1.9.6
+django-excel==0.0.4
+geoip2==2.3.0
+ipaddr==2.1.11
+jdcal==1.2
+maxminddb==1.2.0
+openpyxl==2.2.2
+pyexcel==0.2.1
+pyexcel-io==0.1.0
+pyexcel-webio==0.0.6
+pyexcel-xlsx==0.1.0
+pygobject==3.18.0
+pytz==2016.4
+requests==2.10.0
+texttable==0.8.4
+timezones==1.9.6
+virtualenv==15.0.1
