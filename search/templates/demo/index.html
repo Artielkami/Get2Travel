@@ -200,7 +200,7 @@
                         <td>{{ ticket.flight_code}}</td>
                         <td>{{ ticket.departure_time.time }}</td>
                         <td>{{ ticket.arrival_time.time }}</td>
-                        <td>{{ ticket.carrier }}</td>
+                        <td>{{ ticket.carrier|carrier }}</td>
                         <td>{{ ticket.sit_class|clat}}</td>
                         <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe ticket.fee_tax_adult ticket.fee_tax_child ticket.fee_tax_babe %}</td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>
