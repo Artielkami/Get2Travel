@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
                     <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a></li>
-{#                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">International</a></li>#}
+{#                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">Insert</a></li>#}
 {#                    <li><a id="a-ud-routes" title="Update the routes" href="{% url 'search:update_routes' %}">Upgrade</a></li>#}
 {#                    <li><a id="a-del-page" title="Delete all ticket" href="{% url 'search:delete' %}">Delete</a></li>#}
                     <li><a id="a-about-page" title="Trang About" href="{% url 'search:about' %}">About</a></li>
@@ -45,7 +45,7 @@
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="from">From:</label>
                 <!--<input type="text" class="form-control" id="from" name="from" placeholder="Location...">-->
-                <select name="departure" id="from" class="form-control">
+                <select name="departure" id="from" class="form-control" required>
                     <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
                     <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                     <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
@@ -73,7 +73,7 @@
             <div class="form-group col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <label class="control-label" for="to">To:</label>
                 <!--<input type="text" class="form-control" id="to" name="to" placeholder="Location...">-->
-                <select name="arrival" id="to" class="form-control">
+                <select name="arrival" id="to" class="form-control" required>
                     <option class="pickFlightStart" value="" style="text-align: center">-- Please choose place --</option>
                     <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                     <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
@@ -182,8 +182,11 @@
         {% if item_list and quan %}
         <p class="rs-title">Kết quả</p>
         <div class="rs-div-group">
-
-            <p><strong>Chiều đi: từ {{ places.dep }} đi {{ places.arr }}, {{ dates.go }}</strong></p>
+            {% if rs_type %}
+                <div>{{ item_list }}</div>
+            </div>
+            {% else %}
+            <p><strong>Chiều đi: {{ places.dep }} đi {{ places.arr }} | {{ dates.go }}</strong></p>
             <div class="rs-div-result">
                 <table class="ticket-list-table">
                     <tr class="tr-tik-header">
@@ -209,10 +212,10 @@
                 </table>
 
             </div>
-
+            {% endif %}
             {% if rt_list %}
                 <p></p>
-                <p><strong>Chiều về: từ {{ places.arr }} về {{ places.dep }} {{ dates.back }}</strong></p>
+                <p><strong>Chiều về: {{ places.arr }} về {{ places.dep }} | {{ dates.back }}</strong></p>
                 <div class="rs-div-result">
                 <table class="ticket-list-table">
                     <tr class="tr-tik-header">
@@ -254,8 +257,13 @@
 </footer>
 <script type="text/javascript">
     $(document).ready(function () {
-        test();
-        rt_day();
+{#        {% if sform %}#}
+{#            $('#from option').val({{ sform.departure }}).attr('selected');#}
+{#            $('#to').val({{ sform.arrival }});#}
+{#        {% else %}#}
+            test();
+            rt_day();
+{#        {% endif %}#}
     });
     function rt_show() {
         if($('#way').val() == '1'){

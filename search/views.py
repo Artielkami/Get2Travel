@@ -49,15 +49,17 @@ def domestic(request):
     if request.GET.get('departure'):
         main = Main()
         search_form = Search(request.GET)
+        # print('run domestic')
         if search_form.is_valid():
+            # print ('form is_valid')
             clean_data = search_form.cleaned_data
             quantity = {'adult':clean_data['adult'],
                         'child':clean_data['child'],
                         'babe':clean_data['babe']}
             dates = {'go':clean_data['go_day'],
                      'back':clean_data['rt_day']}
-            places = {'dep':Airport.objects.get(code=clean_data['departure']).name,
-                      'arr': Airport.objects.get(code=clean_data['arrival']).name}
+            places = {'dep':Airport.objects.get(code=clean_data['departure']).sname,
+                      'arr': Airport.objects.get(code=clean_data['arrival']).sname}
             lst_result = main.get_ticket(dep=clean_data['departure'],
                                          arr=clean_data['arrival'],
                                          way=clean_data['way'],
@@ -67,7 +69,19 @@ def domestic(request):
                                          rt_day=clean_data['rt_day']
                                          )
             if lst_result:
-                if clean_data['way'] == 2:
+                if clean_data['stops'] == 2:
+                    return render(request,
+                                  'demo/index.html',
+                                  {
+                                      'item_list': lst_result,
+                                      # 'rt_list': rt_result,
+                                      'rs_type': 'stop',
+                                      'places': places,
+                                      'dates': dates,
+                                      'sform': search_form,
+                                      'quan': quantity
+                                  })
+                elif clean_data['way'] == 2:
                     rt_result = main.get_ticket(dep=clean_data['arrival'],
                                                 arr=clean_data['departure'],
                                                 way=clean_data['way'],
@@ -83,12 +97,14 @@ def domestic(request):
                                       'rt_list': rt_result,
                                       'places': places,
                                       'dates': dates,
+                                      'sform': search_form,
                                       'quan': quantity
                                   })
                 return render(request,
                               'demo/index.html',
                               {
                                   'item_list': lst_result,
+                                  'sform': search_form,
                                   'dates':dates,
                                   'places': places,
                                   'quan':quantity

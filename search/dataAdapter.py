@@ -41,8 +41,8 @@ class DataAdapter(object):
 
     @staticmethod
     def make_some_db():
-        day = 20
-        date = datetime.datetime(year=2016, month=5, day=day,
+        day = 15
+        date = datetime.datetime(year=2016, month=6, day=day,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
         type = ['standard', 'save', 'flex']
@@ -55,7 +55,7 @@ class DataAdapter(object):
         ap = Airport.objects.get
         rc = random.choice
         rr = random.randrange
-        for x in xrange(1, 200):
+        for x in xrange(1, 500):
             print 'make', x
             in1 = rr(1, 21)
             in2 = rr(1, 21)
