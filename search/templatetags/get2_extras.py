@@ -11,6 +11,10 @@ def makeprice(quan, pr1, pr2, pr3, ft1, ft2, ft3):
             ft1 + ft2 + ft3
     return price
 
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+
 
 @register.filter(name='carrier')
 def carrier(value):

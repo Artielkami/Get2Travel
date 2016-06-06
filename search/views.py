@@ -53,12 +53,12 @@ def domestic(request):
         if search_form.is_valid():
             # print ('form is_valid')
             clean_data = search_form.cleaned_data
-            quantity = {'adult':clean_data['adult'],
-                        'child':clean_data['child'],
-                        'babe':clean_data['babe']}
-            dates = {'go':clean_data['go_day'],
-                     'back':clean_data['rt_day']}
-            places = {'dep':Airport.objects.get(code=clean_data['departure']).sname,
+            quantity = {'adult': clean_data['adult'],
+                        'child': clean_data['child'],
+                        'babe': clean_data['babe']}
+            dates = {'go': clean_data['go_day'],
+                     'back': clean_data['rt_day']}
+            places = {'dep': Airport.objects.get(code=clean_data['departure']).sname,
                       'arr': Airport.objects.get(code=clean_data['arrival']).sname}
             lst_result = main.get_ticket(dep=clean_data['departure'],
                                          arr=clean_data['arrival'],
@@ -68,6 +68,13 @@ def domestic(request):
                                          go_day=clean_data['go_day'],
                                          rt_day=clean_data['rt_day']
                                          )
+            sform = {'departure': clean_data['departure'],
+                     'arrival': clean_data['arrival'],
+                     'way': clean_data['way'],
+                     'stop': clean_data['stops'],
+                     'go_day': clean_data['go_day'],
+                     'rt_day': clean_data['rt_day'],
+                     'ttype': clean_data['ttype']}
             if lst_result:
                 if clean_data['stops'] == 2:
                     return render(request,
@@ -78,7 +85,7 @@ def domestic(request):
                                       'rs_type': 'stop',
                                       'places': places,
                                       'dates': dates,
-                                      'sform': search_form,
+                                      'sform': sform,
                                       'quan': quantity
                                   })
                 elif clean_data['way'] == 2:
@@ -97,17 +104,17 @@ def domestic(request):
                                       'rt_list': rt_result,
                                       'places': places,
                                       'dates': dates,
-                                      'sform': search_form,
+                                      'sform': sform,
                                       'quan': quantity
                                   })
                 return render(request,
                               'demo/index.html',
                               {
                                   'item_list': lst_result,
-                                  'sform': search_form,
-                                  'dates':dates,
+                                  'sform': sform,
+                                  'dates': dates,
                                   'places': places,
-                                  'quan':quantity
+                                  'quan': quantity
                               })
             else:
                 return_msg = 'Không tìm thấy kết quả'
