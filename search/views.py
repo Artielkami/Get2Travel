@@ -121,6 +121,7 @@ def domestic(request):
                 return render(request,
                               'search/index.html',
                               {
+                                  'sform': sform,
                                   'return_msg': return_msg
                               })
         else:
