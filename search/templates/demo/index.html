@@ -282,7 +282,7 @@
     }
     function rt_day() {
         var d = new Date();
-        d.setDate(3);
+        d.setDate(d.getDate() + 3);
         var day = d.getDate();
         var year = d.getYear() + 1900;
         var mon = d.getMonth() + 1;
