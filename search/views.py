@@ -20,14 +20,14 @@ def index(request):
         # lst_result = main.get_by_date(search_form.go_date)[:10]
         lst_result = Ticket.objects.all()
         return render(request,
-                      'demo/index.html',
+                      'search/index.html',
                       {
                           'item_list': lst_result
                       })
     else:
         print 'fail'
         ticket_list = Ticket.objects.order_by('-day')
-        template = loader.get_template('demo/UI.html')
+        template = loader.get_template('search/UI.html')
         context = {
             'item_list': ticket_list,
         }
@@ -38,11 +38,11 @@ def index(request):
 
 
 def about_page(request):
-    return render(request, 'demo/about.html')
+    return render(request, 'search/about.html')
 
 
 def contact_page(request):
-    return render(request, 'demo/contact.html')
+    return render(request, 'search/contact.html')
 
 
 def domestic(request):
@@ -78,7 +78,7 @@ def domestic(request):
             if lst_result:
                 if clean_data['stops'] == 2:
                     return render(request,
-                                  'demo/index.html',
+                                  'search/index.html',
                                   {
                                       'item_list': lst_result,
                                       # 'rt_list': rt_result,
@@ -98,7 +98,7 @@ def domestic(request):
                                                 rt_day=clean_data['rt_day']
                                                 )
                     return render(request,
-                                  'demo/index.html',
+                                  'search/index.html',
                                   {
                                       'item_list': lst_result,
                                       'rt_list': rt_result,
@@ -108,7 +108,7 @@ def domestic(request):
                                       'quan': quantity
                                   })
                 return render(request,
-                              'demo/index.html',
+                              'search/index.html',
                               {
                                   'item_list': lst_result,
                                   'sform': sform,
@@ -119,7 +119,7 @@ def domestic(request):
             else:
                 return_msg = 'Không tìm thấy kết quả'
                 return render(request,
-                              'demo/index.html',
+                              'search/index.html',
                               {
                                   'return_msg': return_msg
                               })
@@ -130,7 +130,7 @@ def domestic(request):
         lst_result = None
         search = None
         return render(request,
-                      'demo/index.html',
+                      'search/index.html',
                       {
                           'item_list': lst_result,
                           'is_search': search
