@@ -1,13 +1,13 @@
 /**
  * Created by admin on 29/04/2016.
  */
-function rt_show() {
-    if ($('#way').val() == '1') {
-        $('#div-return').css('visibility', 'hidden');
+$('#way input:radio').change(function(){
+    if ($(this).val() == 'rounded_trip') {
+        $('#inbound').css('visibility', 'visible');
     } else {
-        $('#div-return').css('visibility', 'visible');
+        $('#inbound').css('visibility', 'hidden');
     }
-}
+});
 
 function rt_day() {
     var d = new Date();
