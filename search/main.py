@@ -2,12 +2,24 @@
 # -*- coding: utf-8 -*-
 from .models import Ticket, Carrier, Airport, MiddlePort
 from django.db.models import F
+from result import Result, Flight
 import random
 import datetime
 
-
 class Main(object):
     """Lõi xử lý chính"""
+    def __init__(self):
+        self.num_adult = 0
+        self.num_child = 0
+        self.num_infan = 0
+        self.outward_day = None
+        self.return_day = None
+        self.way = 1  # chieu di, la 1/2 chieu
+        self.dep_port = None
+        self.arr_port = None
+        self.sort_by = 'price'
+        self.outward_list = []
+        self.return_list = []
 
     @staticmethod
     def get_ticket(dep, arr, go_day, rt_day='xxx', way=1, stop=0, ttype='all'):
