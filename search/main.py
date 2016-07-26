@@ -1,10 +1,42 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from .models import Ticket, Carrier, Airport, MiddlePort
+from .models import Ticket, Carrier, Airport, MiddlePort, VNATicket, VJATicket, JSATicket
 from django.db.models import F
 from result import Result, Flight
 import random
 import datetime
+
+
+class SeatFlight(object):
+    def __init__(self):
+        self.ticket_type = 0
+        self.adult_price = 0
+        self.child_price = 0
+        self.babe_price = 0
+        self.adult_ft = 0
+        self.child_ft = 0
+        self.babe_ft = 0
+
+
+class AFlight(object):
+    def __init__(self):
+        self.total_price_min = 0
+        self.departure_port = None
+        self.arrival_port = None
+        self.departure_time = '0000'
+        self.arrival_time = '0000'
+        self.seat_list = []
+
+
+class ResultFlight(object):
+    def __init__(self):
+        self.total_price = 0
+        self.transit = None
+        self.departure_time = '0000'
+        self.arrival_time = '0000'
+        self.first_flight = []
+        self.second_flight = []
+
 
 class Main(object):
     """Lõi xử lý chính"""
@@ -21,8 +53,36 @@ class Main(object):
         self.outward_list = []
         self.return_list = []
 
+    def search(self, data = {}):
+        self.num_adult = data['adult']
+        self.num_child = data['child']
+        self.num_infan = data['babe']
+        self.outward_day = data['go_day']
+        self.return_day = data['rt_day']
+        self.way = data['way']
+        self.dep_port = data['departure']
+        self.arr_port = data['arrival']
+        transit_list = MiddlePort.objects.filter(depart_port=self.dep_port, arrival_port=self.arr_port)
+        flight_lst = Ticket.objects.filter(departure_port=self.dep_port,
+                                           arrival_port=self.arr_port,
+                                           departure_time__range=(
+                                               datetime.datetime.combine(self.outward_day, datetime.time.min),
+                                               datetime.datetime.combine(self.outward_day, datetime.time.max))
+                                           )
+        # TODO --------- search method ---------
+        if flight_lst:
+            for flight in flight_lst:
+                # get list ticket suitable with carrier
+                if flight.carrier == 'vna':
+                    ticket_lst = VNATicket.objects.get(id=flight.ticket)
+                elif flight.carrier == 'vja':
+                    ticket_lst = VJATicket.objects.get(id=flight.ticket)
+                elif flight.carrier == 'jsa':
+                    ticket_lst = JSATicket.objects.get(id=flight.ticket)
+                aResult = ResultFlight()
+
     @staticmethod
-    def get_ticket(dep, arr, go_day, rt_day='xxx', way=1, stop=0, ttype='all'):
+    def get_ticket(dep, arr, go_day, rt_day='xxx', way=1, stop=0, ttype='all', quan = {}):
         if ttype == 'all' and (stop == 0 or stop == 1):
             return Ticket.objects.filter(departure_port=dep,
                                          arrival_port=arr,

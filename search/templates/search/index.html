@@ -109,10 +109,10 @@
                     </select>
                 </div>
                 <div class="form-group col-xs-12">
-                    <label class="control-label" for="stops">Điểm dừng:</label>
+                    <label class="control-label" for="stops">Chặng dừng:</label>
                     <select class="form-control" id="stops" name="stops">
                         <option value="0">Bất kỳ</option>
-                        <option value="1">Không điểm dừng</option>
+                        <option value="1">Không trung chuyển</option>
                         <option value="2">Một điểm dừng</option>
                     </select>
                 </div>
@@ -141,7 +141,7 @@
                     <span class="title">Số hành khách</span>
                 </div>
                 <div class="form-group input-inline col-xs-4">
-                    <label class="control-label" for="adult"><img src="{% static 'search/images/adult.jpg' %}"
+                    <label class="control-label" for="adult"><img src="{% static 'search/images/adult.jpg' %}" title="Adult"
                                                                   alt="icon"></label>
                     <select class="form-control" id="adult" name="adult">
                         <option value="1">1</option>
@@ -156,7 +156,7 @@
                     </select>
                 </div>
                 <div class="form-group input-inline col-xs-4">
-                    <label class="control-label" for="child"><img src="{% static 'search/images/child.jpg' %}"
+                    <label class="control-label" for="child"><img src="{% static 'search/images/child.jpg' %}" title="Child"
                                                                   alt="icon"></label>
                     <select class="form-control" id="child" name="child">
                         <option value="0">0</option>
@@ -170,7 +170,7 @@
                     </select>
                 </div>
                 <div class="form-group input-inline col-xs-4">
-                    <label class="control-label" for="babe"><img src="{% static 'search/images/babe.jpg' %}" alt="icon"></label>
+                    <label class="control-label" for="babe"><img src="{% static 'search/images/babe.jpg' %}" title="Babe" alt="icon"></label>
                     <select class="form-control" id="babe" name="babe">
                         <option value="0">0</option>
                         <option value="1">1</option>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from models import Ticket, Airport, Carrier, DomesticRegion, MiddlePort
+from models import Ticket, Airport, Carrier, DomesticRegion, MiddlePort, VNATicket, VJATicket, JSATicket
 import datetime
 import random
 from django.utils import timezone
@@ -49,7 +49,7 @@ class DataAdapter(object):
         # type_bu = ['standard', 'flex']
         # carry = ['Ppew', 'UFO', 'Aiur', 'Navi', 'Medin', 'Lotha', 'Sinvo',
         #          'Valve', 'Volvo', 'Skys']
-        carry = ['vna', 'vja', 'pja']
+        carry = ['vna', 'vja', 'jsa']
         sit_class = ['economy', 'business', 'first', 'save']
         fcode = ['VN370', 'VN7770', 'VJ1280', 'PJ8010', 'VJ780', 'PJ980']
         ap = Airport.objects.get
