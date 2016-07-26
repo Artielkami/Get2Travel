@@ -122,6 +122,7 @@ def domestic(request):
                               'search/index.html',
                               {
                                   'sform': sform,
+                                  'quan': quantity,
                                   'return_msg': return_msg
                               })
         else:

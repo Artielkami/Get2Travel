@@ -2,7 +2,7 @@
  * Created by admin on 29/04/2016.
  */
 $('#way input:radio').change(function(){
-    if ($(this).val() == 'rounded_trip') {
+    if ($(this).val() == '2') {
         $('#inbound').css('visibility', 'visible');
     } else {
         $('#inbound').css('visibility', 'hidden');

@@ -30,16 +30,10 @@
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
                     <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a>
                     </li>
-                    {#
                     <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">Insert</a></li>
-                    #}
-                    {#
                     <li><a id="a-ud-routes" title="Update the routes"
                            href="{% url 'search:update_routes' %}">Upgrade</a></li>
-                    #}
-                    {#
                     <li><a id="a-del-page" title="Delete all ticket" href="{% url 'search:delete' %}">Delete</a></li>
-                    #}
                     <li><a id="a-about-page" title="Trang About" href="{% url 'search:about' %}">About</a></li>
                     <li><a id="a-contact-page" title="Trang Contact" href="{% url 'search:contact' %}">Contact</a></li>
                 </ul>
@@ -133,8 +127,8 @@
                     <input type="date" class="form-control" id="outbound" name="go_day" placeholder="Date...">
                 </div>
                 <div class="form-group col-xs-12" id="way">
-                    <label class="radio-inline"><input type="radio" name="way" value="one_way" checked>Một chiều</label>
-                    <label class="radio-inline"><input type="radio" name="way" value="rounded_trip">Khứ hồi</label>
+                    <label class="radio-inline"><input type="radio" name="way" value="1" checked>Một chiều</label>
+                    <label class="radio-inline"><input type="radio" name="way" value="2">Khứ hồi</label>
                 </div>
                 <div class="form-group col-xs-12" id="inbound">
                     <label class="control-label" for="return">Ngày về:</label>
@@ -228,8 +222,7 @@
                         <td>{{ ticket.arrival_time.time }}</td>
                         <td>{{ ticket.carrier|carrier }}</td>
                         <td>{{ ticket.sit_class|clat}}</td>
-                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe ticket.fee_tax_adult
-                            ticket.fee_tax_child ticket.fee_tax_babe %}
+                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe ticket.fee_tax_adult ticket.fee_tax_child ticket.fee_tax_babe %}
                         </td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>
                     </tr>
@@ -259,8 +252,7 @@
                         <td>{{ rt.arrival_time.time }}</td>
                         <td>{{ rt.carrier|carrier }}</td>
                         <td>{{ rt.sit_class|clat}}</td>
-                        <td>{% price quan rt.price_adult rt.price_child rt.price_babe rt.fee_tax_adult rt.fee_tax_child
-                            rt.fee_tax_babe %}
+                        <td>{% price quan rt.price_adult rt.price_child rt.price_babe rt.fee_tax_adult rt.fee_tax_child rt.fee_tax_babe %}
                         </td>
                         <td><a href="javascript:void(0)">Đặt vé</a></td>
                     </tr>
