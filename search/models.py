@@ -107,7 +107,7 @@ class VNATicket(models.Model):
 
 class VJATicket(models.Model):
     """List all ticket of VietJet"""
-    # business flex
+    # promo
     promo_num = models.IntegerField(default=20)
     pro_adult_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     pro_child_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
@@ -116,7 +116,7 @@ class VJATicket(models.Model):
     pro_child_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     pro_babe_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
 
-    # business standard
+    # eco
     eco_num = models.IntegerField(default=20)
     eco_adult_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     eco_child_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
@@ -125,7 +125,7 @@ class VJATicket(models.Model):
     eco_child_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     eco_babe_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
 
-    # economy flex
+    # skyboss
     skyboss_num = models.IntegerField(default=20)
     sky_adult_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     sky_child_price = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
@@ -192,7 +192,7 @@ class Ticket(models.Model):
     # fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     # ticket_type = models.CharField(max_length=50, null=False, default=None)
     # sit_class = models.CharField(max_length=20, default='business')
-    ticket = models.IntegerField()
+    ticket = models.IntegerField(default=0)
     carrier = models.CharField(max_length=5, default='vna')
     flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
