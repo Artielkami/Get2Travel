@@ -251,6 +251,22 @@
                                             <li>{{ ticket.ticket_type|ticket_type }} : {{ ticket.total_price }}</li>
                                         {% endfor %}
                                     </ul>
+                                    {% if flight.second_flight %}
+                                        {% for sflight in flight.second_flight %}
+                                            <p>
+                                                {{ sflight.carrier|carrier }}-
+                                                {{ sflight.flight_code }} :
+                                                {{ sflight.departure_time.time|time:"g:iA"|lower }}
+                                                &rarr;
+                                                {{ sflight.arrival_time.time|time:"g:iA"|lower }}
+                                            </p>
+                                            <ul>
+                                                {% for ticket in sflight.seat_list %}
+                                                    <li>{{ ticket.ticket_type|ticket_type }} : {{ ticket.total_price }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endfor %}
+                                    {% endif %}
                                 </td>
                             </tr>
                             </tbody>

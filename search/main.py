@@ -638,8 +638,8 @@ class Main(object):
                                 asflight.departure_name = second_flight.departure_port.sname
                                 asflight.departure_time = second_flight.departure_time
                                 asflight.arrival_time = second_flight.arrival_time
-                                asflight.carrier = flight.carrier
-                                asflight.flight_code = flight.flight_code
+                                asflight.carrier = second_flight.carrier
+                                asflight.flight_code = second_flight.flight_code
                                 asflight.set_min_price()
 
                                 aresult.end_port = asflight.arrival_name
