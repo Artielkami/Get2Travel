@@ -34,6 +34,8 @@ class SeatFlight(object):
 class AFlight(object):
     def __init__(self):
         self.total_price_min = 0
+        self.carrier = None
+        self.flight_code = None
         self.departure_port = None
         self.arrival_port = None
         self.departure_name = None
@@ -49,11 +51,12 @@ class AFlight(object):
 
 
 class ResultFlight(object):
-    def __init__(self, transit=False):
+    def __init__(self, transit=None):
         self.total_price = 0
         self.transit = transit
         self.departure_time = '0000'
         self.arrival_time = '0000'
+        self.end_port = None
         self.first_flight = None
         self.second_flight = []
 
@@ -222,7 +225,7 @@ class Main(object):
                     lst_ticket.append(ticket_vjaeco)
                     lst_ticket.append(ticket_vjasky)
                 elif flight.carrier == 'jsa':  # jetstar
-                    ticket_lst = JSATicket.objects.get(i=flight.ticket)
+                    ticket_lst = JSATicket.objects.get(id=flight.ticket)
                     # save
                     ticket_jsasave = SeatFlight(ticket_type='jsa_save',
                                                 adult_price=ticket_lst.save_adult_price,
@@ -261,6 +264,7 @@ class Main(object):
                     lst_ticket.append(ticket_jsaopt)
                 aresult = ResultFlight()
                 aflight = AFlight()
+
                 # for seat in ticket_lst:
                 aflight.seat_list = lst_ticket
                 aflight.departure_port = flight.departure_port
@@ -269,6 +273,8 @@ class Main(object):
                 aflight.departure_name = flight.departure_port.sname
                 aflight.departure_time = flight.departure_time
                 aflight.arrival_time = flight.arrival_time
+                aflight.carrier = flight.carrier
+                aflight.flight_code = flight.flight_code
                 aflight.set_min_price()
 
                 aresult.first_flight = aflight
@@ -451,8 +457,9 @@ class Main(object):
                                 lst_ticket.append(ticket_jsasave)
                                 lst_ticket.append(ticket_jsaflex)
                                 lst_ticket.append(ticket_jsaopt)
-                            aresult = ResultFlight(transit=True)
+                            aresult = ResultFlight(transit=transit)
                             aflight = AFlight()
+                            end_port = None
                             # for seat in ticket_lst:
                             aflight.seat_list = lst_ticket
                             aflight.departure_port = flight.departure_port
@@ -461,6 +468,8 @@ class Main(object):
                             aflight.departure_name = flight.departure_port.sname
                             aflight.departure_time = flight.departure_time
                             aflight.arrival_time = flight.arrival_time
+                            aflight.carrier = flight.carrier
+                            aflight.flight_code = flight.flight_code
                             aflight.set_min_price()
 
                             aresult.first_flight = aflight
@@ -583,7 +592,7 @@ class Main(object):
                                     lst_ticket_2.append(ticket_vjaeco)
                                     lst_ticket_2.append(ticket_vjasky)
                                 elif second_flight.carrier == 'jsa':  # jetstar
-                                    ticket_lst = JSATicket.objects.get(i=second_flight.ticket)
+                                    ticket_lst = JSATicket.objects.get(id=second_flight.ticket)
                                     # save
                                     ticket_jsasave = SeatFlight(ticket_type='jsa_save',
                                                                 adult_price=ticket_lst.save_adult_price,
@@ -629,8 +638,11 @@ class Main(object):
                                 asflight.departure_name = second_flight.departure_port.sname
                                 asflight.departure_time = second_flight.departure_time
                                 asflight.arrival_time = second_flight.arrival_time
+                                asflight.carrier = flight.carrier
+                                asflight.flight_code = flight.flight_code
                                 asflight.set_min_price()
 
+                                aresult.end_port = asflight.arrival_name
                                 aresult.second_flight.append(asflight)
 
                             aresult.set_price()

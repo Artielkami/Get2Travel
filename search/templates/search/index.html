@@ -108,7 +108,7 @@
                         <option class="pickFlightStart" value="CAH"> Cà Mau (CAH)</option>
                     </select>
                 </div>
-                <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12 hidden">
                     <label class="control-label" for="stops">Chặng dừng:</label>
                     <select class="form-control" id="stops" name="stops">
                         <option value="0">Bất kỳ</option>
@@ -179,7 +179,7 @@
                         <option value="4">4</option>
                     </select>
                 </div>
-                <div class="form-group col-xs-12">
+                <div class="form-group col-xs-12 hidden">
                     <label class="control-label" for="type-ticket">Loại vé</label>
                     <select class="form-control" id="type-ticket" name="ttype">
                         <option value="all">Bất kì</option>
@@ -196,6 +196,73 @@
             <button type="submit" class="btn btn-success btn-search" id="search" name="search">Tìm chuyến bay</button>
         </div>
     </form>
+    <div id="result">
+        {% if outward_list %}
+            <table class="table-result-layout">
+            <tbody>
+            {% for flight in outward_list %}
+                <tr>
+                    <td>
+                        <table id="{{ flight.first_flight.flight_code}}_1" class="table-result">
+                            <colgroup span="5">
+                                <col width="18%">
+                                <col width="10%">
+                                <col width="40%">
+                                <col width="20%">
+                                <col width="12%">
+                            </colgroup>
+                            <tbody>
+                            <tr class="a-result-flight">
+                                <td class="result-time">
+                                    {{ flight.departure_time.time|time:"g:iA"|lower }}
+                                    &rarr;
+                                    {{ flight.arrival_time.time|time:"g:iA"|lower }}
+                                </td>
+                                <td class="result-carrier">
+                                    {{ flight.first_flight.carrier|carrier }}<br>
+                                    {{ flight.first_flight.flight_code }}
+                                </td>
+                                <td class="result-transit">
+                                    {% if not flight.transit %}
+                                        Bay trực tiếp <br>
+                                        {{ flight.first_flight.departure_name }}
+                                        &rarr;
+                                        {{ flight.first_flight.arrival_name }}
+                                    {% else %}
+                                        Có trung chuyển <br>
+                                        {{ flight.first_flight.departure_name }}
+                                        &rarr;
+                                        {{ flight.transit }}
+                                        &rarr;
+                                        {{ flight.end_port }}
+                                    {% endif %}
+                                </td>
+                                <td class="result-price">
+                                    {{ flight.total_price }}
+                                </td>
+                                <td class="result-button">
+                                    <button class="btn btn-success" id="{{ flight.first_flight.flight_code}}_1">Xem</button>
+                                </td>
+                            </tr>
+                            <tr class="result-detail hidden" id="detail_{{ flight.first_flight.flight_code }}_1">
+                                <td colspan="5">
+                                    <ul>
+                                        {% for ticket in flight.first_flight.seat_list %}
+                                            <li>{{ ticket.ticket_type|ticket_type }} : {{ ticket.total_price }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        {% endif %}
+    </div>
+{% comment %}
     <div id="result">
         {% if item_list and quan %}
         <p class="rs-title">Kết quả</p>
@@ -270,6 +337,7 @@
         {% endif %}
         {% endif %}
     </div>
+{% endcomment %}
 
 </div>
 <footer class="container-fluid text-center footer-my-style">

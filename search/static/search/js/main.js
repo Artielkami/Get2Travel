@@ -1,6 +1,19 @@
 /**
  * Created by admin on 29/04/2016.
  */
+$(document).ready(function(){
+    $(".table-result button").click(function(){
+        var sid = this.id;
+        var target = '#detail_' + sid;
+        //alert(target);
+        if($(target).hasClass('hidden')){
+            $(target).removeClass('hidden');
+        }else {
+            $(target).addClass('hidden');
+        }
+    });
+});
+
 $('#way input:radio').change(function(){
     if ($(this).val() == '2') {
         $('#inbound').css('visibility', 'visible');

@@ -153,14 +153,14 @@ body {
     height:auto;
     width: 100%;
     background-color: #999999;
-    padding:10px;
+    padding:3px;
 }
 .footer-my-style p {
     margin-bottom: 0px;
 }
 #result {
     margin-top: 20px;
-    background-color: #E0BFDC;
+    background-color: #eaeaea;
     padding: 15px;
 }
 #result .rs-title {
@@ -197,6 +197,7 @@ body {
 }
 #result {
     margin-bottom: 35px;
+    min-height: 100px;
 }
 /* This under is belong to about.html and contact.html */
 .main .row .brand-name {
@@ -207,4 +208,35 @@ body {
 .main .row ol > li {
     font-weight:bold;
     font-style:italic;
+}
+.table-result{
+    width: 100%;
+    font-weight: bold;
+}
+.result-time{
+    width: 18%;
+}
+.result-carrier{
+    width: 18%;
+}
+.result-transit{
+    width: 32%;
+}
+.result-price{
+    width: 20%;
+}
+.result-button{
+    width: 12%;
+}
+.table-result tr td{
+    border: 1px grey solid;
+}
+.table-result-layout{
+    width: 100%;
+}
+.result-detail{
+    background-color: #1ba0e2;
+}
+.result-detail ul li{
+    list-style-type: none;
 }
