@@ -232,7 +232,7 @@
                                         Có trung chuyển <br>
                                         {{ flight.first_flight.departure_name }}
                                         &rarr;
-                                        {{ flight.transit }}
+                                        {{ flight.first_flight.arrival_name }}
                                         &rarr;
                                         {{ flight.end_port }}
                                     {% endif %}
@@ -246,7 +246,11 @@
                             </tr>
                             <tr class="result-detail hidden" id="detail_{{ flight.first_flight.flight_code }}_1">
                                 <td colspan="5">
+                                    <p class="first-flight-header">Từ <span class="color-green">{{ flight.first_flight.departure_name }}</span>
+                                        đi <span class="color-green">{{ flight.first_flight.arrival_name }}</span>
+                                    </p>
                                     <ul>
+
                                         {% for ticket in flight.first_flight.seat_list %}
                                             <li>{{ ticket.ticket_type|ticket_type }} : {{ ticket.total_price }}</li>
                                         {% endfor %}
@@ -278,83 +282,6 @@
             </table>
         {% endif %}
     </div>
-{% comment %}
-    <div id="result">
-        {% if item_list and quan %}
-        <p class="rs-title">Kết quả</p>
-        <div class="rs-div-group">
-            {% if rs_type %}
-            <div>{{ item_list }}</div>
-            {% else %}
-            <p><strong>Chiều đi: {{ places.dep }} đi {{ places.arr }} | {{ dates.go }}</strong></p>
-            <div class="rs-div-result">
-                <table class="ticket-list-table">
-                    <tr class="tr-tik-header">
-                        <th class="th-time-come">Mã chuyến bay</th>
-                        <th class="th-time-go">Giờ đi</th>
-                        <th class="th-time-come">Giờ đến</th>
-                        <th class="th-time-come">Hãng</th>
-                        <th class="th-ticket-type">Loại vé</th>
-                        <th class="price">Giá (1000 VND)</th>
-                        <th class="th-place">Đặt vé</th>
-                    </tr>
-                    {% for ticket in item_list %}
-                    <tr class="tr-tik">
-                        <td>{{ ticket.flight_code}}</td>
-                        <td>{{ ticket.departure_time.time }}</td>
-                        <td>{{ ticket.arrival_time.time }}</td>
-                        <td>{{ ticket.carrier|carrier }}</td>
-                        <td>{{ ticket.sit_class|clat}}</td>
-                        <td>{% price quan ticket.price_adult ticket.price_child ticket.price_babe ticket.fee_tax_adult ticket.fee_tax_child ticket.fee_tax_babe %}
-                        </td>
-                        <td><a href="javascript:void(0)">Đặt vé</a></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-
-            </div>
-            {% endif %}
-            {% if rt_list %}
-            <p></p>
-            <p><strong>Chiều về: {{ places.arr }} về {{ places.dep }} | {{ dates.back }}</strong></p>
-            <div class="rs-div-result">
-                <table class="ticket-list-table">
-                    <tr class="tr-tik-header">
-                        <th class="th-time-come">Mã chuyến bay</th>
-                        <th class="th-time-go">Giờ đi</th>
-                        <th class="th-time-come">Giờ đến</th>
-                        <th class="th-time-come">Hãng</th>
-                        <th class="th-ticket-type">Loại vé</th>
-                        <th class="price">Giá (1000 VND)</th>
-                        <th class="th-place">Đặt vé</th>
-                    </tr>
-                    {% for rt in rt_list %}
-                    <tr class="tr-tik">
-                        <td>{{ rt.flight_code}}</td>
-                        <td>{{ rt.departure_time.time }}</td>
-                        <td>{{ rt.arrival_time.time }}</td>
-                        <td>{{ rt.carrier|carrier }}</td>
-                        <td>{{ rt.sit_class|clat}}</td>
-                        <td>{% price quan rt.price_adult rt.price_child rt.price_babe rt.fee_tax_adult rt.fee_tax_child rt.fee_tax_babe %}
-                        </td>
-                        <td><a href="javascript:void(0)">Đặt vé</a></td>
-                    </tr>
-                    {% endfor %}
-                </table>
-
-            </div>
-            {% endif %}
-        </div>
-        {% else %}
-        {% if return_msg %}
-        <p>{{ return_msg }}</p>
-        {% else %}
-        <p>Hãy bắt đầu tìm kiếm để có được kết quả</p>
-        {% endif %}
-        {% endif %}
-    </div>
-{% endcomment %}
-
 </div>
 <footer class="container-fluid text-center footer-my-style">
     <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
