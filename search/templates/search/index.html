@@ -8,6 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'search/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'search/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'search/default.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'search/default.date.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'search/chosen.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/fonts.css' %}">
     <script src="{% static 'search/js/jquery-1.12.4.js' %}"></script>
@@ -52,10 +55,8 @@
                 </div>
                 <div class="form-group col-xs-12">
                     <label class="control-label" for="from">Điểm khởi hành:</label>
-                    <select name="departure" id="from" class="form-control" required>
-                        <option class="pickFlightStart" value="" style="text-align: center">-- Vui lòng chọn địa điểm
-                            --
-                        </option>
+                    <select name="departure" id="from" data-placeholder="-- Vui lòng chọn địa điểm --" class="form-control chosen-select" required>
+                        <option class="pickFlightStart"></option>
                         <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                         <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
                         <option class="pickFlightStart" value="DLI"> Đà Lạt (DLI)</option>
@@ -81,10 +82,8 @@
                 </div>
                 <div class="form-group col-xs-12">
                     <label class="control-label" for="to">Điểm đến:</label>
-                    <select name="arrival" id="to" class="form-control" required>
-                        <option class="pickFlightStart" value="" style="text-align: center">-- Vui lòng chọn địa điểm
-                            --
-                        </option>
+                    <select name="arrival" id="to" data-placeholder="-- Vui lòng chọn địa điểm --" class="form-control chosen-select" required>
+                        <option class="pickFlightStart"></option>
                         <option class="pickFlightStart" value="BMV"> Buôn Ma Thuột (BMV)</option>
                         <option class="pickFlightStart" value="DAD"> Đà Nẵng (DAD)</option>
                         <option class="pickFlightStart" value="DLI"> Đà Lạt (DLI)</option>
@@ -124,7 +123,7 @@
                 </div>
                 <div class="form-group col-xs-12">
                     <label class="control-label" for="outbound">Ngày đi:</label>
-                    <input type="date" class="form-control" id="outbound" name="go_day" placeholder="Date...">
+                    <input type="text" class="form-control datepicker" id="outbound" name="go_day" placeholder="Ngày đi">
                 </div>
                 <div class="form-group col-xs-12" id="way">
                     <label class="radio-inline"><input type="radio" name="way" value="1" checked>Một chiều</label>
@@ -132,7 +131,7 @@
                 </div>
                 <div class="form-group col-xs-12" id="inbound">
                     <label class="control-label" for="return">Ngày về:</label>
-                    <input type="date" class="form-control" id="return" name="rt_day" placeholder="Date...">
+                    <input type="text" class="form-control datepicker" id="return" name="rt_day" placeholder="Ngày về">
                 </div>
             </div>
             <div class="group-item col-xs-12 col-sm-4">
@@ -309,16 +308,10 @@
             rt_day();
         {% endif %}
     });
-
-
-
-
-
-
-
-
-
 </script>
+<script src="{% static 'search/js/picker.js' %}"></script>
+<script src="{% static 'search/js/picker.date.js' %}"></script>
+<script src="{% static 'search/js/chosen.jquery.min.js' %}"></script>
 <script src="{% static 'search/js/main.js' %}"></script>
 </body>
 </html>
