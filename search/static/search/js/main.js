@@ -12,7 +12,30 @@ $(document).ready(function(){
             $(target).addClass('hidden');
         }
     });
+
+    $('.datepicker').pickadate({
+        weekdaysShort: ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+        showMonthsShort: true,
+        today: 'Hôm nay',
+        clear: 'Xóa lựa chọn',
+        close: 'Hủy',
+        labelMonthNext: 'Tháng sau',
+        labelMonthPrev: 'Tháng trước',
+        labelMonthSelect: 'Chọn tháng',
+        labelYearSelect: 'Chọn năm',
+        selectMonths: true,
+        selectYears: true,
+        format: 'yyyy-mm-dd',
+        formatSubmit: 'yyyy/mm/dd',
+    });
+
+    $('select').chosen({
+        disable_search_threshold: 10,
+        no_results_text: "Không tìm thấy!",
+        allow_single_deselect: true,
+    });
 });
+
 
 $('#way input:radio').change(function(){
     if ($(this).val() == '2') {

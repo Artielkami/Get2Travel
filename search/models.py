@@ -104,6 +104,10 @@ class VNATicket(models.Model):
     sd_child_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     sd_babe_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
 
+    # reference
+
+    # ref = models.IntegerField(default=0)
+
 
 class VJATicket(models.Model):
     """List all ticket of VietJet"""
@@ -133,6 +137,8 @@ class VJATicket(models.Model):
     sky_adult_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     sky_child_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     sky_babe_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
+
+    # ref = models.IntegerField(default=0)
 
 
 class JSATicket(models.Model):
@@ -164,6 +170,8 @@ class JSATicket(models.Model):
     opt_child_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
     opt_babe_ft = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
 
+    # ref = models.IntegerField(default=0)
+
 
 class Ticket(models.Model):
     departure_port = models.ForeignKey(
@@ -193,6 +201,7 @@ class Ticket(models.Model):
     # ticket_type = models.CharField(max_length=50, null=False, default=None)
     # sit_class = models.CharField(max_length=20, default='business')
     ticket = models.IntegerField(default=0)
+    # up_ref = models.BooleanField(default=True)
     carrier = models.CharField(max_length=5, default='vna')
     flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
@@ -200,8 +209,28 @@ class Ticket(models.Model):
     # carrier = vna, vja, pja
     # type = flex, standard, save, none
     # sit_class = FIRST, BUSINESS, ECONOMY, SAVE
+    # def delete(self, using=None, keep_parents=False):
+    #     q = VJATicket.objects.get(id=self.ticket)
+    #     q.ref -= 1
+    #     q.save()
 
     def save(self, *args, **kwargs):
+        # if self.carrier == 'vja' and self.up_ref:
+        #     q = VJATicket.objects.get(id=self.ticket)
+        #     q.ref += 1
+        #     self.up_ref = False
+        #     q.save()
+        # elif self.carrier == 'vna' and self.up_ref:
+        #     q = VNATicket.objects.get(id=self.ticket)
+        #     q.ref += 1
+        #     self.up_ref = False
+        #     q.save()
+        # elif self.carrier == 'jsa' and self.up_ref:
+        #     q = JSATicket.objects.get(id=self.ticket)
+        #     q.ref += 1
+        #     self.up_ref = False
+        #     q.save()
+
         if not self.arrival_time:
             self.arrival_time = None
         super(Ticket, self).save(*args, **kwargs)

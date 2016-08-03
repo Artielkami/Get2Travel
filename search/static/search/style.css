@@ -160,7 +160,7 @@ body {
 }
 #result {
     margin-top: 20px;
-    background-color: #eaeaea;
+    background-color: whitesmoke;
     padding: 15px;
 }
 #result .rs-title {
@@ -235,8 +235,31 @@ body {
     width: 100%;
 }
 .result-detail{
-    background-color: #1ba0e2;
+    background-color: #b1fba8;
+}
+.result-detail td{
+    padding-left: 2px;
+    padding-right: 2px;
 }
 .result-detail ul li{
     list-style-type: none;
+}
+select#from, select#to {
+    background-color: #d5f3d4;
+    color: black;
+}
+.color-green{
+    color: #e81919;
+}
+.first-flight-header{
+    text-align: left;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 30px;
+    background-color: #fbdbb4;
+    margin-top: 2px;
+    margin-bottom: 0px;
+}
+.a-result-flight{
+    background-color: #f9f7b0;
 }
