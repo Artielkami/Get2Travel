@@ -25,7 +25,7 @@ $(document).ready(function(){
         labelYearSelect: 'Chọn năm',
         selectMonths: true,
         selectYears: true,
-        format: 'yyyy/mm/dd',
+        format: 'yyyy-mm-dd',
         formatSubmit: 'yyyy/mm/dd',
     });
 
