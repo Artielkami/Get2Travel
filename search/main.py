@@ -46,7 +46,7 @@ class AFlight(object):
 
     def set_min_price(self):
         for seat in self.seat_list:
-            if self.total_price_min == 0 or self.total_price_min < seat.total_price:
+            if self.total_price_min == 0 or self.total_price_min > seat.total_price:
                 self.total_price_min = seat.total_price
 
 
@@ -85,6 +85,162 @@ class Main(object):
         self.outward_list = []
         self.return_list = []
 
+    def get_ticket_list(self, carrier, id):
+        return_lst = []
+        if carrier == 'vna':
+            ticket_lst = VNATicket.objects.get(id=id)
+            # business flex
+            ticket_vnabf = SeatFlight(ticket_type='vna_bf',
+                                      adult_price=ticket_lst.bf_adult_price,
+                                      child_price=ticket_lst.bf_child_price,
+                                      babe_price=ticket_lst.bf_babe_price,
+                                      adult_ft=ticket_lst.bf_adult_ft,
+                                      child_ft=ticket_lst.bf_child_ft,
+                                      babe_ft=ticket_lst.bf_babe_ft)
+            ticket_vnabf.set_price(num_adult=self.num_adult,
+                                   num_child=self.num_child,
+                                   num_babe=self.num_infan)
+            # business standard
+            ticket_vnabs = SeatFlight(ticket_type='vna_bs',
+                                      adult_price=ticket_lst.bs_adult_price,
+                                      child_price=ticket_lst.bs_child_price,
+                                      babe_price=ticket_lst.bs_babe_price,
+                                      adult_ft=ticket_lst.bs_adult_ft,
+                                      child_ft=ticket_lst.bs_child_ft,
+                                      babe_ft=ticket_lst.bs_babe_ft)
+            ticket_vnabs.set_price(num_adult=self.num_adult,
+                                   num_child=self.num_child,
+                                   num_babe=self.num_infan)
+            # economy flex
+            ticket_vnaef = SeatFlight(ticket_type='vna_ef',
+                                      adult_price=ticket_lst.ef_adult_price,
+                                      child_price=ticket_lst.ef_child_price,
+                                      babe_price=ticket_lst.ef_babe_price,
+                                      adult_ft=ticket_lst.ef_adult_ft,
+                                      child_ft=ticket_lst.ef_child_ft,
+                                      babe_ft=ticket_lst.ef_babe_ft)
+            ticket_vnaef.set_price(num_adult=self.num_adult,
+                                   num_child=self.num_child,
+                                   num_babe=self.num_infan)
+            # economy standard
+            ticket_vnaes = SeatFlight(ticket_type='vna_es',
+                                      adult_price=ticket_lst.es_adult_price,
+                                      child_price=ticket_lst.es_child_price,
+                                      babe_price=ticket_lst.es_babe_price,
+                                      adult_ft=ticket_lst.es_adult_ft,
+                                      child_ft=ticket_lst.es_child_ft,
+                                      babe_ft=ticket_lst.es_babe_ft)
+            ticket_vnaes.set_price(num_adult=self.num_adult,
+                                   num_child=self.num_child,
+                                   num_babe=self.num_infan)
+            # economy save
+            ticket_vnaesa = SeatFlight(ticket_type='vna_esa',
+                                       adult_price=ticket_lst.esa_adult_price,
+                                       child_price=ticket_lst.esa_child_price,
+                                       babe_price=ticket_lst.esa_babe_price,
+                                       adult_ft=ticket_lst.esa_adult_ft,
+                                       child_ft=ticket_lst.esa_child_ft,
+                                       babe_ft=ticket_lst.esa_babe_ft)
+            ticket_vnaesa.set_price(num_adult=self.num_adult,
+                                    num_child=self.num_child,
+                                    num_babe=self.num_infan)
+            # special deal
+            ticket_vnasd = SeatFlight(ticket_type='vna_sd',
+                                      adult_price=ticket_lst.sd_adult_price,
+                                      child_price=ticket_lst.sd_child_price,
+                                      babe_price=ticket_lst.sd_babe_price,
+                                      adult_ft=ticket_lst.sd_adult_ft,
+                                      child_ft=ticket_lst.sd_child_ft,
+                                      babe_ft=ticket_lst.sd_babe_ft)
+            ticket_vnasd.set_price(num_adult=self.num_adult,
+                                   num_child=self.num_child,
+                                   num_babe=self.num_infan)
+
+            return_lst.append(ticket_vnabf)
+            return_lst.append(ticket_vnabs)
+            return_lst.append(ticket_vnaef)
+            return_lst.append(ticket_vnaes)
+            return_lst.append(ticket_vnaesa)
+            return_lst.append(ticket_vnasd)
+        elif carrier == 'vja':
+            ticket_lst = VJATicket.objects.get(id=id)
+            # promo
+            if ticket_lst.promo_num > 0:
+                ticket_vjapromo = SeatFlight(ticket_type='vja_promo',
+                                             adult_price=ticket_lst.pro_adult_price,
+                                             child_price=ticket_lst.pro_child_price,
+                                             babe_price=ticket_lst.pro_babe_price,
+                                             adult_ft=ticket_lst.pro_adult_ft,
+                                             child_ft=ticket_lst.pro_child_ft,
+                                             babe_ft=ticket_lst.pro_babe_ft)
+                ticket_vjapromo.set_price(num_adult=self.num_adult,
+                                          num_child=self.num_child,
+                                          num_babe=self.num_infan)
+                return_lst.append(ticket_vjapromo)
+            # eco
+            ticket_vjaeco = SeatFlight(ticket_type='vja_eco',
+                                       adult_price=ticket_lst.eco_adult_price,
+                                       child_price=ticket_lst.eco_child_price,
+                                       babe_price=ticket_lst.eco_babe_price,
+                                       adult_ft=ticket_lst.eco_adult_ft,
+                                       child_ft=ticket_lst.eco_child_ft,
+                                       babe_ft=ticket_lst.eco_babe_ft)
+            ticket_vjaeco.set_price(num_adult=self.num_adult,
+                                    num_child=self.num_child,
+                                    num_babe=self.num_infan)
+            # skyboss
+            ticket_vjasky = SeatFlight(ticket_type='vja_sky',
+                                       adult_price=ticket_lst.sky_adult_price,
+                                       child_price=ticket_lst.sky_child_price,
+                                       babe_price=ticket_lst.sky_babe_price,
+                                       adult_ft=ticket_lst.sky_adult_ft,
+                                       child_ft=ticket_lst.sky_child_ft,
+                                       babe_ft=ticket_lst.sky_babe_ft)
+            ticket_vjasky.set_price(num_adult=self.num_adult,
+                                    num_child=self.num_child,
+                                    num_babe=self.num_infan)
+            return_lst.append(ticket_vjaeco)
+            return_lst.append(ticket_vjasky)
+        elif carrier == 'jsa':
+            ticket_lst = JSATicket.objects.get(id=id)
+            # save
+            ticket_jsasave = SeatFlight(ticket_type='jsa_save',
+                                        adult_price=ticket_lst.save_adult_price,
+                                        child_price=ticket_lst.save_child_price,
+                                        babe_price=ticket_lst.save_babe_price,
+                                        adult_ft=ticket_lst.save_adult_ft,
+                                        child_ft=ticket_lst.save_child_ft,
+                                        babe_ft=ticket_lst.save_babe_ft)
+            ticket_jsasave.set_price(num_adult=self.num_adult,
+                                     num_child=self.num_child,
+                                     num_babe=self.num_infan)
+            # promo
+            ticket_jsaflex = SeatFlight(ticket_type='jsa_flex',
+                                        adult_price=ticket_lst.flex_adult_price,
+                                        child_price=ticket_lst.flex_child_price,
+                                        babe_price=ticket_lst.flex_babe_price,
+                                        adult_ft=ticket_lst.flex_adult_ft,
+                                        child_ft=ticket_lst.flex_child_ft,
+                                        babe_ft=ticket_lst.flex_babe_ft)
+            ticket_jsaflex.set_price(num_adult=self.num_adult,
+                                     num_child=self.num_child,
+                                     num_babe=self.num_infan)
+            # opt
+            ticket_jsaopt = SeatFlight(ticket_type='jsa_opt',
+                                       adult_price=ticket_lst.opt_adult_price,
+                                       child_price=ticket_lst.opt_child_price,
+                                       babe_price=ticket_lst.opt_babe_price,
+                                       adult_ft=ticket_lst.opt_adult_ft,
+                                       child_ft=ticket_lst.opt_child_ft,
+                                       babe_ft=ticket_lst.opt_babe_ft)
+            ticket_jsaopt.set_price(num_adult=self.num_adult,
+                                    num_child=self.num_child,
+                                    num_babe=self.num_infan)
+            return_lst.append(ticket_jsasave)
+            return_lst.append(ticket_jsaflex)
+            return_lst.append(ticket_jsaopt)
+        return return_lst
+
     # search method
     # the most importance action
     def search(self, data={}):
@@ -107,161 +263,11 @@ class Main(object):
                                                datetime.datetime.combine(self.outward_day, datetime.time.max))
                                            )
         # TODO --------- search method ---------
+        # - OUTWARD
         if flight_lst:
             for flight in flight_lst:
                 # get list ticket suitable with carrier
-                lst_ticket = []
-                if flight.carrier == 'vna':
-                    ticket_lst = VNATicket.objects.get(id=flight.ticket)
-                    # business flex
-                    ticket_vnabf = SeatFlight(ticket_type='vna_bf',
-                                              adult_price=ticket_lst.bf_adult_price,
-                                              child_price=ticket_lst.bf_child_price,
-                                              babe_price=ticket_lst.bf_babe_price,
-                                              adult_ft=ticket_lst.bf_adult_ft,
-                                              child_ft=ticket_lst.bf_child_ft,
-                                              babe_ft=ticket_lst.bf_babe_ft)
-                    ticket_vnabf.set_price(num_adult=self.num_adult,
-                                           num_child=self.num_child,
-                                           num_babe=self.num_infan)
-                    # business standard
-                    ticket_vnabs = SeatFlight(ticket_type='vna_bs',
-                                              adult_price=ticket_lst.bs_adult_price,
-                                              child_price=ticket_lst.bs_child_price,
-                                              babe_price=ticket_lst.bs_babe_price,
-                                              adult_ft=ticket_lst.bs_adult_ft,
-                                              child_ft=ticket_lst.bs_child_ft,
-                                              babe_ft=ticket_lst.bs_babe_ft)
-                    ticket_vnabs.set_price(num_adult=self.num_adult,
-                                           num_child=self.num_child,
-                                           num_babe=self.num_infan)
-                    # economy flex
-                    ticket_vnaef = SeatFlight(ticket_type='vna_ef',
-                                              adult_price=ticket_lst.ef_adult_price,
-                                              child_price=ticket_lst.ef_child_price,
-                                              babe_price=ticket_lst.ef_babe_price,
-                                              adult_ft=ticket_lst.ef_adult_ft,
-                                              child_ft=ticket_lst.ef_child_ft,
-                                              babe_ft=ticket_lst.ef_babe_ft)
-                    ticket_vnaef.set_price(num_adult=self.num_adult,
-                                           num_child=self.num_child,
-                                           num_babe=self.num_infan)
-                    # economy standard
-                    ticket_vnaes = SeatFlight(ticket_type='vna_es',
-                                              adult_price=ticket_lst.es_adult_price,
-                                              child_price=ticket_lst.es_child_price,
-                                              babe_price=ticket_lst.es_babe_price,
-                                              adult_ft=ticket_lst.es_adult_ft,
-                                              child_ft=ticket_lst.es_child_ft,
-                                              babe_ft=ticket_lst.es_babe_ft)
-                    ticket_vnaes.set_price(num_adult=self.num_adult,
-                                           num_child=self.num_child,
-                                           num_babe=self.num_infan)
-                    # economy save
-                    ticket_vnaesa = SeatFlight(ticket_type='vna_esa',
-                                               adult_price=ticket_lst.esa_adult_price,
-                                               child_price=ticket_lst.esa_child_price,
-                                               babe_price=ticket_lst.esa_babe_price,
-                                               adult_ft=ticket_lst.esa_adult_ft,
-                                               child_ft=ticket_lst.esa_child_ft,
-                                               babe_ft=ticket_lst.esa_babe_ft)
-                    ticket_vnaesa.set_price(num_adult=self.num_adult,
-                                            num_child=self.num_child,
-                                            num_babe=self.num_infan)
-                    # special deal
-                    ticket_vnasd = SeatFlight(ticket_type='vna_sd',
-                                              adult_price=ticket_lst.sd_adult_price,
-                                              child_price=ticket_lst.sd_child_price,
-                                              babe_price=ticket_lst.sd_babe_price,
-                                              adult_ft=ticket_lst.sd_adult_ft,
-                                              child_ft=ticket_lst.sd_child_ft,
-                                              babe_ft=ticket_lst.sd_babe_ft)
-                    ticket_vnasd.set_price(num_adult=self.num_adult,
-                                           num_child=self.num_child,
-                                           num_babe=self.num_infan)
-
-                    lst_ticket.append(ticket_vnabf)
-                    lst_ticket.append(ticket_vnabs)
-                    lst_ticket.append(ticket_vnaef)
-                    lst_ticket.append(ticket_vnaes)
-                    lst_ticket.append(ticket_vnaesa)
-                    lst_ticket.append(ticket_vnasd)
-                elif flight.carrier == 'vja':  # vietjetair
-                    ticket_lst = VJATicket.objects.get(id=flight.ticket)
-                    # promo
-                    ticket_vjapromo = SeatFlight(ticket_type='vja_promo',
-                                                 adult_price=ticket_lst.pro_adult_price,
-                                                 child_price=ticket_lst.pro_child_price,
-                                                 babe_price=ticket_lst.pro_babe_price,
-                                                 adult_ft=ticket_lst.pro_adult_ft,
-                                                 child_ft=ticket_lst.pro_child_ft,
-                                                 babe_ft=ticket_lst.pro_babe_ft)
-                    ticket_vjapromo.set_price(num_adult=self.num_adult,
-                                              num_child=self.num_child,
-                                              num_babe=self.num_infan)
-                    # eco
-                    ticket_vjaeco = SeatFlight(ticket_type='vja_eco',
-                                               adult_price=ticket_lst.eco_adult_price,
-                                               child_price=ticket_lst.eco_child_price,
-                                               babe_price=ticket_lst.eco_babe_price,
-                                               adult_ft=ticket_lst.eco_adult_ft,
-                                               child_ft=ticket_lst.eco_child_ft,
-                                               babe_ft=ticket_lst.eco_babe_ft)
-                    ticket_vjaeco.set_price(num_adult=self.num_adult,
-                                            num_child=self.num_child,
-                                            num_babe=self.num_infan)
-                    # skyboss
-                    ticket_vjasky = SeatFlight(ticket_type='vja_sky',
-                                               adult_price=ticket_lst.sky_adult_price,
-                                               child_price=ticket_lst.sky_child_price,
-                                               babe_price=ticket_lst.sky_babe_price,
-                                               adult_ft=ticket_lst.sky_adult_ft,
-                                               child_ft=ticket_lst.sky_child_ft,
-                                               babe_ft=ticket_lst.sky_babe_ft)
-                    ticket_vjasky.set_price(num_adult=self.num_adult,
-                                            num_child=self.num_child,
-                                            num_babe=self.num_infan)
-                    lst_ticket.append(ticket_vjapromo)
-                    lst_ticket.append(ticket_vjaeco)
-                    lst_ticket.append(ticket_vjasky)
-                elif flight.carrier == 'jsa':  # jetstar
-                    ticket_lst = JSATicket.objects.get(id=flight.ticket)
-                    # save
-                    ticket_jsasave = SeatFlight(ticket_type='jsa_save',
-                                                adult_price=ticket_lst.save_adult_price,
-                                                child_price=ticket_lst.save_child_price,
-                                                babe_price=ticket_lst.save_babe_price,
-                                                adult_ft=ticket_lst.save_adult_ft,
-                                                child_ft=ticket_lst.save_child_ft,
-                                                babe_ft=ticket_lst.save_babe_ft)
-                    ticket_jsasave.set_price(num_adult=self.num_adult,
-                                             num_child=self.num_child,
-                                             num_babe=self.num_infan)
-                    # promo
-                    ticket_jsaflex = SeatFlight(ticket_type='jsa_flex',
-                                                adult_price=ticket_lst.flex_adult_price,
-                                                child_price=ticket_lst.flex_child_price,
-                                                babe_price=ticket_lst.flex_babe_price,
-                                                adult_ft=ticket_lst.flex_adult_ft,
-                                                child_ft=ticket_lst.flex_child_ft,
-                                                babe_ft=ticket_lst.flex_babe_ft)
-                    ticket_jsaflex.set_price(num_adult=self.num_adult,
-                                             num_child=self.num_child,
-                                             num_babe=self.num_infan)
-                    # opt
-                    ticket_jsaopt = SeatFlight(ticket_type='jsa_opt',
-                                               adult_price=ticket_lst.opt_adult_price,
-                                               child_price=ticket_lst.opt_child_price,
-                                               babe_price=ticket_lst.opt_babe_price,
-                                               adult_ft=ticket_lst.opt_adult_ft,
-                                               child_ft=ticket_lst.opt_child_ft,
-                                               babe_ft=ticket_lst.opt_babe_ft)
-                    ticket_jsaopt.set_price(num_adult=self.num_adult,
-                                            num_child=self.num_child,
-                                            num_babe=self.num_infan)
-                    lst_ticket.append(ticket_jsasave)
-                    lst_ticket.append(ticket_jsaflex)
-                    lst_ticket.append(ticket_jsaopt)
+                lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
                 aresult = ResultFlight()
                 aflight = AFlight()
 
@@ -305,161 +311,9 @@ class Main(object):
                                                                   )
                                                                   )
                         if second_flight_lst:
-                            lst_ticket = []
-                            if flight.carrier == 'vna':
-                                ticket_lst = VNATicket.objects.get(id=flight.ticket)
-                                # business flex
-                                ticket_vnabf = SeatFlight(ticket_type='vna_bf',
-                                                          adult_price=ticket_lst.bf_adult_price,
-                                                          child_price=ticket_lst.bf_child_price,
-                                                          babe_price=ticket_lst.bf_babe_price,
-                                                          adult_ft=ticket_lst.bf_adult_ft,
-                                                          child_ft=ticket_lst.bf_child_ft,
-                                                          babe_ft=ticket_lst.bf_babe_ft)
-                                ticket_vnabf.set_price(num_adult=self.num_adult,
-                                                       num_child=self.num_child,
-                                                       num_babe=self.num_infan)
-                                # business standard
-                                ticket_vnabs = SeatFlight(ticket_type='vna_bs',
-                                                          adult_price=ticket_lst.bs_adult_price,
-                                                          child_price=ticket_lst.bs_child_price,
-                                                          babe_price=ticket_lst.bs_babe_price,
-                                                          adult_ft=ticket_lst.bs_adult_ft,
-                                                          child_ft=ticket_lst.bs_child_ft,
-                                                          babe_ft=ticket_lst.bs_babe_ft)
-                                ticket_vnabs.set_price(num_adult=self.num_adult,
-                                                       num_child=self.num_child,
-                                                       num_babe=self.num_infan)
-                                # economy flex
-                                ticket_vnaef = SeatFlight(ticket_type='vna_ef',
-                                                          adult_price=ticket_lst.ef_adult_price,
-                                                          child_price=ticket_lst.ef_child_price,
-                                                          babe_price=ticket_lst.ef_babe_price,
-                                                          adult_ft=ticket_lst.ef_adult_ft,
-                                                          child_ft=ticket_lst.ef_child_ft,
-                                                          babe_ft=ticket_lst.ef_babe_ft)
-                                ticket_vnaef.set_price(num_adult=self.num_adult,
-                                                       num_child=self.num_child,
-                                                       num_babe=self.num_infan)
-                                # economy standard
-                                ticket_vnaes = SeatFlight(ticket_type='vna_es',
-                                                          adult_price=ticket_lst.es_adult_price,
-                                                          child_price=ticket_lst.es_child_price,
-                                                          babe_price=ticket_lst.es_babe_price,
-                                                          adult_ft=ticket_lst.es_adult_ft,
-                                                          child_ft=ticket_lst.es_child_ft,
-                                                          babe_ft=ticket_lst.es_babe_ft)
-                                ticket_vnaes.set_price(num_adult=self.num_adult,
-                                                       num_child=self.num_child,
-                                                       num_babe=self.num_infan)
-                                # economy save
-                                ticket_vnaesa = SeatFlight(ticket_type='vna_esa',
-                                                           adult_price=ticket_lst.esa_adult_price,
-                                                           child_price=ticket_lst.esa_child_price,
-                                                           babe_price=ticket_lst.esa_babe_price,
-                                                           adult_ft=ticket_lst.esa_adult_ft,
-                                                           child_ft=ticket_lst.esa_child_ft,
-                                                           babe_ft=ticket_lst.esa_babe_ft)
-                                ticket_vnaesa.set_price(num_adult=self.num_adult,
-                                                        num_child=self.num_child,
-                                                        num_babe=self.num_infan)
-                                # special deal
-                                ticket_vnasd = SeatFlight(ticket_type='vna_sd',
-                                                          adult_price=ticket_lst.sd_adult_price,
-                                                          child_price=ticket_lst.sd_child_price,
-                                                          babe_price=ticket_lst.sd_babe_price,
-                                                          adult_ft=ticket_lst.sd_adult_ft,
-                                                          child_ft=ticket_lst.sd_child_ft,
-                                                          babe_ft=ticket_lst.sd_babe_ft)
-                                ticket_vnasd.set_price(num_adult=self.num_adult,
-                                                       num_child=self.num_child,
-                                                       num_babe=self.num_infan)
-
-                                lst_ticket.append(ticket_vnabf)
-                                lst_ticket.append(ticket_vnabs)
-                                lst_ticket.append(ticket_vnaef)
-                                lst_ticket.append(ticket_vnaes)
-                                lst_ticket.append(ticket_vnaesa)
-                                lst_ticket.append(ticket_vnasd)
-                            elif flight.carrier == 'vja':  # vietjetair
-                                ticket_lst = VJATicket.objects.get(id=flight.ticket)
-                                # promo
-                                ticket_vjapromo = SeatFlight(ticket_type='vja_promo',
-                                                             adult_price=ticket_lst.pro_adult_price,
-                                                             child_price=ticket_lst.pro_child_price,
-                                                             babe_price=ticket_lst.pro_babe_price,
-                                                             adult_ft=ticket_lst.pro_adult_ft,
-                                                             child_ft=ticket_lst.pro_child_ft,
-                                                             babe_ft=ticket_lst.pro_babe_ft)
-                                ticket_vjapromo.set_price(num_adult=self.num_adult,
-                                                          num_child=self.num_child,
-                                                          num_babe=self.num_infan)
-                                # eco
-                                ticket_vjaeco = SeatFlight(ticket_type='vja_eco',
-                                                           adult_price=ticket_lst.eco_adult_price,
-                                                           child_price=ticket_lst.eco_child_price,
-                                                           babe_price=ticket_lst.eco_babe_price,
-                                                           adult_ft=ticket_lst.eco_adult_ft,
-                                                           child_ft=ticket_lst.eco_child_ft,
-                                                           babe_ft=ticket_lst.eco_babe_ft)
-                                ticket_vjaeco.set_price(num_adult=self.num_adult,
-                                                        num_child=self.num_child,
-                                                        num_babe=self.num_infan)
-                                # skyboss
-                                ticket_vjasky = SeatFlight(ticket_type='vja_sky',
-                                                           adult_price=ticket_lst.sky_adult_price,
-                                                           child_price=ticket_lst.sky_child_price,
-                                                           babe_price=ticket_lst.sky_babe_price,
-                                                           adult_ft=ticket_lst.sky_adult_ft,
-                                                           child_ft=ticket_lst.sky_child_ft,
-                                                           babe_ft=ticket_lst.sky_babe_ft)
-                                ticket_vjasky.set_price(num_adult=self.num_adult,
-                                                        num_child=self.num_child,
-                                                        num_babe=self.num_infan)
-                                lst_ticket.append(ticket_vjapromo)
-                                lst_ticket.append(ticket_vjaeco)
-                                lst_ticket.append(ticket_vjasky)
-                            elif flight.carrier == 'jsa':  # jetstar
-                                ticket_lst = JSATicket.objects.get(i=flight.ticket)
-                                # save
-                                ticket_jsasave = SeatFlight(ticket_type='jsa_save',
-                                                            adult_price=ticket_lst.save_adult_price,
-                                                            child_price=ticket_lst.save_child_price,
-                                                            babe_price=ticket_lst.save_babe_price,
-                                                            adult_ft=ticket_lst.save_adult_ft,
-                                                            child_ft=ticket_lst.save_child_ft,
-                                                            babe_ft=ticket_lst.save_babe_ft)
-                                ticket_jsasave.set_price(num_adult=self.num_adult,
-                                                         num_child=self.num_child,
-                                                         num_babe=self.num_infan)
-                                # promo
-                                ticket_jsaflex = SeatFlight(ticket_type='jsa_flex',
-                                                            adult_price=ticket_lst.flex_adult_price,
-                                                            child_price=ticket_lst.flex_child_price,
-                                                            babe_price=ticket_lst.flex_babe_price,
-                                                            adult_ft=ticket_lst.flex_adult_ft,
-                                                            child_ft=ticket_lst.flex_child_ft,
-                                                            babe_ft=ticket_lst.flex_babe_ft)
-                                ticket_jsaflex.set_price(num_adult=self.num_adult,
-                                                         num_child=self.num_child,
-                                                         num_babe=self.num_infan)
-                                # opt
-                                ticket_jsaopt = SeatFlight(ticket_type='jsa_opt',
-                                                           adult_price=ticket_lst.opt_adult_price,
-                                                           child_price=ticket_lst.opt_child_price,
-                                                           babe_price=ticket_lst.opt_babe_price,
-                                                           adult_ft=ticket_lst.opt_adult_ft,
-                                                           child_ft=ticket_lst.opt_child_ft,
-                                                           babe_ft=ticket_lst.opt_babe_ft)
-                                ticket_jsaopt.set_price(num_adult=self.num_adult,
-                                                        num_child=self.num_child,
-                                                        num_babe=self.num_infan)
-                                lst_ticket.append(ticket_jsasave)
-                                lst_ticket.append(ticket_jsaflex)
-                                lst_ticket.append(ticket_jsaopt)
+                            lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
                             aresult = ResultFlight(transit=transit)
                             aflight = AFlight()
-                            end_port = None
                             # for seat in ticket_lst:
                             aflight.seat_list = lst_ticket
                             aflight.departure_port = flight.departure_port
@@ -477,158 +331,8 @@ class Main(object):
                             aresult.arrival_time = flight.arrival_time
 
                             for second_flight in second_flight_lst:
-                                lst_ticket_2 = []
-                                if second_flight.carrier == 'vna':
-                                    ticket_lst = VNATicket.objects.get(id=second_flight.ticket)
-                                    # business flex
-                                    ticket_vnabf = SeatFlight(ticket_type='vna_bf',
-                                                              adult_price=ticket_lst.bf_adult_price,
-                                                              child_price=ticket_lst.bf_child_price,
-                                                              babe_price=ticket_lst.bf_babe_price,
-                                                              adult_ft=ticket_lst.bf_adult_ft,
-                                                              child_ft=ticket_lst.bf_child_ft,
-                                                              babe_ft=ticket_lst.bf_babe_ft)
-                                    ticket_vnabf.set_price(num_adult=self.num_adult,
-                                                           num_child=self.num_child,
-                                                           num_babe=self.num_infan)
-                                    # business standard
-                                    ticket_vnabs = SeatFlight(ticket_type='vna_bs',
-                                                              adult_price=ticket_lst.bs_adult_price,
-                                                              child_price=ticket_lst.bs_child_price,
-                                                              babe_price=ticket_lst.bs_babe_price,
-                                                              adult_ft=ticket_lst.bs_adult_ft,
-                                                              child_ft=ticket_lst.bs_child_ft,
-                                                              babe_ft=ticket_lst.bs_babe_ft)
-                                    ticket_vnabs.set_price(num_adult=self.num_adult,
-                                                           num_child=self.num_child,
-                                                           num_babe=self.num_infan)
-                                    # economy flex
-                                    ticket_vnaef = SeatFlight(ticket_type='vna_ef',
-                                                              adult_price=ticket_lst.ef_adult_price,
-                                                              child_price=ticket_lst.ef_child_price,
-                                                              babe_price=ticket_lst.ef_babe_price,
-                                                              adult_ft=ticket_lst.ef_adult_ft,
-                                                              child_ft=ticket_lst.ef_child_ft,
-                                                              babe_ft=ticket_lst.ef_babe_ft)
-                                    ticket_vnaef.set_price(num_adult=self.num_adult,
-                                                           num_child=self.num_child,
-                                                           num_babe=self.num_infan)
-                                    # economy standard
-                                    ticket_vnaes = SeatFlight(ticket_type='vna_es',
-                                                              adult_price=ticket_lst.es_adult_price,
-                                                              child_price=ticket_lst.es_child_price,
-                                                              babe_price=ticket_lst.es_babe_price,
-                                                              adult_ft=ticket_lst.es_adult_ft,
-                                                              child_ft=ticket_lst.es_child_ft,
-                                                              babe_ft=ticket_lst.es_babe_ft)
-                                    ticket_vnaes.set_price(num_adult=self.num_adult,
-                                                           num_child=self.num_child,
-                                                           num_babe=self.num_infan)
-                                    # economy save
-                                    ticket_vnaesa = SeatFlight(ticket_type='vna_esa',
-                                                               adult_price=ticket_lst.esa_adult_price,
-                                                               child_price=ticket_lst.esa_child_price,
-                                                               babe_price=ticket_lst.esa_babe_price,
-                                                               adult_ft=ticket_lst.esa_adult_ft,
-                                                               child_ft=ticket_lst.esa_child_ft,
-                                                               babe_ft=ticket_lst.esa_babe_ft)
-                                    ticket_vnaesa.set_price(num_adult=self.num_adult,
-                                                            num_child=self.num_child,
-                                                            num_babe=self.num_infan)
-                                    # special deal
-                                    ticket_vnasd = SeatFlight(ticket_type='vna_sd',
-                                                              adult_price=ticket_lst.sd_adult_price,
-                                                              child_price=ticket_lst.sd_child_price,
-                                                              babe_price=ticket_lst.sd_babe_price,
-                                                              adult_ft=ticket_lst.sd_adult_ft,
-                                                              child_ft=ticket_lst.sd_child_ft,
-                                                              babe_ft=ticket_lst.sd_babe_ft)
-                                    ticket_vnasd.set_price(num_adult=self.num_adult,
-                                                           num_child=self.num_child,
-                                                           num_babe=self.num_infan)
+                                lst_ticket_2 = self.get_ticket_list(second_flight.carrier, second_flight.ticket)
 
-                                    lst_ticket_2.append(ticket_vnabf)
-                                    lst_ticket_2.append(ticket_vnabs)
-                                    lst_ticket_2.append(ticket_vnaef)
-                                    lst_ticket_2.append(ticket_vnaes)
-                                    lst_ticket_2.append(ticket_vnaesa)
-                                    lst_ticket_2.append(ticket_vnasd)
-                                elif second_flight.carrier == 'vja':  # vietjetair
-                                    ticket_lst = VJATicket.objects.get(id=second_flight.ticket)
-                                    # promo
-                                    ticket_vjapromo = SeatFlight(ticket_type='vja_promo',
-                                                                 adult_price=ticket_lst.pro_adult_price,
-                                                                 child_price=ticket_lst.pro_child_price,
-                                                                 babe_price=ticket_lst.pro_babe_price,
-                                                                 adult_ft=ticket_lst.pro_adult_ft,
-                                                                 child_ft=ticket_lst.pro_child_ft,
-                                                                 babe_ft=ticket_lst.pro_babe_ft)
-                                    ticket_vjapromo.set_price(num_adult=self.num_adult,
-                                                              num_child=self.num_child,
-                                                              num_babe=self.num_infan)
-                                    # eco
-                                    ticket_vjaeco = SeatFlight(ticket_type='vja_eco',
-                                                               adult_price=ticket_lst.eco_adult_price,
-                                                               child_price=ticket_lst.eco_child_price,
-                                                               babe_price=ticket_lst.eco_babe_price,
-                                                               adult_ft=ticket_lst.eco_adult_ft,
-                                                               child_ft=ticket_lst.eco_child_ft,
-                                                               babe_ft=ticket_lst.eco_babe_ft)
-                                    ticket_vjaeco.set_price(num_adult=self.num_adult,
-                                                            num_child=self.num_child,
-                                                            num_babe=self.num_infan)
-                                    # skyboss
-                                    ticket_vjasky = SeatFlight(ticket_type='vja_sky',
-                                                               adult_price=ticket_lst.sky_adult_price,
-                                                               child_price=ticket_lst.sky_child_price,
-                                                               babe_price=ticket_lst.sky_babe_price,
-                                                               adult_ft=ticket_lst.sky_adult_ft,
-                                                               child_ft=ticket_lst.sky_child_ft,
-                                                               babe_ft=ticket_lst.sky_babe_ft)
-                                    ticket_vjasky.set_price(num_adult=self.num_adult,
-                                                            num_child=self.num_child,
-                                                            num_babe=self.num_infan)
-                                    lst_ticket_2.append(ticket_vjapromo)
-                                    lst_ticket_2.append(ticket_vjaeco)
-                                    lst_ticket_2.append(ticket_vjasky)
-                                elif second_flight.carrier == 'jsa':  # jetstar
-                                    ticket_lst = JSATicket.objects.get(id=second_flight.ticket)
-                                    # save
-                                    ticket_jsasave = SeatFlight(ticket_type='jsa_save',
-                                                                adult_price=ticket_lst.save_adult_price,
-                                                                child_price=ticket_lst.save_child_price,
-                                                                babe_price=ticket_lst.save_babe_price,
-                                                                adult_ft=ticket_lst.save_adult_ft,
-                                                                child_ft=ticket_lst.save_child_ft,
-                                                                babe_ft=ticket_lst.save_babe_ft)
-                                    ticket_jsasave.set_price(num_adult=self.num_adult,
-                                                             num_child=self.num_child,
-                                                             num_babe=self.num_infan)
-                                    # promo
-                                    ticket_jsaflex = SeatFlight(ticket_type='jsa_flex',
-                                                                adult_price=ticket_lst.flex_adult_price,
-                                                                child_price=ticket_lst.flex_child_price,
-                                                                babe_price=ticket_lst.flex_babe_price,
-                                                                adult_ft=ticket_lst.flex_adult_ft,
-                                                                child_ft=ticket_lst.flex_child_ft,
-                                                                babe_ft=ticket_lst.flex_babe_ft)
-                                    ticket_jsaflex.set_price(num_adult=self.num_adult,
-                                                             num_child=self.num_child,
-                                                             num_babe=self.num_infan)
-                                    # opt
-                                    ticket_jsaopt = SeatFlight(ticket_type='jsa_opt',
-                                                               adult_price=ticket_lst.opt_adult_price,
-                                                               child_price=ticket_lst.opt_child_price,
-                                                               babe_price=ticket_lst.opt_babe_price,
-                                                               adult_ft=ticket_lst.opt_adult_ft,
-                                                               child_ft=ticket_lst.opt_child_ft,
-                                                               babe_ft=ticket_lst.opt_babe_ft)
-                                    ticket_jsaopt.set_price(num_adult=self.num_adult,
-                                                            num_child=self.num_child,
-                                                            num_babe=self.num_infan)
-                                    lst_ticket_2.append(ticket_jsasave)
-                                    lst_ticket_2.append(ticket_jsaflex)
-                                    lst_ticket_2.append(ticket_jsaopt)
                                 asflight = AFlight()
                                 # for seat in ticket_lst_2:
                                 asflight.seat_list = lst_ticket_2
@@ -648,6 +352,106 @@ class Main(object):
                             aresult.set_price()
 
                             self.outward_list.append(aresult)
+
+        # - RETURN
+        if self.way == 2:
+            transit_list = MiddlePort.objects.get(depart_port=self.arr_port, arrival_port=self.dep_port)
+
+            flight_lst = Ticket.objects.filter(departure_port=self.arr_port,
+                                               arrival_port=self.dep_port,
+                                               departure_time__range=(
+                                                   datetime.datetime.combine(self.return_day, datetime.time.min),
+                                                   datetime.datetime.combine(self.return_day, datetime.time.max))
+                                               )
+            # direct return flight
+            if flight_lst:
+                for flight in flight_lst:
+                    lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
+                    aresult = ResultFlight()
+                    aflight = AFlight()
+
+                    # for seat in ticket_lst:
+                    aflight.seat_list = lst_ticket
+                    aflight.departure_port = flight.departure_port
+                    aflight.arrival_port = flight.arrival_port
+                    aflight.arrival_name = flight.arrival_port.sname
+                    aflight.departure_name = flight.departure_port.sname
+                    aflight.departure_time = flight.departure_time
+                    aflight.arrival_time = flight.arrival_time
+                    aflight.carrier = flight.carrier
+                    aflight.flight_code = flight.flight_code
+                    aflight.set_min_price()
+
+                    aresult.first_flight = aflight
+                    aresult.departure_time = flight.departure_time
+                    aresult.arrival_time = flight.arrival_time
+                    aresult.set_price()
+
+                    # Thêm kết quả tìm được vào list kết quả
+                    self.return_list.append(aresult)
+            # transit return flight
+            if transit_list:
+                lst_transit_port = transit_list.middle_port.split(',')
+                for transit in lst_transit_port:
+                    first_flight_lst = Ticket.objects.filter(departure_port=self.arr_port,
+                                                             arrival_port=transit,
+                                                             departure_time__range=(
+                                                                 datetime.datetime.combine(self.return_day,
+                                                                                           datetime.time.min),
+                                                                 datetime.datetime.combine(self.return_day,
+                                                                                           datetime.time.max))
+                                                             )
+                    if first_flight_lst:
+                        for flight in first_flight_lst:
+                            second_flight_lst = Ticket.objects.filter(departure_port=transit,
+                                                                      arrival_port=self.dep_port,
+                                                                      departure_time__range=(
+                                                                          flight.arrival_time + td(hours=0, minutes=45),
+                                                                          flight.arrival_time + td(hours=5, minutes=15)
+                                                                      )
+                                                                      )
+                            if second_flight_lst:
+                                lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
+                                aresult = ResultFlight(transit=transit)
+                                aflight = AFlight()
+                                # for seat in ticket_lst:
+                                aflight.seat_list = lst_ticket
+                                aflight.departure_port = flight.departure_port
+                                aflight.arrival_port = flight.arrival_port
+                                aflight.arrival_name = flight.arrival_port.sname
+                                aflight.departure_name = flight.departure_port.sname
+                                aflight.departure_time = flight.departure_time
+                                aflight.arrival_time = flight.arrival_time
+                                aflight.carrier = flight.carrier
+                                aflight.flight_code = flight.flight_code
+                                aflight.set_min_price()
+
+                                aresult.first_flight = aflight
+                                aresult.departure_time = flight.departure_time
+                                aresult.arrival_time = flight.arrival_time
+
+                                for second_flight in second_flight_lst:
+                                    lst_ticket_2 = self.get_ticket_list(second_flight.carrier, second_flight.ticket)
+
+                                    asflight = AFlight()
+                                    # for seat in ticket_lst_2:
+                                    asflight.seat_list = lst_ticket_2
+                                    asflight.departure_port = second_flight.departure_port
+                                    asflight.arrival_port = second_flight.arrival_port
+                                    asflight.arrival_name = second_flight.arrival_port.sname
+                                    asflight.departure_name = second_flight.departure_port.sname
+                                    asflight.departure_time = second_flight.departure_time
+                                    asflight.arrival_time = second_flight.arrival_time
+                                    asflight.carrier = second_flight.carrier
+                                    asflight.flight_code = second_flight.flight_code
+                                    asflight.set_min_price()
+
+                                    aresult.end_port = asflight.arrival_name
+                                    aresult.second_flight.append(asflight)
+
+                                aresult.set_price()
+
+                                self.return_list.append(aresult)
 
     def sort_result(self):
         self.outward_list.sort(key=lambda x: x.total_price)
