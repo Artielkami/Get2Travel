@@ -41,21 +41,21 @@ class DataAdapter(object):
 
     @staticmethod
     def make_some_db():
-        day = 15
-        date = datetime.datetime(year=2016, month=6, day=day,
+        day = 2
+        date = datetime.datetime(year=2016, month=8, day=day,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
-        type = ['standard', 'save', 'flex']
+        #type = ['standard', 'save', 'flex']
         # type_bu = ['standard', 'flex']
         # carry = ['Ppew', 'UFO', 'Aiur', 'Navi', 'Medin', 'Lotha', 'Sinvo',
         #          'Valve', 'Volvo', 'Skys']
         carry = ['vna', 'vja', 'jsa']
-        sit_class = ['economy', 'business', 'first', 'save']
+        #sit_class = ['economy', 'business', 'first', 'save']
         fcode = ['VN370', 'VN7770', 'VJ1280', 'PJ8010', 'VJ780', 'PJ980']
         ap = Airport.objects.get
         rc = random.choice
         rr = random.randrange
-        for x in xrange(1, 500):
+        for x in xrange(1, 200):
             print 'make', x
             in1 = rr(1, 21)
             in2 = rr(1, 21)
@@ -63,30 +63,24 @@ class DataAdapter(object):
                 in1 = 21 - in2
             td1 = td(hours=rr(0, 23), minutes=5 * rr(0, 11))
             td2 = td1 + td(hours=rr(0, 23), minutes=5 * rr(0, 11))
-            sit = rc(sit_class)
-            typ = rc(type)
-            if sit == 'first' or sit == 'save':
-                typ = None
-            elif sit == 'business' and typ == 'save':
-                typ = 'standard'
-            pr1 = 100 * rr(4, 21)
+            #sit = rc(sit_class)
+            #typ = rc(type)
+            # if sit == 'first' or sit == 'save':
+            #     typ = None
+            # elif sit == 'business' and typ == 'save':
+            #     typ = 'standard'
+            pr1 = rr(1, 6)
             pr2 = pr1 - 100*rr(3,5) if pr1 > 600 else pr1-100*rr(1,2)
-            pr3 = 0 if typ == 'save' else 100*rr(1,2)
-            ft1 = pr1*38/100
-            ft2 = pr2*29/100
-            ft3 = 100*rr(0, 1) + pr3*1/10
+            #pr3 = 0 if typ == 'save' else 100*rr(1,2)
+            #ft1 = pr1*38/100
+            #ft2 = pr2*29/100
+            #ft3 = 100*rr(0, 1) + pr3*1/10
+
             t = Ticket(departure_port=ap(pk=in1),
                        arrival_port=ap(pk=in2),
                        departure_time=date + td1,
                        arrival_time=date + td2,
-                       price_adult =pr1,
-                       price_child=pr2,
-                       price_babe=pr3,
-                       fee_tax_adult=ft1,
-                       fee_tax_child=ft2,
-                       fee_tax_babe=ft3,
-                       ticket_type=typ,
-                       sit_class=sit,
+                       ticket=pr1,
                        carrier=rc(carry),
                        flight_code=rc(fcode),
                        date_created=timezone.now()
