@@ -81,6 +81,7 @@ def domestic(request):
                               'search/index.html',
                               {
                                   'outward_list': main.outward_list,
+                                  'return_list': main.return_list,
                                   'sform': sform,
                                   'dates': dates,
                                   'places': places,

@@ -213,7 +213,7 @@ body {
     width: 100%;
     font-weight: bold;
 }
-.result-time{
+/*.result-time{
     width: 18%;
 }
 .result-carrier{
@@ -227,8 +227,8 @@ body {
 }
 .result-button{
     width: 12%;
-}
-.table-result tr td{
+}*/
+.a-result-flight td{
     border: 1px grey solid;
 }
 .table-result-layout{
@@ -258,8 +258,18 @@ select#from, select#to {
     padding-left: 30px;
     background-color: #fbdbb4;
     margin-top: 2px;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 .a-result-flight{
     background-color: #f9f7b0;
+}
+.first-content-time, .first-content-carrier, .first-content-ticket{
+    border: 0;
+    background-color: whitesmoke;
+}
+.first-content-time, .first-content-carrier{
+    border-right: 1px dotted gray;
+}
+.result-detail-first-content{
+    margin-bottom: 2px;
 }
