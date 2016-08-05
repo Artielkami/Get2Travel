@@ -1,6 +1,7 @@
 /**
  * Created by admin on 29/04/2016.
  */
+
 $(document).ready(function(){
     $(".table-result button").click(function(){
         var sid = this.id;
@@ -26,7 +27,7 @@ $(document).ready(function(){
         selectMonths: true,
         selectYears: true,
         format: 'yyyy-mm-dd',
-        formatSubmit: 'yyyy/mm/dd',
+        formatSubmit: 'yyyy-mm-dd',
     });
 
     $('select').chosen({

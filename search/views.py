@@ -11,7 +11,7 @@ from dataAdapter import DataAdapter
 # Create your views here.
 
 
-# this one predecate
+# this one not use anymore
 def index(request):
     if request.method == 'GET':
         print 'search'
@@ -59,15 +59,7 @@ def domestic(request):
             # get name of airport
             places = {'dep': Airport.objects.get(code=clean_data['departure']).sname,
                       'arr': Airport.objects.get(code=clean_data['arrival']).sname}
-            # lst_result = main.get_ticket(dep=clean_data['departure'],
-            #                              arr=clean_data['arrival'],
-            #                              way=clean_data['way'],
-            #                              stop=clean_data['stops'],
-            #                              ttype=clean_data['ttype'],
-            #                              go_day=clean_data['go_day'],
-            #                              rt_day=clean_data['rt_day'],
-            #                              quan=quantity,
-            #                              )
+
             main.search(clean_data)
             sform = {'departure': clean_data['departure'],
                      'arrival': clean_data['arrival'],
@@ -87,49 +79,8 @@ def domestic(request):
                                   'places': places,
                                   'quan': quantity
                               })
-            # if lst_result:
-            #     if clean_data['stops'] == 2:
-            #         return render(request,
-            #                       'search/index.html',
-            #                       {
-            #                           'item_list': lst_result,
-            #                           # 'rt_list': rt_result,
-            #                           'rs_type': 'stop',
-            #                           'places': places,
-            #                           'dates': dates,
-            #                           'sform': sform,
-            #                           'quan': quantity
-            #                       })
-            #     elif clean_data['way'] == 2:
-            #         rt_result = main.get_ticket(dep=clean_data['arrival'],
-            #                                     arr=clean_data['departure'],
-            #                                     way=clean_data['way'],
-            #                                     stop=clean_data['stops'],
-            #                                     ttype=clean_data['ttype'],
-            #                                     go_day=clean_data['rt_day'],
-            #                                     rt_day=clean_data['rt_day']
-            #                                     )
-            #         return render(request,
-            #                       'search/index.html',
-            #                       {
-            #                           'item_list': lst_result,
-            #                           'rt_list': rt_result,
-            #                           'places': places,
-            #                           'dates': dates,
-            #                           'sform': sform,
-            #                           'quan': quantity
-            #                       })
-            #     return render(request,
-            #                   'search/index.html',
-            #                   {
-            #                       'item_list': lst_result,
-            #                       'sform': sform,
-            #                       'dates': dates,
-            #                       'places': places,
-            #                       'quan': quantity
-            #                   })
             else:
-                return_msg = 'Không tìm thấy kết quả'
+                return_msg = 'Không tìm thấy kết quả.'
                 return render(request,
                               'search/index.html',
                               {

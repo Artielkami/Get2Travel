@@ -196,6 +196,9 @@
         </div>
     </form>
     <div id="result">
+        {% if return_msg %}
+            <h2>{{ return_msg }}</h2>
+        {% endif %}
         <!-- Outward -->
         {% if outward_list %}
             <p class="resultList-title">Chiều đi</p>
@@ -441,15 +444,25 @@
 <footer class="container-fluid text-center footer-my-style">
     <p>Get Hi Travel pleasure for serve you. Have a good day and a nice travel</p>
 </footer>
+<script src="{% static 'search/js/picker.js' %}"></script>
+<script src="{% static 'search/js/picker.date.js' %}"></script>
+<script src="{% static 'search/js/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'search/js/main.js' %}"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
+        {% comment %}
+            Show form value comfirm with search value
+        {% endcomment %}
         {% if sform %}
             $('#from').val('{{ sform.departure }}');
+            $('#from').trigger("chosen:updated");
             $('#to').val('{{ sform.arrival }}');
-            $('#way').val('{{ sform.way }}');
-            if ($('#way').val() == '2'){
-                rt_show();
-            }
+            $('#to').trigger("chosen:updated");
+            {% if sform.way == 2 %}
+                $("#way input[value='2']").prop('checked', true);
+                $('#inbound').css('visibility', 'visible');
+            {% endif %}
             $('#stops').val('{{ sform.stop }}');
             var go_d = new Date('{{ sform.go_day }}');
             makeday(go_d, '#outbound');
@@ -465,9 +478,5 @@
         {% endif %}
     });
 </script>
-<script src="{% static 'search/js/picker.js' %}"></script>
-<script src="{% static 'search/js/picker.date.js' %}"></script>
-<script src="{% static 'search/js/chosen.jquery.min.js' %}"></script>
-<script src="{% static 'search/js/main.js' %}"></script>
 </body>
 </html>
