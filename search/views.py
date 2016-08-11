@@ -7,6 +7,7 @@ from .models import Ticket, Airport
 from .forms import Search
 from .main import Main
 from dataAdapter import DataAdapter
+import simplejson
 # import pytz
 # Create your views here.
 

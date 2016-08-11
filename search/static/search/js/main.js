@@ -46,6 +46,31 @@ $('#way input:radio').change(function(){
     }
 });
 
+/* Sort list result*/
+
+// sort
+function sortResults(lst, prop, asc) {
+    lst = lst.sort(function(a, b) {
+        if (asc) return (a[prop] > b[prop]);
+        else return (b[prop] > a[prop]);
+    });
+    showResults(lst);
+}
+
+// show result after sorted
+function showResults (lst) {
+    //var html = '';
+    // for (var i in lst) {
+    //     html += '<tr>'
+    //         +'<td>'+lst[i].f_name+'</td>'
+    //         +'<td>'+lst[i].l_name+'</td>'
+    //         +'<td>'+lst[i].age+'</td>'
+    //     +'</tr>';
+    // }
+    //$('#results').html(html);
+    alert(lst.length);
+}
+
 function rt_day() {
     var d = new Date();
     d.setDate(d.getDate() + 3);

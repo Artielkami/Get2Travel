@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from django import template
+from django.db.models.query import QuerySet
+import simplejson
+from django.utils.safestring import mark_safe
+from django.core.serializers import serialize
 
 register = template.Library()
 
@@ -39,6 +43,11 @@ def clat(value):
     else:
         return 'Đặc biệt'
 
+@register.filter('jsonify')
+def jsonify(object):
+    if isinstance(object, QuerySet):
+        return mark_safe(serialize('json', object))
+    return mark_safe(simplejson.dumps(object))
 
 @register.filter(name='ticket_type')
 def cut(value):

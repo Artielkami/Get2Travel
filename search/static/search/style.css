@@ -185,8 +185,8 @@ body {
     text-align: center;
 }
 .ticket-list-table th,td {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .tr-tik {
     margin-bottom: 3px;
@@ -213,21 +213,6 @@ body {
     width: 100%;
     font-weight: bold;
 }
-/*.result-time{
-    width: 18%;
-}
-.result-carrier{
-    width: 18%;
-}
-.result-transit{
-    width: 32%;
-}
-.result-price{
-    width: 20%;
-}
-.result-button{
-    width: 12%;
-}*/
 .a-result-flight td{
     border: 1px grey solid;
 }
@@ -272,4 +257,7 @@ select#from, select#to {
 }
 .result-detail-first-content{
     margin-bottom: 2px;
+}
+#outward-list-result-header {
+    margin-bottom: 10px;
 }

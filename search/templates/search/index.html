@@ -201,7 +201,10 @@
         {% endif %}
         <!-- Outward -->
         {% if outward_list %}
-            <p class="resultList-title">Chiều đi</p>
+            <div id="outward-list-result-header">
+                Đi:
+                <button id="outward-sort-btn">Sort</button>
+            </div>
             <table class="table-result-layout">
             <tbody>
             {% for flight in outward_list %}
@@ -209,17 +212,20 @@
                     <td>
                         <table id="{{ flight.first_flight.flight_code}}_1" class="table-result">
                             <colgroup span="5">
-                                <col width="20%">
+                                <col width="11%">
+                                <col width="11%">
                                 <col width="13%">
                                 <col width="41%">
                                 <col width="16%">
-                                <col width="10%">
+                                <col width="8%">
                             </colgroup>
                             <tbody>
+
                             <tr class="a-result-flight">
                                 <td class="result-time">
                                     {{ flight.departure_time.time|time:"g:iA"|lower }}
-                                    &rarr;
+                                </td>
+                                <td class="result-time">
                                     {{ flight.arrival_time.time|time:"g:iA"|lower }}
                                 </td>
                                 <td class="result-carrier">
@@ -249,7 +255,7 @@
                                 </td>
                             </tr>
                             <tr class="result-detail hidden" id="detail_{{ flight.first_flight.flight_code }}_1">
-                                <td colspan="5">
+                                <td colspan="6">
                                     <p class="first-flight-header">Từ <span class="color-green">{{ flight.first_flight.departure_name }}</span>
                                         đi <span class="color-green">{{ flight.first_flight.arrival_name }}</span>
                                     </p>
@@ -446,11 +452,26 @@
 </footer>
 <script src="{% static 'search/js/picker.js' %}"></script>
 <script src="{% static 'search/js/picker.date.js' %}"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script src="{% static 'search/js/chosen.jquery.min.js' %}"></script>
 <script src="{% static 'search/js/main.js' %}"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        {% comment %}var outwardLst = jQuery.parseJSON('{{ outward_list|jsonify }}');{% endcomment %}
+        {% comment %}var returnLst = "{{ return_list|safe }}";
+        var myJSONList = (("{{outward_list}}").replace(/&(l|g|quo)t;/g, function (a, b) {
+            return {
+                l: '<',
+                g: '>',
+                quo: '"'
+            }[b];
+        }));{% endcomment %}
+
+        //var myData = JSON.parse(myJSONList);
+        {% comment %}$('#outward-sort-btn').click(function () {
+            alert(outwardLst.length);
+        }){% endcomment %}
         {% comment %}
             Show form value comfirm with search value
         {% endcomment %}
