@@ -1,0 +1,12 @@
+insert into 
+search_jsaticket (
+save_num, save_adult_price, save_child_price, save_babe_price, save_adult_ft, save_child_ft, save_babe_ft,
+flex_num, flex_adult_price, flex_child_price, flex_babe_price, flex_adult_ft, flex_child_ft, flex_babe_ft,
+optimize_num, opt_adult_price, opt_child_price, opt_babe_price, opt_adult_ft, opt_child_ft, opt_babe_ft
+) 
+values
+(
+10, 784, 410, 170, 230, 140, 80,
+10, 1269, 745, 242, 400, 260, 110,
+10, 3210, 2102, 364, 615, 410, 210
+)

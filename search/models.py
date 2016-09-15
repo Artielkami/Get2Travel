@@ -239,3 +239,5 @@ class Ticket(models.Model):
         return str(self.id) + "_" + unicode(self.departure_port) + "_" + \
                unicode(self.arrival_port) +\
                "_" + unicode(self.departure_time.date().strftime("%y%m%d"))
+
+

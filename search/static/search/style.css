@@ -261,3 +261,18 @@ select#from, select#to {
 #outward-list-result-header {
     margin-bottom: 10px;
 }
+.li-ticket-result-detail {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.li-ticket-result-detail:nth-of-type(n+2) {
+    border-top: 1px solid;
+}
+.div-result-ticket-type {
+    text-align: left;
+    padding-left: 25px;
+}
+.div-result-ticket-btn-choose {
+    padding-right: 25px;
+    text-align: right;
+}

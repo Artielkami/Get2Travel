@@ -276,18 +276,18 @@
                                                 {{ flight.first_flight.flight_code }}
                                             </td>
                                             <td class="first-content-ticket">
-                                                <ul>
+                                                <ul style="margin-bottom: 0; padding-left: 0">
                                                     {% for ticket in flight.first_flight.seat_list %}
-                                                        <li>
+                                                        <li class="li-ticket-result-detail">
                                                             <div class="row">
-                                                                <div class="col-*-5">
+                                                                <div class="col-lg-5 div-result-ticket-type">
                                                                     {{ ticket.ticket_type|ticket_type }}
                                                                 </div>
-                                                                <div class="col-*-4">
+                                                                <div class="col-lg-4">
                                                                     {{ ticket.total_price }}
                                                                     <a href="#">Detail</a>
                                                                 </div>
-                                                                <div class="col-*-3">
+                                                                <div class="col-lg-3 div-result-ticket-btn-choose">
                                                                     <button>Chọn</button>
                                                                 </div>
                                                             </div>
