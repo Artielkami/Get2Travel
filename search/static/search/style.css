@@ -149,19 +149,22 @@ body {
 }
 .footer-my-style {
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     height:auto;
     width: 100%;
     background-color: #999999;
     padding:3px;
 }
 .footer-my-style p {
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 #result {
     margin-top: 20px;
-    background-color: whitesmoke;
-    padding: 15px;
+    background-color: #3e3535;
+    padding: 15px 0 15px 0;
+    margin-bottom: 35px;
+    min-height: 100px;
+    border-radius: 0.375rem;
 }
 #result .rs-title {
     text-align: center;
@@ -194,10 +197,6 @@ body {
 }
 #div-return {
     visibility: hidden;
-}
-#result {
-    margin-bottom: 35px;
-    min-height: 100px;
 }
 /* This under is belong to about.html and contact.html */
 .main .row .brand-name {
@@ -241,12 +240,12 @@ select#from, select#to {
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 30px;
-    background-color: #fbdbb4;
+    background-color: #f1d15c;
     margin-top: 2px;
-    margin-bottom: 0;
+    margin-bottom: 2px;
 }
 .a-result-flight{
-    background-color: #f9f7b0;
+    background-color: #ffffff;
 }
 .first-content-time, .first-content-carrier, .first-content-ticket{
     border: 0;
@@ -275,4 +274,27 @@ select#from, select#to {
 .div-result-ticket-btn-choose {
     padding-right: 25px;
     text-align: right;
+}
+.result-time-left {
+    text-align: right;
+    width: 40%;
+    float: left;
+}
+.result-time-right {
+    text-align: left;
+    width: 40%;
+    float: left;
+}
+.result-time-arrow {
+    text-align: center;
+    width: 20%;
+    float: left;
+}
+.span-color-green {
+    color: #00bd68;
+    font-weight: 300;
+}
+.span-color-red {
+    color: #ff5452;
+    font-weight: 300;
 }

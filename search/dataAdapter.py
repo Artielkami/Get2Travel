@@ -41,6 +41,7 @@ class DataAdapter(object):
 
     @staticmethod
     def make_some_db():
+        """Create fake data for test"""
         day = 2
         date = datetime.datetime(year=2016, month=8, day=day,
                                  hour=0, minute=0, second=0)
