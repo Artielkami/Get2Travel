@@ -35,6 +35,11 @@ $(document).ready(function(){
         no_results_text: "Không tìm thấy!",
         allow_single_deselect: true,
     });
+    $('.a-result-flight').hover(function(){
+        $(this).css('background-color', '#C3C9C5');
+    }, function () {
+        $(this).css('background-color', '#ffffff');
+    });
 });
 
 
