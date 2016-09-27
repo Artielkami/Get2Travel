@@ -256,6 +256,9 @@ class IntAirport(models.Model):
     sname = models.CharField(max_length=80, default=None)
     router = models.CharField(max_length=100, default=None)
     is_del = models.BooleanField(default=False)
+    # additional for transit
+    # continent = ['ASIA', 'EURO', 'AFRI', 'NAMER', 'SAMER', 'AUS']
+    continent = models.CharField(max_legth=5, default='ASIA')
 
     def __str__(self):
         return str(self.id) + '_' + unicode(self.code) + '_' + unicode(self.sname)
