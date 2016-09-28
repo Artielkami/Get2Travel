@@ -257,75 +257,78 @@ class IntAirport(models.Model):
     router = models.CharField(max_length=100, default=None)
     is_del = models.BooleanField(default=False)
     # additional for transit
+
     # continent = ['ASIA', 'EURO', 'AFRI', 'NAMER', 'SAMER', 'AUS']
     continent = models.CharField(max_legth=5, default='ASIA')
+    # region hien tai se chi la sea thoi :)
+    # now only have 'sea' region, bobo putang ina mo
+    region = models.CharField(max_legth=9, default='SEA')
+    # not importance
+    nation = models.CharField(max_legth=55, default='Vatican')
 
     def __str__(self):
-        return str(self.id) + '_' + unicode(self.code) + '_' + unicode(self.sname)
+        return str(self.id) + '_' + unicode(self.code) + '_' + unicode(self.sname) + \
+               '_' + unicode(self.nation) + '_' + unicode(self.region) + '_' + unicode(self.continent)
+
+
+class IntContinentRoute(models.Model):
+    departure_cont = models.CharField()
+    arrival_cont = models.CharField()
+    route_cont = models.CharField()
+
+
+class IntRegionRoute(models.Model):
+    departure_region = models.CharField()
+    arrival_region = models.CharField()
+    route_region = models.CharField()
 
 
 class IntTicket(models.Model):
-    """ International ticket """
-    departure_port = models.ForeignKey(
-        Airport,
-        to_field='code',
-        db_column="departure_port",
-        on_delete=models.CASCADE,
-        related_name='dep_code',
-        related_query_name='depart'
-    )
-    arrival_port = models.ForeignKey(
-        Airport,
-        to_field='code',
-        db_column='arrival_port',
-        on_delete=models.CASCADE,
-        related_name='arr_code',
-        related_query_name='arrival'
-    )
+    """ A set of price for a ticket in any type"""
+    # carrier code
+    carrier_code = models.CharField(max_legth=25)
+
+    carrier_name = models.CharField(max_legth=225)
+
+    ticket_type = models.CharField(max_length=225, default='normal')
+
+    price_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    price_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    price_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+
+
+class IntFlight(models.Model):
+    """ International flight """
+    # departure_port = models.ForeignKey(
+    #     Airport,
+    #     to_field='code',
+    #     db_column="departure_port",
+    #     on_delete=models.CASCADE,
+    #     related_name='dep_code',
+    #     related_query_name='depart'
+    # )
+    # arrival_port = models.ForeignKey(
+    #     Airport,
+    #     to_field='code',
+    #     db_column='arrival_port',
+    #     on_delete=models.CASCADE,
+    #     related_name='arr_code',
+    #     related_query_name='arrival'
+    # )
+
+    departure_port = models.CharField()
+    arrival_port = models.CharField()
     departure_time = models.DateTimeField(null=True, blank=True)
     arrival_time = models.DateTimeField(null=True, blank=True)
-    # price_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # price_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # price_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=10)
-    # ticket_type = models.CharField(max_length=50, null=False, default=None)
-    # sit_class = models.CharField(max_length=20, default='business')
-    ticket = models.IntegerField(default=0)
+    ticket = models.CharField()  # e.g. 12,13,42,... a list number, which is id of ticket in IntTicket Table
     # up_ref = models.BooleanField(default=True)
     carrier = models.CharField(max_length=5, default='vna')
     flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
-
-    # carrier = vna, vja, pja
-    # type = flex, standard, save, none
-    # sit_class = FIRST, BUSINESS, ECONOMY, SAVE
-    # def delete(self, using=None, keep_parents=False):
-    #     q = VJATicket.objects.get(id=self.ticket)
-    #     q.ref -= 1
-    #     q.save()
-
-    def save(self, *args, **kwargs):
-        # if self.carrier == 'vja' and self.up_ref:
-        #     q = VJATicket.objects.get(id=self.ticket)
-        #     q.ref += 1
-        #     self.up_ref = False
-        #     q.save()
-        # elif self.carrier == 'vna' and self.up_ref:
-        #     q = VNATicket.objects.get(id=self.ticket)
-        #     q.ref += 1
-        #     self.up_ref = False
-        #     q.save()
-        # elif self.carrier == 'jsa' and self.up_ref:
-        #     q = JSATicket.objects.get(id=self.ticket)
-        #     q.ref += 1
-        #     self.up_ref = False
-        #     q.save()
-
-        if not self.arrival_time:
-            self.arrival_time = None
-        super(Ticket, self).save(*args, **kwargs)
+    is_deleted = models.BooleanField(default=false)
 
     def __str__(self):
         return str(self.id) + "_" + unicode(self.departure_port) + "_" + \
