@@ -259,12 +259,12 @@ class IntAirport(models.Model):
     # additional for transit
 
     # continent = ['ASIA', 'EURO', 'AFRI', 'NAMER', 'SAMER', 'AUS']
-    continent = models.CharField(max_legth=5, default='ASIA')
+    continent = models.CharField(max_length=5, default='ASIA')
     # region hien tai se chi la sea thoi :)
     # now only have 'sea' region, bobo putang ina mo
-    region = models.CharField(max_legth=9, default='SEA')
+    region = models.CharField(max_length=9, default='SEA')
     # not importance
-    nation = models.CharField(max_legth=55, default='Vatican')
+    nation = models.CharField(max_length=55, default='Vatican')
 
     def __str__(self):
         return str(self.id) + '_' + unicode(self.code) + '_' + unicode(self.sname) + \
@@ -272,23 +272,34 @@ class IntAirport(models.Model):
 
 
 class IntContinentRoute(models.Model):
-    departure_cont = models.CharField()
-    arrival_cont = models.CharField()
-    route_cont = models.CharField()
+    departure_cont = models.CharField(max_length=10)
+    arrival_cont = models.CharField(max_length=10)
+    route_cont = models.CharField(max_length=150)
+    is_deleted = models.BooleanField(default=False)
 
 
 class IntRegionRoute(models.Model):
-    departure_region = models.CharField()
-    arrival_region = models.CharField()
-    route_region = models.CharField()
+    departure_region = models.CharField(max_length=10)
+    arrival_region = models.CharField(max_length=10)
+    route_region = models.CharField(max_length=160)
+    is_deleted = models.BooleanField(default=False)
+
+
+class IntConnetingMap(models.Model):
+    departure_port = models.CharField(max_length=10)
+    arrival_port = models.CharField(max_length=10)
+    have_direct = models.BooleanField(default=False)
+    route_transit_once = models.CharField(max_length=160)
+    route_transit_twice = models.CharField(max_length=160)
+    is_deleted = models.BooleanField(default=False)
 
 
 class IntTicket(models.Model):
     """ A set of price for a ticket in any type"""
     # carrier code
-    carrier_code = models.CharField(max_legth=25)
+    carrier_code = models.CharField(max_length=25)
 
-    carrier_name = models.CharField(max_legth=225)
+    carrier_name = models.CharField(max_length=225)
 
     ticket_type = models.CharField(max_length=225, default='normal')
 
@@ -319,16 +330,17 @@ class IntFlight(models.Model):
     #     related_query_name='arrival'
     # )
 
-    departure_port = models.CharField()
-    arrival_port = models.CharField()
+    departure_port = models.CharField(max_length=10)
+    arrival_port = models.CharField(max_length=10)
     departure_time = models.DateTimeField(null=True, blank=True)
     arrival_time = models.DateTimeField(null=True, blank=True)
-    ticket = models.CharField()  # e.g. 12,13,42,... a list number, which is id of ticket in IntTicket Table
+    ticket = models.CharField(max_length=160)
+    # e.g. 12,13,42,... a list number, which is id of ticket in IntTicket Table
     # up_ref = models.BooleanField(default=True)
     carrier = models.CharField(max_length=5, default='vna')
     flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
-    is_deleted = models.BooleanField(default=false)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id) + "_" + unicode(self.departure_port) + "_" + \
