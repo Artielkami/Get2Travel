@@ -293,7 +293,7 @@ class Main(object):
         self.dep_port = data['departure']
         self.arr_port = data['arrival']
         td = datetime.timedelta
-        #num_passenger = self.num_adult + self.num_child + self.num_infan
+        # num_passenger = self.num_adult + self.num_child + self.num_infan
         transit_list = MiddlePort.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
 
         flight_lst = Ticket.objects.filter(departure_port=self.dep_port,
@@ -496,7 +496,7 @@ class Main(object):
         # sort result by price
         self.sort_result()
 
-    def int_search(self, data={}):
+    def int_search(self, data):
         self.num_adult = data['adult']
         self.num_child = data['child']
         self.num_infan = data['babe']
@@ -506,7 +506,7 @@ class Main(object):
         self.dep_port = data['departure']
         self.arr_port = data['arrival']
         td = datetime.timedelta
-        #num_passenger = self.num_adult + self.num_child + self.num_infan
+        # num_passenger = self.num_adult + self.num_child + self.num_infan
         transit_list = IntConnetingMap.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
         # Get direct flight
         flight_lst = IntFlight.objects.filter(departure_port=self.dep_port,
