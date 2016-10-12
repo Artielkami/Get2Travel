@@ -8,6 +8,13 @@ from django.db.models import F
 from result import Result, Flight
 import random
 import datetime
+import logging
+import threading
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='[%(levelname)s] | %(asctime)s -#- %(threadName)-20s : %(message)s',
+)
 
 
 class SeatFlight(object):
@@ -28,9 +35,7 @@ class SeatFlight(object):
         self.total_ticket_price = num_adult * self.adult_price + \
                                   num_child * self.child_price + \
                                   num_babe * self.babe_price
-        self.total_ticket_fee = num_adult * self.adult_ft + \
-                                num_child * self.child_ft + \
-                                num_babe * self.babe_ft
+        self.total_ticket_fee = num_adult * self.adult_ft + num_child * self.child_ft + num_babe * self.babe_ft
         self.total_price += self.total_price + self.total_ticket_fee
 
 
@@ -283,7 +288,7 @@ class Main(object):
 
     # search method
     # the most importance action
-    def search(self, data={}):
+    def search(self, data=None):
         self.num_adult = data['adult']
         self.num_child = data['child']
         self.num_infan = data['babe']
@@ -304,14 +309,22 @@ class Main(object):
                                            )
         # TODO --------- search method ---------
         # - OUTWARD
+        # Set direct flight result
         if flight_lst:
             for flight in flight_lst:
                 # get list ticket suitable with carrier
                 lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
+
+                # - initial
+                # -- ResultFlight: 1 ket qua tra ve
                 aresult = ResultFlight()
+                # -- Aflight: 1 chuyến bay kết quả trả về
+                # Trong trường hợp nà ứng với first flight
+                # Second flight is none
                 aflight = AFlight()
 
                 # for seat in ticket_lst:
+                # set attribute value for a flight
                 aflight.seat_list = lst_ticket
                 aflight.departure_port = flight.departure_port
                 aflight.arrival_port = flight.arrival_port
@@ -323,6 +336,8 @@ class Main(object):
                 aflight.flight_code = flight.flight_code
                 aflight.set_min_price()
 
+                # add first flight to result
+                # second flight = none, because this is direct flight
                 aresult.first_flight = aflight
                 aresult.departure_time = flight.departure_time
                 aresult.arrival_time = flight.arrival_time
@@ -330,7 +345,10 @@ class Main(object):
 
                 # Thêm kết quả tìm được vào list kết quả
                 self.outward_list.append(aresult)
+        # check transit list
+        # *note : now we just check if flight trip is exist in database
         if transit_list:
+            # get transit port,which is stored in db at string, then split them into list.
             lst_transit_port = transit_list.middle_port.split(',')
             for transit in lst_transit_port:
                 first_flight_lst = Ticket.objects.filter(departure_port=self.dep_port,
@@ -517,6 +535,7 @@ class Main(object):
                                               )
         # ----- TODO : make seach with 2 transit -----
         # - OUTWARD
+        # set direct flight
         if flight_lst:
             for flight in flight_lst:
                 # get list ticket suitable with carrier
@@ -536,18 +555,38 @@ class Main(object):
                 aflight.flight_code = flight.flight_code
                 aflight.set_min_price()
 
+                # because this is direct flight so it not have second flight list
                 aresult.first_flight = aflight
                 aresult.departure_time = flight.departure_time
                 aresult.arrival_time = flight.arrival_time
                 aresult.set_price()
 
                 # Thêm kết quả tìm được vào list kết quả
+                # each flight after calculation are added to outward_list
                 self.outward_list.append(aresult)
-        # done above
+        # set transit flight
+        # typical a flight would have this format
+        # flight:
+        #   first:  A flight
+        #   sec:
+        #       [
+        #           {
+        #               first: A flight
+        #               sec:    [
+        #                           {
+        #                               first: A flight
+        #                               sec: None
+        #                           }
+        #                       ]
+        #           }
+        #       ]
         if transit_list:
             # - 1 transit
+            # get transit port then split into list type.
+            # nothing much different from domestic search
             lst_transit_port = transit_list.route_transit_once.split(',')
             for transit in lst_transit_port:
+                # get first flight
                 first_flight_lst = IntFlight.objects.filter(departure_port=self.dep_port,
                                                             arrival_port=transit,
                                                             departure_time__range=(
@@ -556,8 +595,12 @@ class Main(object):
                                                                 datetime.datetime.combine(self.outward_day,
                                                                                           datetime.time.max))
                                                             )
+                # check if flight list not none
                 if first_flight_lst:
+                    # loop for each flight in flight list
                     for flight in first_flight_lst:
+                        # in each flight in flight list
+                        # get it's continuous flight
                         second_flight_lst = IntFlight.objects.filter(departure_port=transit,
                                                                      arrival_port=self.arr_port,
                                                                      departure_time__range=(
@@ -565,7 +608,9 @@ class Main(object):
                                                                          flight.arrival_time + td(hours=5, minutes=15)
                                                                      )
                                                                      )
+                        # check sec flight list not none
                         if second_flight_lst:
+                            # get ticket list of flight
                             lst_ticket = self.get_int_ticket(flight.ticket)
                             aresult = ResultFlight(transit=transit)
                             aflight = AFlight()
@@ -586,11 +631,11 @@ class Main(object):
                             aresult.arrival_time = flight.arrival_time
 
                             for second_flight in second_flight_lst:
-                                lst_ticket_2 = self.get_int_ticket(second_flight.ticket)
+                                lst_ticket = self.get_int_ticket(second_flight.ticket)
 
                                 asflight = AFlight()
                                 # for seat in ticket_lst_2:
-                                asflight.seat_list = lst_ticket_2
+                                asflight.seat_list = lst_ticket
                                 asflight.departure_port = second_flight.departure_port
                                 asflight.arrival_port = second_flight.arrival_port
                                 asflight.arrival_name = second_flight.arrival_port.sname
@@ -619,6 +664,7 @@ class Main(object):
                                                                 datetime.datetime.combine(self.outward_day,
                                                                                           datetime.time.max))
                                                             )
+                # TODO check arrival_port at below
                 if first_flight_lst:
                     for flight in first_flight_lst:
                         second_flight_lst = IntFlight.objects.filter(departure_port=transit,
