@@ -337,7 +337,7 @@ class IntFlight(models.Model):
     ticket = models.CharField(max_length=160)
     # e.g. 12,13,42,... a list number, which is id of ticket in IntTicket Table
     # up_ref = models.BooleanField(default=True)
-    carrier = models.CharField(max_length=5, default='vna')
+    carrier = models.CharField(max_length=7, default='vna')
     flight_code = models.CharField(max_length=10, default='VN370')
     date_created = models.DateTimeField(default=timezone.now)
     is_deleted = models.BooleanField(default=False)

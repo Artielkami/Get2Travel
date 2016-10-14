@@ -52,6 +52,16 @@ class AFlight(object):
         self.arrival_time = '0000'
         self.seat_list = []
 
+    def get_port_name(self):
+        try:
+            self.departure_name = Airport.objects.get(code=self.departure_port).sname
+            self.arrival_name = Airport.objects.get(code=self.arrival_port).sname
+        except Exception:
+            self.departure_name = 'Need to update'
+            self.arrival_name = 'Need to update'
+            return False
+        return True
+
     def set_min_price(self):
         for seat in self.seat_list:
             if self.total_price_min == 0 or self.total_price_min > seat.total_price:
@@ -76,6 +86,16 @@ class ResultFlight(object):
                 if second_min_price == 0 or flight.total_price_min < second_min_price:
                     second_min_price = flight.total_price_min
             self.total_price += second_min_price
+
+    def set_int_price(self):
+        # get min price of first flight
+        self.total_price = self.first_flight.total_price_min
+        # get min price of second connect flight
+        second_min_price = 0
+        for flight in self.second_flight:
+            if second_min_price == 0 or flight.total_price_min < second_min_price:
+                second_min_price = flight.total_price
+        self.total_price += second_min_price
 
 
 class ResultIntFlight(object):
@@ -547,8 +567,10 @@ class Main(object):
                 aflight.seat_list = lst_ticket
                 aflight.departure_port = flight.departure_port
                 aflight.arrival_port = flight.arrival_port
-                aflight.arrival_name = flight.arrival_port.sname
-                aflight.departure_name = flight.departure_port.sname
+                # aflight.arrival_name = flight.arrival_port.sname
+                # aflight.departure_name = flight.departure_port.sname
+                # replace with function get name
+                aflight.get_port_name()
                 aflight.departure_time = flight.departure_time
                 aflight.arrival_time = flight.arrival_time
                 aflight.carrier = flight.carrier
@@ -580,6 +602,7 @@ class Main(object):
         #                       ]
         #           }
         #       ]
+
         if transit_list:
             # - 1 transit
             # get transit port then split into list type.
@@ -596,66 +619,85 @@ class Main(object):
                                                                                           datetime.time.max))
                                                             )
                 # check if flight list not none
-                if first_flight_lst:
-                    # loop for each flight in flight list
-                    for flight in first_flight_lst:
-                        # in each flight in flight list
-                        # get it's continuous flight
-                        second_flight_lst = IntFlight.objects.filter(departure_port=transit,
-                                                                     arrival_port=self.arr_port,
-                                                                     departure_time__range=(
-                                                                         flight.arrival_time + td(hours=0, minutes=45),
-                                                                         flight.arrival_time + td(hours=5, minutes=15)
-                                                                     )
-                                                                     )
-                        # check sec flight list not none
-                        if second_flight_lst:
-                            # get ticket list of flight
-                            lst_ticket = self.get_int_ticket(flight.ticket)
-                            aresult = ResultFlight(transit=transit)
-                            aflight = AFlight()
-                            # for seat in ticket_lst:
-                            aflight.seat_list = lst_ticket
-                            aflight.departure_port = flight.departure_port
-                            aflight.arrival_port = flight.arrival_port
-                            aflight.arrival_name = flight.arrival_port.sname
-                            aflight.departure_name = flight.departure_port.sname
-                            aflight.departure_time = flight.departure_time
-                            aflight.arrival_time = flight.arrival_time
-                            aflight.carrier = flight.carrier
-                            aflight.flight_code = flight.flight_code
-                            aflight.set_min_price()
+                if not first_flight_lst:
+                    break
+                # loop for each flight in flight list
+                for flight in first_flight_lst:
+                    insert = False
+                    # in each flight in flight list
+                    # get it's continuous flight
+                    second_flight_lst = IntFlight.objects.filter(departure_port=transit,
+                                                                 arrival_port=self.arr_port,
+                                                                 departure_time__range=(
+                                                                     flight.arrival_time + td(hours=0, minutes=45),
+                                                                     flight.arrival_time + td(hours=5, minutes=15)
+                                                                 )
+                                                                 )
+                    # check sec flight list not none
+                    # if it is none -> next flight
+                    # else do something
+                    if not second_flight_lst:
+                        continue
+                    # get ticket list of flight
+                    lst_ticket = self.get_int_ticket(flight.ticket)
+                    aresult = ResultFlight(transit=transit)
+                    aflight = AFlight()
+                    # for seat in ticket_lst:
+                    aflight.seat_list = lst_ticket
+                    aflight.departure_port = flight.departure_port
+                    aflight.arrival_port = flight.arrival_port
+                    # aflight.arrival_name = flight.arrival_port.sname
+                    # aflight.departure_name = flight.departure_port.sname
+                    # replace with fuction get name
+                    aflight.get_port_name()
+                    aflight.departure_time = flight.departure_time
+                    aflight.arrival_time = flight.arrival_time
+                    aflight.carrier = flight.carrier
+                    aflight.flight_code = flight.flight_code
+                    aflight.set_min_price()
 
-                            aresult.first_flight = aflight
-                            aresult.departure_time = flight.departure_time
-                            aresult.arrival_time = flight.arrival_time
+                    aresult.first_flight = aflight
+                    aresult.departure_time = flight.departure_time
+                    aresult.arrival_time = flight.arrival_time
 
-                            for second_flight in second_flight_lst:
-                                lst_ticket = self.get_int_ticket(second_flight.ticket)
+                    for second_flight in second_flight_lst:
+                        lst_ticket = self.get_int_ticket(second_flight.ticket)
 
-                                asflight = AFlight()
-                                # for seat in ticket_lst_2:
-                                asflight.seat_list = lst_ticket
-                                asflight.departure_port = second_flight.departure_port
-                                asflight.arrival_port = second_flight.arrival_port
-                                asflight.arrival_name = second_flight.arrival_port.sname
-                                asflight.departure_name = second_flight.departure_port.sname
-                                asflight.departure_time = second_flight.departure_time
-                                asflight.arrival_time = second_flight.arrival_time
-                                asflight.carrier = second_flight.carrier
-                                asflight.flight_code = second_flight.flight_code
-                                asflight.set_min_price()
+                        asflight = AFlight()
+                        # for seat in ticket_lst_2:
+                        asflight.seat_list = lst_ticket
+                        asflight.departure_port = second_flight.departure_port
+                        asflight.arrival_port = second_flight.arrival_port
+                        # asflight.arrival_name = second_flight.arrival_port.sname
+                        # asflight.departure_name = second_flight.departure_port.sname
+                        # replace with function get name
+                        asflight.get_port_name()
+                        asflight.departure_time = second_flight.departure_time
+                        asflight.arrival_time = second_flight.arrival_time
+                        asflight.carrier = second_flight.carrier
+                        asflight.flight_code = second_flight.flight_code
+                        asflight.set_min_price()
 
-                                aresult.end_port = asflight.arrival_name
-                                aresult.second_flight.append(asflight)
+                        aresult.end_port = asflight.arrival_name
+                        aresult.second_flight.append(asflight)
+                        insert = True
 
-                            aresult.set_price()
-
-                            self.outward_list.append(aresult)
+                    aresult.set_price()
+                    if insert:
+                        self.outward_list.append(aresult)
             # - 2 transit
             # -- TODO - make 2 transit
+            # Summarized:
+            # E.g. A -> B -> C -> D
+            # Basically separate into 2 part
+            # Part 1: direct flight from A to B
+            # Part 2: transit flight form B to D
+
+            # Retrieve transit first list
             lst_transit_first = transit_list.route_transit_twice.split(',')
             for transit in lst_transit_first:
+                # Make part 1
+                # Direct flight from A to B (B form transit first list)
                 first_flight_lst = IntFlight.objects.filter(departure_port=self.dep_port,
                                                             arrival_port=transit,
                                                             departure_time__range=(
@@ -665,57 +707,158 @@ class Main(object):
                                                                                           datetime.time.max))
                                                             )
                 # TODO check arrival_port at below
-                if first_flight_lst:
-                    for flight in first_flight_lst:
-                        second_flight_lst = IntFlight.objects.filter(departure_port=transit,
-                                                                     arrival_port=self.arr_port,
-                                                                     departure_time__range=(
-                                                                         flight.arrival_time + td(hours=0, minutes=45),
-                                                                         flight.arrival_time + td(hours=5, minutes=15)
-                                                                     )
-                                                                     )
-                        if second_flight_lst:
-                            lst_ticket = self.get_int_ticket(flight.ticket)
-                            aresult = ResultFlight(transit=transit)
-                            aflight = AFlight()
-                            # for seat in ticket_lst:
-                            aflight.seat_list = lst_ticket
-                            aflight.departure_port = flight.departure_port
-                            aflight.arrival_port = flight.arrival_port
-                            aflight.arrival_name = flight.arrival_port.sname
-                            aflight.departure_name = flight.departure_port.sname
-                            aflight.departure_time = flight.departure_time
-                            aflight.arrival_time = flight.arrival_time
-                            aflight.carrier = flight.carrier
-                            aflight.flight_code = flight.flight_code
-                            aflight.set_min_price()
+                # if not have flight from A to B, so continue on next airport
+                if not first_flight_lst:
+                    continue
 
-                            aresult.first_flight = aflight
-                            aresult.departure_time = flight.departure_time
-                            aresult.arrival_time = flight.arrival_time
+                for flight in first_flight_lst:
+                    insert = False
+                    # something wrong ...
+                    # fix in 3 .. 2 .. 1 .. done
+                    # retrieve ticket for first flight - b2c
+                    lst_ticket = self.get_int_ticket(flight.ticket)
 
-                            for second_flight in second_flight_lst:
-                                lst_ticket_2 = self.get_int_ticket(second_flight.ticket)
+                    # A result flight consist of:
+                    # One flight from A 2 B
+                    # A list from B to C
+                    # and each list form C 2 D
+                    a_result_flight = ResultFlight()
 
-                                asflight = AFlight()
-                                # for seat in ticket_lst_2:
-                                asflight.seat_list = lst_ticket_2
-                                asflight.departure_port = second_flight.departure_port
-                                asflight.arrival_port = second_flight.arrival_port
-                                asflight.arrival_name = second_flight.arrival_port.sname
-                                asflight.departure_name = second_flight.departure_port.sname
-                                asflight.departure_time = second_flight.departure_time
-                                asflight.arrival_time = second_flight.arrival_time
-                                asflight.carrier = second_flight.carrier
-                                asflight.flight_code = second_flight.flight_code
-                                asflight.set_min_price()
+                    # A flight from A 2 B
+                    a_flight = AFlight()
 
-                                aresult.end_port = asflight.arrival_name
-                                aresult.second_flight.append(asflight)
+                    a_flight.seat_list = lst_ticket
+                    a_flight.departure_port = flight.departure_port
+                    a_flight.arrival_port = flight.arrival_port
+                    # a_flight.arrival_name = flight.arrival_port.sname
+                    # a_flight.departure_name = flight.departure_port.sname
+                    # replace both line with get sname function
+                    a_flight.get_port_name()
+                    a_flight.departure_time = flight.departure_time
+                    a_flight.arrival_time = flight.arrival_time
+                    a_flight.carrier = flight.carrier
+                    a_flight.flight_code = flight.flight_code
+                    a_flight.set_min_price()
 
-                            aresult.set_price()
+                    # add flight to a_result
+                    a_result_flight.first_flight = a_flight
+                    a_result_flight.departure_time = flight.departure_time
+                    a_result_flight.arrival_time = flight.arrival_time
+
+                    # Make part 2
+
+                    # Get transit form B to D
+                    lst_transit_sec = IntConnetingMap.objects.get(depart_port=transit,
+                                                                  arrival_port=self.arr_port) \
+                        .route_transit_once.split(',')
+                    # For each transit in transit list:
+                    # Making a search for it
+                    for sec_transit in lst_transit_sec:
+                        # transit is B
+                        # sec_transit is C
+                        first_flight_of_sec = IntFlight.objects.filter(departure_port=transit,
+                                                                       arrival_port=sec_transit,
+                                                                       departure_time__range=(
+                                                                           flight.arrival_time + td(hours=0,
+                                                                                                    minutes=45),
+                                                                           flight.arrival_time + td(hours=5,
+                                                                                                    minutes=15)
+                                                                       ))
+                        # skip to next transit if there are haven't part 1
+                        if not first_flight_of_sec:
+                            continue
+
+                        # loop in first flight list
+                        for sec_flight in first_flight_of_sec:
+
+                            # checking if exist flight from C 2 D
+                            sec_flight_of_sec = IntFlight.objects.filter(departure_port=sec_transit,
+                                                                         arrival_port=self.arr_port,
+                                                                         departure_time__range=(
+                                                                             sec_flight.arrival_time + td(hours=0,
+                                                                                                          minutes=45),
+                                                                             sec_flight.arrival_time + td(hours=5,
+                                                                                                          minutes=15)
+                                                                         ))
+                            if not sec_flight_of_sec:
+                                continue
+
+                            # retrieve ticket
+
+                            lst_ticket = self.get_int_ticket(sec_flight.ticket)
+                            
+                            # create new result flight for part 2: B2D
+                            a_sec_result_flight = ResultFlight(transit=sec_transit)
+    
+                            # A flight from B 2 C
+                            a_sec_flight = AFlight()
+    
+                            a_sec_flight.seat_list = lst_ticket
+                            a_sec_flight.departure_port = sec_flight.departure_port
+                            a_sec_flight.arrival_port = sec_flight.arrival_port
+                            # a_sec_flight.arrival_name = flight.arrival_port.sname
+                            # a_sec_flight.departure_name = flight.departure_port.sname
+                            # replace both line with get sname function
+                            a_sec_flight.get_port_name()
+                            a_sec_flight.departure_time = sec_flight.departure_time
+                            a_sec_flight.arrival_time = sec_flight.arrival_time
+                            a_sec_flight.carrier = sec_flight.carrier
+                            a_sec_flight.flight_code = sec_flight.flight_code
+                            a_sec_flight.set_min_price()
+    
+                            # add flight to a_result
+                            a_sec_result_flight.first_flight = a_sec_flight
+                            a_sec_result_flight.departure_time = sec_flight.departure_time
+                            a_sec_result_flight.arrival_time = sec_flight.arrival_time
+
+                            # loop for second flight : c2d
+                            # sec_transit = C
+                            # transit = B
+                            # dep = A
+                            # arrival = D
+                            for sec_sec_flight in sec_flight_of_sec:
+                                lst_ticket = self.get_int_ticket(sec_sec_flight.ticket)
+
+                                # A flight from B 2 C
+                                a_sec_flight = AFlight()
+
+                                a_sec_flight.seat_list = lst_ticket
+                                a_sec_flight.departure_port = a_sec_flight.departure_port
+                                a_sec_flight.arrival_port = a_sec_flight.arrival_port
+                                # a_sec_flight.arrival_name = flight.arrival_port.sname
+                                # a_sec_flight.departure_name = flight.departure_port.sname
+                                # replace both line with get sname function
+                                a_sec_flight.get_port_name()
+                                a_sec_flight.departure_time = a_sec_flight.departure_time
+                                a_sec_flight.arrival_time = a_sec_flight.arrival_time
+                                a_sec_flight.carrier = a_sec_flight.carrier
+                                a_sec_flight.flight_code = a_sec_flight.flight_code
+                                a_sec_flight.set_min_price()
+
+                                # add flight to a_result
+                                a_sec_result_flight.end_port = a_sec_flight.arrival_name
+                                a_sec_result_flight.second_flight.append(a_sec_flight)
+
+                            a_sec_result_flight.set_price()
+                            # add part 2 to part 1 as
+                            a_result_flight.end_port = a_sec_result_flight.end_port
+                            a_result_flight.second_flight.append(a_sec_result_flight)
+                            insert = True
+
+                    # set price after do search for 1 flight in first flight list
+                    a_result_flight.set_int_price()
+                    # add result to outward list
+                    if insert:
+                        self.outward_list.append(a_result_flight)
+                    # ----------------- * - * - * ----------------- #
+                    # --------------------------------------------- #
+                    # --------------------------------------------- #
+                    # --------------------------------------------- #
 
         # - RETURN
+        if self.way != 2:
+            return False
+        # --------------------------------------------------------------------------------------------------------------
         if self.way == 2:
             transit_list = IntConnetingMap.objects.get(depart_port=self.arr_port, arrival_port=self.dep_port)
 
