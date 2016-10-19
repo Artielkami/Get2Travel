@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from .models import Ticket, Carrier, Airport, MiddlePort,\
     VNATicket, VJATicket, JSATicket, \
-    IntRegionRoute, IntConnetingMap, IntContinentRoute, \
+    IntRegionRoute, IntConnectingMap, IntContinentRoute, \
     IntAirport, IntFlight, IntTicket
 from django.db.models import F
 from result import Result, Flight
@@ -545,7 +545,7 @@ class Main(object):
         self.arr_port = data['arrival']
         td = datetime.timedelta
         # num_passenger = self.num_adult + self.num_child + self.num_infan
-        transit_list = IntConnetingMap.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
+        transit_list = IntConnectingMap.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
         # Get direct flight
         flight_lst = IntFlight.objects.filter(departure_port=self.dep_port,
                                               arrival_port=self.arr_port,
@@ -749,8 +749,8 @@ class Main(object):
                     # Make part 2
 
                     # Get transit form B to D
-                    lst_transit_sec = IntConnetingMap.objects.get(depart_port=transit,
-                                                                  arrival_port=self.arr_port) \
+                    lst_transit_sec = IntConnectingMap.objects.get(depart_port=transit,
+                                                                   arrival_port=self.arr_port) \
                         .route_transit_once.split(',')
                     # For each transit in transit list:
                     # Making a search for it
@@ -862,7 +862,7 @@ class Main(object):
         # --------------------------------------------------------------------------------------------------------------
         # set direct flight
         # just a reverse of outward, change position of arrival port and departure port
-        transit_list = IntConnetingMap.objects.get(departure_port=self.arr_port, arrival_port=self.dep_port)
+        transit_list = IntConnectingMap.objects.get(departure_port=self.arr_port, arrival_port=self.dep_port)
         # direct flight return
         flight_lst = IntFlight.objects.filter(departure_port=self.arr_port,
                                               arrival_port=self.dep_port,
@@ -1068,8 +1068,8 @@ class Main(object):
                     # Make part 2
 
                     # Get transit form B to D
-                    lst_transit_sec = IntConnetingMap.objects.get(depart_port=transit,
-                                                                  arrival_port=self.dep_port) \
+                    lst_transit_sec = IntConnectingMap.objects.get(depart_port=transit,
+                                                                   arrival_port=self.dep_port) \
                         .route_transit_once.split(',')
                     # For each transit in transit list:
                     # Making a search for it

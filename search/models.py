@@ -292,6 +292,7 @@ class IntConnectingMap(models.Model):
     departure_port = models.CharField(max_length=10)
     arrival_port = models.CharField(max_length=10)
     have_direct = models.BooleanField(default=False)
+    recommend = models.BooleanField(default=False)
     route_transit_once = models.CharField(max_length=160)
     route_transit_twice = models.CharField(max_length=160)
     date_create = models.DateTimeField(default=timezone.now)
