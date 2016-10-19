@@ -33,6 +33,7 @@
                 <ul class="nav navbar-nav navbar-right text-uppercase my-nav-text-style">
                     <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a>
                     </li>
+                    <li><a href="{% url 'search:int_search' %}">International</a></li>
                     <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">Insert</a></li>
                     <li><a id="a-ud-routes" title="Update the routes"
                            href="{% url 'search:update_routes' %}">Upgrade</a></li>
@@ -46,7 +47,7 @@
 </header>
 <div class="container-fluid main">
     <!-- form se duoc gui thong qua ajax -->
-    <form id="myForm" method="get" action="">
+    <form id="myForm" method="get" action="{{ base_data.action_link }}">
         <div class="row">
             <div class="group-item col-xs-12 col-sm-4">
                 <div class="title-col col-xs-12">
@@ -190,6 +191,9 @@
                 </div>
             </div>
         </div>
+        {% if base_data.is_int_search %}
+            <input type="hidden" name="international_search" value="1">
+        {% endif %}
         <div class="row center-block text-center">
             {% csrf_token %}
             <button type="submit" class="btn btn-success btn-search" id="search" name="search">Tìm chuyến bay</button>

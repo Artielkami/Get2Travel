@@ -10,6 +10,9 @@ from dataAdapter import DataAdapter
 import simplejson
 # import pytz
 # Create your views here.
+INDEX_PAGE = 'search/index.html'
+DOMESTIC_SEARCH = 'search/domestic'
+INT_SEARCH = 'search/domestic'
 
 
 # this one not use anymore
@@ -38,6 +41,22 @@ def index(request):
         return HttpResponse(template.render(context, request))
 
 
+def int_search(request):
+    basic_data = {
+        'action_link': 'search/int_search',
+        'domestic_search': DOMESTIC_SEARCH,
+        'int_search': INT_SEARCH,
+        'is_int_search': True
+    }
+    if request.GET.get('international_search'):
+        return None
+    return render(request,
+                  INDEX_PAGE,
+                  {
+                      'base_data': basic_data
+                  })
+
+
 def about_page(request):
     return render(request, 'search/about.html')
 
@@ -47,6 +66,14 @@ def contact_page(request):
 
 
 def domestic(request):
+    """ Domestic search """
+    # some basic key value link action link for form, etc.
+    basic_data = {
+        'action_link': 'search/domestic',
+        'domestic_search': DOMESTIC_SEARCH,
+        'int_search': INT_SEARCH
+    }
+
     if request.GET.get('departure'):
         main = Main()
         search_form = Search(request.GET)
@@ -78,7 +105,8 @@ def domestic(request):
                                   'sform': sform,
                                   'dates': dates,
                                   'places': places,
-                                  'quan': quantity
+                                  'quan': quantity,
+                                  'base_data': basic_data
                               })
             else:
                 return_msg = 'Không tìm thấy kết quả.'
@@ -87,6 +115,7 @@ def domestic(request):
                               {
                                   'sform': sform,
                                   'quan': quantity,
+                                  'base_data': basic_data,
                                   'return_msg': return_msg
                               })
         else:
@@ -99,7 +128,8 @@ def domestic(request):
                       'search/index.html',
                       {
                           'item_list': lst_result,
-                          'is_search': search
+                          'is_search': search,
+                          'base_data': basic_data
                       })
 
 

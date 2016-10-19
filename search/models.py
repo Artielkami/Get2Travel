@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 from django.utils import timezone
 from django.db import models
-import datetime
+# import datetime
 
 # Create your models here.
 
@@ -243,7 +243,7 @@ class Ticket(models.Model):
 
 ##############################################################################################
 #
-#       THE INTERNATIONAL --- * --- TRANSIT
+#    WELCOME TO THE INTERNATIONAL --- * --- TRANSIT
 #
 ##############################################################################################
 
@@ -254,6 +254,7 @@ class IntAirport(models.Model):
     name = models.CharField(max_length=160)
     # short name for airport e.g. Ho Chi Minh (SGN)
     sname = models.CharField(max_length=80, default=None)
+    # List airport connected
     router = models.CharField(max_length=100, default=None)
     is_del = models.BooleanField(default=False)
     # additional for transit
@@ -275,6 +276,7 @@ class IntContinentRoute(models.Model):
     departure_cont = models.CharField(max_length=10)
     arrival_cont = models.CharField(max_length=10)
     route_cont = models.CharField(max_length=150)
+    date_create = models.DateTimeField(default=timezone.now)
     is_deleted = models.BooleanField(default=False)
 
 
@@ -282,15 +284,17 @@ class IntRegionRoute(models.Model):
     departure_region = models.CharField(max_length=10)
     arrival_region = models.CharField(max_length=10)
     route_region = models.CharField(max_length=160)
+    date_create = models.DateTimeField(default=timezone.now)
     is_deleted = models.BooleanField(default=False)
 
 
-class IntConnetingMap(models.Model):
+class IntConnectingMap(models.Model):
     departure_port = models.CharField(max_length=10)
     arrival_port = models.CharField(max_length=10)
     have_direct = models.BooleanField(default=False)
     route_transit_once = models.CharField(max_length=160)
     route_transit_twice = models.CharField(max_length=160)
+    date_create = models.DateTimeField(default=timezone.now)
     is_deleted = models.BooleanField(default=False)
 
 
@@ -309,6 +313,7 @@ class IntTicket(models.Model):
     fee_tax_adult = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
     fee_tax_child = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
     fee_tax_babe = models.DecimalField(default=0.0, decimal_places=2, max_digits=15)
+    is_del = models.BooleanField(default=False)
 
 
 class IntFlight(models.Model):

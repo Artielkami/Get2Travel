@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^contact/$', views.contact_page, name='contact'),
     url(r'^delete/$', views.del_all_ticket, name='delete'),
     url(r'^domestic/$', views.domestic, name='domestic'),
+    url(r'^international', views.int_search, name='int_search'),
     url(r'^insert/$', views.insert_db_ticket, name='insert_db_ticket')
 
     # ex: /polls/5/
