@@ -49,6 +49,7 @@ def int_search(request):
         'is_int_search': True
     }
     if request.GET.get('international_search'):
+
         return None
     return render(request,
                   INDEX_PAGE,

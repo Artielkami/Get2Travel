@@ -75,6 +75,7 @@ class ResultFlight(object):
         self.departure_time = '0000'
         self.arrival_time = '0000'
         self.end_port = None
+        self.is_sec = False
         self.first_flight = None
         self.second_flight = []
 

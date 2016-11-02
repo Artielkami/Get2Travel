@@ -303,3 +303,6 @@ select#from, select#to {
     color: #ffffff;
     font-weight: bolder;
 }
+.int-input {
+    color: blue !important;
+}
