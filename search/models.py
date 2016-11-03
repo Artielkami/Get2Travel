@@ -11,7 +11,7 @@ from django.db import models
 class Airport(models.Model):
     code = models.CharField(max_length=5, unique=True)
     name = models.CharField(max_length=60)
-    sname = models.CharField(max_length=50, default=None)
+    sname = models.CharField(max_length=50, default='xxx')
     router = models.CharField(max_length=100, default='xxx')
     is_del = models.BooleanField(default=False)
 

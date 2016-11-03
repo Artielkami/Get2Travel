@@ -14,6 +14,17 @@ $(document).ready(function(){
         }
     });
 
+    $('.open-sec-btn').click(function () {
+        var sid = this.id;
+        var target = '.' + sid;
+        //alert(target);
+        if($(target).hasClass('hidden')){
+            $(target).removeClass('hidden');
+        }else {
+            $(target).addClass('hidden');
+        }
+    });
+
     $('.datepicker').pickadate({
         weekdaysShort: ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
         showMonthsShort: true,
@@ -50,6 +61,7 @@ $('#way input:radio').change(function(){
         $('#inbound').css('visibility', 'hidden');
     }
 });
+
 
 /* Sort list result*/
 

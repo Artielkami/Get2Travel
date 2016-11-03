@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from models import Ticket, Airport, Carrier, DomesticRegion, MiddlePort, VNATicket, VJATicket, JSATicket
+from models import Ticket, Airport, Carrier, DomesticRegion, \
+    MiddlePort, VNATicket, VJATicket, JSATicket, \
+    IntFlight, IntTicket, IntAirport, IntConnectingMap,\
+    IntContinentRoute, IntRegionRoute
 import datetime
 import random
 from django.utils import timezone
@@ -40,10 +43,10 @@ class DataAdapter(object):
         Ticket.objects.all().delete()
 
     @staticmethod
-    def make_some_db():
+    def make_some_db_2():
         """Create fake data for test"""
-        day = 2
-        date = datetime.datetime(year=2016, month=8, day=day,
+        day = 19
+        date = datetime.datetime(year=2016, month=12, day=day,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
         #type = ['standard', 'save', 'flex']
@@ -53,15 +56,15 @@ class DataAdapter(object):
         carry = ['vna', 'vja', 'jsa']
         #sit_class = ['economy', 'business', 'first', 'save']
         fcode = ['VN370', 'VN7770', 'VJ1280', 'PJ8010', 'VJ780', 'PJ980']
-        ap = Airport.objects.get
+        ap = IntAirport.objects.get
         rc = random.choice
-        rr = random.randrange
-        for x in xrange(1, 200):
+        rr = random.randint
+        for x in xrange(1, 20):
             print 'make', x
-            in1 = rr(1, 21)
-            in2 = rr(1, 21)
-            if in1 == in2:
-                in1 = 21 - in2
+            # in1 = rr(1, 21)
+            # in2 = rr(1, 21)
+            # if in1 == in2:
+            #     in1 = 21 - in2
             td1 = td(hours=rr(0, 23), minutes=5 * rr(0, 11))
             td2 = td1 + td(hours=rr(0, 23), minutes=5 * rr(0, 11))
             #sit = rc(sit_class)
@@ -70,12 +73,62 @@ class DataAdapter(object):
             #     typ = None
             # elif sit == 'business' and typ == 'save':
             #     typ = 'standard'
-            pr1 = rr(1, 6)
+            pr1 = rr(1, 3)
             pr2 = pr1 - 100*rr(3,5) if pr1 > 600 else pr1-100*rr(1,2)
             #pr3 = 0 if typ == 'save' else 100*rr(1,2)
             #ft1 = pr1*38/100
             #ft2 = pr2*29/100
             #ft3 = 100*rr(0, 1) + pr3*1/10
+
+            t = IntFlight(departure_port='SGP',
+                          arrival_port='LAG',  # ap(pk=in2),
+                          departure_time=date + td1,
+                          arrival_time=date + td2,
+                          ticket=pr1,
+                          # carrier=rc(carry),
+                          carrier='vna',
+                          flight_code=rc(fcode),
+                          date_created=timezone.now()
+                          )
+            t.save()
+
+    @staticmethod
+    def make_some_db():
+        """Create fake data for test"""
+        day = 3
+        date = datetime.datetime(year=2016, month=8, day=day,
+                                 hour=0, minute=0, second=0)
+        td = datetime.timedelta
+        # type = ['standard', 'save', 'flex']
+        # type_bu = ['standard', 'flex']
+        # carry = ['Ppew', 'UFO', 'Aiur', 'Navi', 'Medin', 'Lotha', 'Sinvo',
+        #          'Valve', 'Volvo', 'Skys']
+        carry = ['vna', 'vja', 'jsa']
+        # sit_class = ['economy', 'business', 'first', 'save']
+        fcode = ['VN370', 'VN7770', 'VJ1280', 'PJ8010', 'VJ780', 'PJ980']
+        ap = Airport.objects.get
+        rc = random.choice
+        rr = random.randrange
+        for x in xrange(1, 20):
+            print 'make', x
+            in1 = 11  # rr(1, 21)
+            in2 = 6  # rr(1, 21)
+            if in1 == in2:
+                in1 = 21 - in2
+            td1 = td(hours=rr(0, 23), minutes=5 * rr(0, 11))
+            td2 = td1 + td(hours=rr(0, 23), minutes=5 * rr(0, 11))
+            # sit = rc(sit_class)
+            # typ = rc(type)
+            # if sit == 'first' or sit == 'save':
+            #     typ = None
+            # elif sit == 'business' and typ == 'save':
+            #     typ = 'standard'
+            pr1 = rr(1, 6)
+            pr2 = pr1 - 100 * rr(3, 5) if pr1 > 600 else pr1 - 100 * rr(1, 2)
+            # pr3 = 0 if typ == 'save' else 100*rr(1,2)
+            # ft1 = pr1*38/100
+            # ft2 = pr2*29/100
+            # ft3 = 100*rr(0, 1) + pr3*1/10
 
             t = Ticket(departure_port=ap(pk=in1),
                        arrival_port=ap(pk=in2),

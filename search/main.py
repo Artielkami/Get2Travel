@@ -36,7 +36,7 @@ class SeatFlight(object):
                                   num_child * self.child_price + \
                                   num_babe * self.babe_price
         self.total_ticket_fee = num_adult * self.adult_ft + num_child * self.child_ft + num_babe * self.babe_ft
-        self.total_price += self.total_price + self.total_ticket_fee
+        self.total_price += self.total_ticket_price + self.total_ticket_fee
 
 
 class AFlight(object):
@@ -54,8 +54,8 @@ class AFlight(object):
 
     def get_port_name(self):
         try:
-            self.departure_name = Airport.objects.get(code=self.departure_port).sname
-            self.arrival_name = Airport.objects.get(code=self.arrival_port).sname
+            self.departure_name = IntAirport.objects.get(code=self.departure_port).sname
+            self.arrival_name = IntAirport.objects.get(code=self.arrival_port).sname
         except Exception:
             self.departure_name = 'Need to update'
             self.arrival_name = 'Need to update'
@@ -94,7 +94,7 @@ class ResultFlight(object):
         # get min price of second connect flight
         second_min_price = 0
         for flight in self.second_flight:
-            if second_min_price == 0 or flight.total_price_min < second_min_price:
+            if second_min_price == 0 or flight.total_price < second_min_price:
                 second_min_price = flight.total_price
         self.total_price += second_min_price
 
@@ -304,6 +304,9 @@ class Main(object):
                                 adult_ft=tk.fee_tax_adult,
                                 child_ft=tk.fee_tax_child,
                                 babe_ft=tk.fee_tax_babe)
+            ticket.set_price(num_adult=self.num_adult,
+                             num_child=self.num_child,
+                             num_babe=self.num_infan)
             result.append(ticket)
         return result
 
@@ -535,6 +538,9 @@ class Main(object):
         # sort result by price
         self.sort_result()
 
+    ###################################################################################################################
+    ###################################################################################################################
+
     def int_search(self, data):
         self.num_adult = data['adult']
         self.num_child = data['child']
@@ -546,7 +552,7 @@ class Main(object):
         self.arr_port = data['arrival']
         td = datetime.timedelta
         # num_passenger = self.num_adult + self.num_child + self.num_infan
-        transit_list = IntConnectingMap.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
+        transit_list = IntConnectingMap.objects.get(departure_port=self.dep_port, arrival_port=self.arr_port)
         # Get direct flight
         flight_lst = IntFlight.objects.filter(departure_port=self.dep_port,
                                               arrival_port=self.arr_port,
@@ -724,7 +730,7 @@ class Main(object):
                     # One flight from A 2 B
                     # A list from B to C
                     # and each list form C 2 D
-                    a_result_flight = ResultFlight()
+                    a_result_flight = ResultFlight(transit=transit)
 
                     # A flight from A 2 B
                     a_flight = AFlight()
@@ -743,6 +749,7 @@ class Main(object):
                     a_flight.set_min_price()
 
                     # add flight to a_result
+                    a_result_flight.is_sec = True
                     a_result_flight.first_flight = a_flight
                     a_result_flight.departure_time = flight.departure_time
                     a_result_flight.arrival_time = flight.arrival_time
@@ -750,7 +757,7 @@ class Main(object):
                     # Make part 2
 
                     # Get transit form B to D
-                    lst_transit_sec = IntConnectingMap.objects.get(depart_port=transit,
+                    lst_transit_sec = IntConnectingMap.objects.get(departure_port=transit,
                                                                    arrival_port=self.arr_port) \
                         .route_transit_once.split(',')
                     # For each transit in transit list:
@@ -825,16 +832,16 @@ class Main(object):
                                 a_sec_flight = AFlight()
 
                                 a_sec_flight.seat_list = lst_ticket
-                                a_sec_flight.departure_port = a_sec_flight.departure_port
-                                a_sec_flight.arrival_port = a_sec_flight.arrival_port
+                                a_sec_flight.departure_port = sec_sec_flight.departure_port
+                                a_sec_flight.arrival_port = sec_sec_flight.arrival_port
                                 # a_sec_flight.arrival_name = flight.arrival_port.sname
                                 # a_sec_flight.departure_name = flight.departure_port.sname
                                 # replace both line with get sname function
                                 a_sec_flight.get_port_name()
-                                a_sec_flight.departure_time = a_sec_flight.departure_time
-                                a_sec_flight.arrival_time = a_sec_flight.arrival_time
-                                a_sec_flight.carrier = a_sec_flight.carrier
-                                a_sec_flight.flight_code = a_sec_flight.flight_code
+                                a_sec_flight.departure_time = sec_sec_flight.departure_time
+                                a_sec_flight.arrival_time = sec_sec_flight.arrival_time
+                                a_sec_flight.carrier = sec_sec_flight.carrier
+                                a_sec_flight.flight_code = sec_sec_flight.flight_code
                                 a_sec_flight.set_min_price()
 
                                 # add flight to a_result
@@ -859,6 +866,7 @@ class Main(object):
 
         # - RETURN
         if self.way != 2:
+            self.sort_result()
             return False
         # --------------------------------------------------------------------------------------------------------------
         # set direct flight
@@ -1069,7 +1077,7 @@ class Main(object):
                     # Make part 2
 
                     # Get transit form B to D
-                    lst_transit_sec = IntConnectingMap.objects.get(depart_port=transit,
+                    lst_transit_sec = IntConnectingMap.objects.get(departure_port=transit,
                                                                    arrival_port=self.dep_port) \
                         .route_transit_once.split(',')
                     # For each transit in transit list:
@@ -1175,10 +1183,11 @@ class Main(object):
                         # --------------------------------------------- #
                         # --------------------------------------------- #
                         # --------------------------------------------- #
+        self.sort_result()
 
     def sort_result(self):
-        self.outward_list.sort(key=lambda x: x.total_price)
-        self.return_list.sort(key=lambda x: x.total_price)
+        self.outward_list = sorted(self.outward_list, key=lambda x: x.total_price)
+        self.return_list = sorted(self.return_list, key=lambda x: x.total_price)
 
     @staticmethod
     def get_by_date(date):

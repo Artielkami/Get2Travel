@@ -47,7 +47,7 @@
 </header>
 <div class="container-fluid main">
     <!-- form se duoc gui thong qua ajax -->
-    <form id="myForm" method="get" action="{{ base_data.action_link }}">
+    <form id="myForm" method="get" action="/{{ base_data.action_link }}">
         <div class="row">
             <div class="group-item col-xs-12 col-sm-4">
                 <div class="title-col col-xs-12">
@@ -221,6 +221,7 @@
         {% endif %}
         <!-- Outward -->
         {% if outward_list %}
+            {% with detail_id=0 detail_code='outward' %}
             <div id="outward-list-result-header">
                 <span class="span-color-white">Đi:</span>
                 <button id="outward-sort-btn">Sort</button>
@@ -228,9 +229,10 @@
             <table class="table-result-layout">
             <tbody>
             {% for flight in outward_list %}
+                {% increment detail_id %}
                 <tr>
                     <td>
-                        <table id="{{ flight.first_flight.flight_code}}_1" class="table-result">
+                        <table id="table_{{ detail_code }}_{{ detail_id }}" class="table-result">
                             <colgroup span="5">
                                 {% comment %}<col width="11%">{% endcomment %}
                                 <col width="20%">
@@ -265,12 +267,14 @@
                                 </td>
                                 <td class="result-transit">
                                     {% if not flight.transit %}
-                                        <span class="span-color-green">Bay trực tiếp</span> <br>
+                                        <span class="span-color-green">{% if base_data.is_int_search %}Direct{% else %}
+                                            Bay trực tiếp{% endif %}</span> <br>
                                         {{ flight.first_flight.departure_name }}
                                         &rarr;
                                         {{ flight.first_flight.arrival_name }}
                                     {% else %}
-                                        <span class="span-color-red">Có trung chuyển</span> <br>
+                                        <span class="span-color-red">{% if base_data.is_int_search %}Indirect{% else %}
+                                            Có trung chuyển{% endif %}</span> <br>
                                         {{ flight.first_flight.departure_name }}
                                         &rarr;
                                         {{ flight.first_flight.arrival_name }}
@@ -282,10 +286,10 @@
                                     {{ flight.total_price }}
                                 </td>
                                 <td class="result-button">
-                                    <button class="btn btn-warning" id="{{ flight.first_flight.flight_code}}_1">Xem</button>
+                                    <button class="btn btn-warning" id="{{ detail_code }}_{{ detail_id }}">Xem</button>
                                 </td>
                             </tr>
-                            <tr class="result-detail hidden" id="detail_{{ flight.first_flight.flight_code }}_1">
+                            <tr class="result-detail hidden" id="detail_{{ detail_code }}_{{ detail_id }}">
                                 <td colspan="6">
                                     <p class="first-flight-header">Từ <span class="color-green">{{ flight.first_flight.departure_name }}</span>
                                         đi <span class="color-green">{{ flight.first_flight.arrival_name }}</span>
@@ -312,7 +316,11 @@
                                                         <li class="li-ticket-result-detail">
                                                             <div class="row">
                                                                 <div class="col-lg-5 div-result-ticket-type">
+                                                                    {% if base_data.is_int_search %}
+                                                                    {{ ticket.ticket_type }}
+                                                                    {% else %}
                                                                     {{ ticket.ticket_type|ticket_type }}
+                                                                    {% endif %}
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     {{ ticket.total_price }}
@@ -338,7 +346,7 @@
                                         <!-- If not 2 stop result:
                                         second_flight of second_flight is just a
                                         normal flight not a list -->
-                                        {% if not flight.second_flight.is_sec %}
+                                        {% if not flight.is_sec %}
                                         {% for sflight in flight.second_flight %}
                                             <table class="result-detail-first-content" width="100%">
                                                 <colgroup span="3">
@@ -450,16 +458,19 @@
             {% endfor %}
             </tbody>
             </table>
+            {% endwith %}
         {% endif %}
         <!-- Return -->
         {% if return_list %}
+            {% with detail_id=0 detail_code='return' %}
             <p class="resultList-title">Chiều về</p>
             <table class="table-result-layout">
             <tbody>
             {% for flight in return_list %}
+                {% increment detail_id %}
                 <tr>
                     <td>
-                        <table id="{{ flight.first_flight.flight_code}}_1" class="table-result">
+                        <table id="table_{{ detail_code }}_{{ detail_id }}" class="table-result">
                             <colgroup span="5">
                                 <col width="20%">
                                 <col width="13%">
@@ -470,9 +481,20 @@
                             <tbody>
                             <tr class="a-result-flight">
                                 <td class="result-time">
-                                    {{ flight.departure_time.time|time:"g:iA"|lower }}
+                                    <div class="result-time-box">
+                                        <div class="result-time-left">
+                                            {{ flight.departure_time.time|time:"g:iA"|lower }}
+                                        </div>
+                                        <div class="result-time-arrow">
+                                            &rarr;
+                                        </div>
+                                        <div class="result-time-right">
+                                            {{ flight.arrival_time.time|time:"g:iA"|lower }}
+                                        </div>
+                                    </div>
+                                    {% comment %}{{ flight.departure_time.time|time:"g:iA"|lower }}
                                     &rarr;
-                                    {{ flight.arrival_time.time|time:"g:iA"|lower }}
+                                    {{ flight.arrival_time.time|time:"g:iA"|lower }}{% endcomment %}
                                 </td>
                                 <td class="result-carrier">
                                     {{ flight.first_flight.carrier|carrier }}<br>
@@ -485,7 +507,7 @@
                                         &rarr;
                                         {{ flight.first_flight.arrival_name }}
                                     {% else %}
-                                        <span class="span-color-green">Có trung chuyển</span> <br>
+                                        <span class="span-color-red">Có trung chuyển</span> <br>
                                         {{ flight.first_flight.departure_name }}
                                         &rarr;
                                         {{ flight.first_flight.arrival_name }}
@@ -497,10 +519,10 @@
                                     {{ flight.total_price }}
                                 </td>
                                 <td class="result-button">
-                                    <button class="btn btn-warning" id="{{ flight.first_flight.flight_code}}_1">Xem</button>
+                                    <button class="btn btn-warning" id="{{ detail_code }}_{{ detail_id }}">Xem</button>
                                 </td>
                             </tr>
-                            <tr class="result-detail hidden" id="detail_{{ flight.first_flight.flight_code }}_1">
+                            <tr class="result-detail hidden" id="detail_{{ detail_code }}_{{ detail_id }}">
                                 <td colspan="5">
                                     <p class="first-flight-header">Từ <span class="color-green">{{ flight.first_flight.departure_name }}</span>
                                         đi <span class="color-green">{{ flight.first_flight.arrival_name }}</span>
@@ -522,18 +544,18 @@
                                                 {{ flight.first_flight.flight_code }}
                                             </td>
                                             <td class="first-content-ticket">
-                                                <ul>
+                                                <ul style="margin-bottom: 0; padding-left: 0">
                                                     {% for ticket in flight.first_flight.seat_list %}
-                                                        <li>
+                                                        <li class="li-ticket-result-detail">
                                                             <div class="row">
-                                                                <div class="col-*-5">
+                                                                <div class="col-lg-5">
                                                                     {{ ticket.ticket_type|ticket_type }}
                                                                 </div>
-                                                                <div class="col-*-4">
+                                                                <div class="col-lg-4">
                                                                     {{ ticket.total_price }}
                                                                     <a href="#">Detail</a>
                                                                 </div>
-                                                                <div class="col-*-3">
+                                                                <div class="col-lg-3">
                                                                     <button>Chọn</button>
                                                                 </div>
                                                             </div>
@@ -551,7 +573,46 @@
                                             đi <span class="color-green">{{ flight.end_port }}</span>
                                         </p>
                                         {% for sflight in flight.second_flight %}
-                                            <p>
+                                            <table class="result-detail-first-content" width="100%">
+                                                <colgroup span="3">
+                                                    <col width="13%">
+                                                    <col width="13%">
+                                                    <col width="74%">
+                                                </colgroup>
+                                                <tr>
+                                                    <td class="first-content-time">
+                                                        {{ sflight.departure_time.time|time:"g:iA"|lower }}
+                                                        <br>&rarr;<br>
+                                                        {{ sflight.arrival_time.time|time:"g:iA"|lower }}
+                                                    </td>
+                                                    <td class="first-content-carrier">
+                                                        {{ sflight.carrier|carrier }}<br>
+                                                        {{ sflight.flight_code }}
+                                                    </td>
+                                                    <td class="first-content-ticket">
+                                                        <ul style="margin-bottom: 0; padding-left: 0">
+                                                            {% for ticket in sflight.seat_list %}
+                                                                <li class="li-ticket-result-detail">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-5">
+                                                                            {{ ticket.ticket_type|ticket_type }}
+                                                                        </div>
+                                                                        <div class="col-lg-4">
+                                                                            {{ ticket.total_price }}
+                                                                            <a href="#">Detail</a>
+                                                                        </div>
+                                                                        <div class="col-lg-3">
+                                                                            <button>Chọn</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+                                            {% comment %}<p>
                                                 {{ sflight.carrier|carrier }}-
                                                 {{ sflight.flight_code }} :
                                                 {{ sflight.departure_time.time|time:"g:iA"|lower }}
@@ -562,7 +623,7 @@
                                                 {% for ticket in sflight.seat_list %}
                                                     <li>{{ ticket.ticket_type|ticket_type }} : {{ ticket.total_price }}</li>
                                                 {% endfor %}
-                                            </ul>
+                                            </ul>{% endcomment %}
                                         {% endfor %}
                                     {% endif %}
                                 </td>
@@ -574,6 +635,7 @@
             {% endfor %}
             </tbody>
             </table>
+            {% endwith %}
         {% endif %}
     </div>
 </div>

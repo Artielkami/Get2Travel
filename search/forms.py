@@ -12,4 +12,3 @@ class Search(forms.Form):
     adult = forms.IntegerField(min_value=1, max_value=14)
     child = forms.IntegerField(min_value=0, max_value=7)
     babe = forms.IntegerField(min_value=0, max_value=4)
-

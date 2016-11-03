@@ -306,3 +306,9 @@ select#from, select#to {
 .int-input {
     color: blue !important;
 }
+.color-sec-orange {
+    background-color: #ffd16e;
+}
+.top-bot-border:nth-of-type(n+1) {
+    border-top: 1px dotted gray;
+}

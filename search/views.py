@@ -3,7 +3,7 @@
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render_to_response, render, redirect
-from .models import Ticket, Airport
+from .models import Ticket, Airport, IntAirport
 from .forms import Search
 from .main import Main
 from dataAdapter import DataAdapter
@@ -49,8 +49,54 @@ def int_search(request):
         'is_int_search': True
     }
     if request.GET.get('international_search'):
+        main = Main()
+        search_form = Search(request.GET)
+        if search_form.is_valid():
+            clean_data = search_form.cleaned_data
+            quantity = {'adult': clean_data['adult'],
+                        'child': clean_data['child'],
+                        'babe': clean_data['babe']}
+            dates = {'go': clean_data['go_day'],
+                     'back': clean_data['rt_day']}
+            # get name of airport
+            places = {'dep': IntAirport.objects.get(code=clean_data['departure']).sname,
+                      'arr': IntAirport.objects.get(code=clean_data['arrival']).sname}
 
-        return None
+            main.int_search(clean_data)
+            sform = {'departure': clean_data['departure'],
+                     'arrival': clean_data['arrival'],
+                     'way': clean_data['way'],
+                     'stop': clean_data['stops'],
+                     'go_day': clean_data['go_day'],
+                     'rt_day': clean_data['rt_day'],
+                     'ttype': clean_data['ttype']}
+            if main.outward_list:
+                return render(request,
+                              'search/UI.html',
+                              {
+                                  'outward_list': main.outward_list,
+                                  'return_list': main.return_list,
+                                  'sform': sform,
+                                  'dates': dates,
+                                  'places': places,
+                                  'quan': quantity,
+                                  'base_data': basic_data
+                              })
+            else:
+                return_msg = 'Không tìm thấy kết quả.'
+                return render(request,
+                              'search/UI.html',
+                              {
+                                  'sform': sform,
+                                  'quan': quantity,
+                                  'base_data': basic_data,
+                                  'return_msg': return_msg
+                              })
+        return render(request,
+                      INDEX_PAGE,
+                      {
+                          'base_data': basic_data
+                      })
     return render(request,
                   INDEX_PAGE,
                   {
