@@ -8,6 +8,11 @@ from .forms import Search
 from .main import Main
 from dataAdapter import DataAdapter
 import simplejson
+import time
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    datefmt='%d/%m/%Y %I:%M:%S %p',
+                    format='[%(asctime)s][%(name)-12s][%(levelname)s] %(message)s')
 # import pytz
 # Create your views here.
 INDEX_PAGE = 'search/index.html'
@@ -63,6 +68,7 @@ def int_search(request):
                       'arr': IntAirport.objects.get(code=clean_data['arrival']).sname}
 
             main.int_search(clean_data)
+            # main.greedy(clean_data)
             sform = {'departure': clean_data['departure'],
                      'arrival': clean_data['arrival'],
                      'way': clean_data['way'],
@@ -123,7 +129,9 @@ def domestic(request):
 
     if request.GET.get('departure'):
         main = Main()
+        start_time = time.time()
         search_form = Search(request.GET)
+
         if search_form.is_valid():
             clean_data = search_form.cleaned_data
             quantity = {'adult': clean_data['adult'],
@@ -136,6 +144,10 @@ def domestic(request):
                       'arr': Airport.objects.get(code=clean_data['arrival']).sname}
 
             main.search(clean_data)
+            # main.greedy_search(clean_data)
+            
+            elapsed_time = time.time() - start_time
+            logging.debug('Total run time: %s'%elapsed_time)
             sform = {'departure': clean_data['departure'],
                      'arrival': clean_data['arrival'],
                      'way': clean_data['way'],
@@ -186,7 +198,7 @@ def update_routes(request):
 
 
 def insert_db_ticket(request):
-    DataAdapter.make_some_db()
+    DataAdapter.make_some_db_2()
     return redirect('/domestic')
 
 

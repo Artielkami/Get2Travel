@@ -224,7 +224,7 @@
             {% with detail_id=0 detail_code='outward' %}
             <div id="outward-list-result-header">
                 <span class="span-color-white">Đi:</span>
-                <button id="outward-sort-btn">Sort</button>
+                <!-- <button id="outward-sort-btn">Sort</button> -->
             </div>
             <table class="table-result-layout">
             <tbody>
@@ -463,7 +463,11 @@
         <!-- Return -->
         {% if return_list %}
             {% with detail_id=0 detail_code='return' %}
-            <p class="resultList-title">Chiều về</p>
+            <!-- <p class="resultList-title">Chiều về</p> -->
+            <div id="outward-list-result-header">
+                <span class="span-color-white">Về:</span>
+                <!-- <button id="outward-sort-btn">Sort</button> -->
+            </div>
             <table class="table-result-layout">
             <tbody>
             {% for flight in return_list %}

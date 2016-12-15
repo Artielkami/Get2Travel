@@ -45,7 +45,7 @@ class DataAdapter(object):
     @staticmethod
     def make_some_db_2():
         """Create fake data for test"""
-        day = 19
+        day = 22
         date = datetime.datetime(year=2016, month=12, day=day,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
@@ -81,7 +81,7 @@ class DataAdapter(object):
             #ft3 = 100*rr(0, 1) + pr3*1/10
 
             t = IntFlight(departure_port='SGP',
-                          arrival_port='LAG',  # ap(pk=in2),
+                          arrival_port='HAN',  # ap(pk=in2),
                           departure_time=date + td1,
                           arrival_time=date + td2,
                           ticket=pr1,
@@ -95,8 +95,8 @@ class DataAdapter(object):
     @staticmethod
     def make_some_db():
         """Create fake data for test"""
-        day = 3
-        date = datetime.datetime(year=2016, month=8, day=day,
+        day = 22
+        date = datetime.datetime(year=2016, month=12, day=day,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
         # type = ['standard', 'save', 'flex']

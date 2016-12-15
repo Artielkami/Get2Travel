@@ -119,6 +119,135 @@ class ResultIntFlight(object):
             self.total_price += second_min_price
 
 
+# ==== some function support for main ====
+def get_transit_airport(org, des, stop=1):
+    """ origin and destination,
+        only use for international
+    """
+    transit = IntConnectingMap.objects.get(departure_port=self.dep_port,
+                                           arrival_port=self.arr_port)
+    if not transit:
+        lst = make_transit(org, des, stop)
+        return lst
+    if stop == 1:
+        if transit.route_transit_once == 0:
+            # make transit
+            lst = make_transit(org, des, stop, transit)
+            return lst
+        if transit.route_transit_once == 1:
+            return None
+        return transit.route_transit_once.split(',')
+    if stop == 2:
+        if transit.route_transit_twice == 0:
+            lst = make_transit(org, des, stop, transit)
+            return lst
+        if transit.route_transit_twice == 1:
+            return None
+        return transit.route_transit_twice.split(',')
+    # make_transit(org, des, stop)
+
+def make_transit(org, des, stop=1, objects=None):
+    """ temp """
+    port_org = IntAirport.objects.get(code=org)
+    # port_des = IntAirport.objects.get(code=des)
+    transit = port_org.router.split(',')
+    # make transit 1 stop
+    rs_lst_1 = []
+    # get list con
+    if stop == 1:
+        # airport_list = IntAirport.objects.all()
+        for item in transit:
+            air_port = IntAirport.objects.get(code=item)
+            if des in airport.router:
+                rs_lst_1.append(item)
+        
+        rto = ','.join(rs_lst_1)
+        if not rs_lst_1:
+            rto = '1'
+        if objects:
+            objects.route_transit_once = rto
+            objects.save()
+            return rs_lst
+        have_direct = False
+        transit = port_org.router.split(',')
+        if des in transit:
+            have_direct = True
+        # airport_list = IntAirport.objects.all()
+        new_cn = IntConnectingMap(departure_port=org,
+                                  arrival_port=des,
+                                  have_direct=have_direct,
+                                  recommend=False,
+                                  route_transit_once=rs_lst_1,
+                                  route_transit_twice='0',
+                                  date_create=datetime.now(),
+                                  is_deleted=0
+                                  )
+        new_cn.save()
+        return rs_lst
+    # final_result = IntConnectingMap.objects.get(departure_port=org,
+    #                                             arrival_port=des)
+    rs_lst_2 = []
+    for item in transit:
+        air_port = IntAirport.objects.get(code=item)
+        transit_2 = airport.router.split(',')
+        for place in transit_2:
+            if get_transit_airport(place, des):
+                rs_lst_2.append(place)
+    if objects:
+        if rs_lst_2:
+            rtt = ','.join(rs_lst_2)
+            objects.route_transit_twice=stt
+            objects.save()
+            return rs_lst_2
+        objects.route_transit_twice='1'
+        objects.save()
+        return None
+
+    have_direct = False
+    transit = port_org.router.split(',')
+    if des in transit:
+        have_direct = True
+    for item in transit:
+        air_port = IntAirport.objects.get(code=item)
+        if des in airport.router:
+            rs_lst_1.append(item)
+    rto = ','.join(rs_lst_1)
+    rtt = ','.join(rs_lst_2)
+    if not rs_lst_2:
+        rtt = '0'
+    # airport_list = IntAirport.objects.all()
+    new_cn = IntConnectingMap(departure_port=org,
+                              arrival_port=des,
+                              have_direct=have_direct,
+                              recommend=False,
+                              route_transit_once=rto,
+                              route_transit_twice=rtt,
+                              date_create=datetime.now(),
+                              is_deleted=0
+                              )
+
+    return rs_lst_2
+
+def get_transit_middle(org, des):
+    port_org = IntAirport.objects.get(code=org)
+    # port_des = IntAirport.objects.get(code=des)
+
+    # make transit 1 stop
+
+    # get list con
+    # have_direct = False
+    transit = port_org.router.split(',')
+    # if des in transit:
+        # have_direct = True
+    rs_lst = []
+    # rs_lst_2 = []
+    # airport_list = IntAirport.objects.all()
+    for item in transit:
+        air_port = IntAirport.objects.get(code=item)
+        if des in airport.router:
+            rs_lst.append(item)
+    return rs_lst
+
 class Main(object):
     """Lõi xử lý chính"""
     def __init__(self):
@@ -134,6 +263,162 @@ class Main(object):
         self.outward_list = []
         self.return_list = []
 
+    def greedy_search(self, data=None):
+        self.num_adult = data['adult']
+        self.num_child = data['child']
+        self.num_infan = data['babe']
+        self.outward_day = data['go_day']
+        self.return_day = data['rt_day']
+        self.way = data['way']
+        self.dep_port = data['departure']
+        self.arr_port = data['arrival']
+
+        self.greedy(self.dep_port, self.arr_port, self.outward_day, 1)
+
+        if self.way == 2:
+            self.greedy(self.arr_port, self.dep_port, self.return_day, 2)
+
+    def greedy(self, org, des, date, mode, *args, **kwargs):
+        
+        td = datetime.timedelta
+        
+        flight_lst = Ticket.objects.filter(departure_port=org,
+                                           arrival_port=des,
+                                           departure_time__range=(
+                                               datetime.datetime.combine(date, datetime.time.min),
+                                               datetime.datetime.combine(date, datetime.time.max))
+                                           )
+        # TODO --------- search method ---------
+        # - OUTWARD
+        # Set direct flight result
+        if flight_lst:
+            for flight in flight_lst:
+                # get list ticket suitable with carrier
+                lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
+
+                # - initial
+                # -- ResultFlight: 1 ket qua tra ve
+                aresult = ResultFlight()
+                # -- Aflight: 1 chuyến bay kết quả trả về
+                # Trong trường hợp nà ứng với first flight
+                # Second flight is none
+                aflight = AFlight()
+
+                # for seat in ticket_lst:
+                # set attribute value for a flight
+                aflight.seat_list = lst_ticket
+                aflight.departure_port = flight.departure_port
+                aflight.arrival_port = flight.arrival_port
+                aflight.arrival_name = flight.arrival_port.sname
+                aflight.departure_name = flight.departure_port.sname
+                aflight.departure_time = flight.departure_time
+                aflight.arrival_time = flight.arrival_time
+                aflight.carrier = flight.carrier
+                aflight.flight_code = flight.flight_code
+                aflight.set_min_price()
+
+                # add first flight to result
+                # second flight = none, because this is direct flight
+                aresult.first_flight = aflight
+                aresult.departure_time = flight.departure_time
+                aresult.arrival_time = flight.arrival_time
+                aresult.set_price()
+
+                # Thêm kết quả tìm được vào list kết quả
+                if mode == 1:
+                    self.outward_list.append(aresult)
+                else:
+                    self.return_list.append(aresult)
+        # Lấy hết chuyến bay trong ngày mà xuất phát từ nơi đi
+        transit_flight_list = Ticket.objects.filter(departure_port=org,
+                                                    departure_time__range=(
+                                                        datetime.datetime.combine(date, datetime.time.min),
+                                                        datetime.datetime.combine(date, datetime.time.max))
+                                                    )
+        # Ứng với mỗi chuyến bay tìm được, lấy hết các chuyến bay có xuất phát từ đó
+        for flight in transit_flight_list:
+            # danh sách các chuyến bay ứng với mỗi chuyến tìm được bên trên
+            # print flight.arrival_port.code
+            transit_tmp = flight.arrival_port.code
+            sec_lst_bf_filter = Ticket.objects.filter(departure_port=transit_tmp,
+                                                      departure_time__range=(
+                                                          datetime.datetime.combine(date, datetime.time.min),
+                                                          datetime.datetime.combine(date, datetime.time.max) + td(hours=36)
+                                                          )
+                                                      )
+            # Nếu không tìm thấy chuyến nào thì chuyển sang duyệt chuyến kế tiếp
+            if not sec_lst_bf_filter:
+                continue
+            # print '-------------------- SOS ---------------------'
+            filter_lst = []
+            # - initial
+            # -- ResultFlight: 1 ket qua tra ve
+            lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
+            aresult = ResultFlight(transit=transit_tmp)
+            # -- Aflight: 1 chuyến bay kết quả trả về
+            # Trong trường hợp nà ứng với first flight
+            # Second flight is none
+            aflight = AFlight()
+
+            # for seat in ticket_lst:
+            # set attribute value for a flight
+            aflight.seat_list = lst_ticket
+            aflight.departure_port = flight.departure_port
+            aflight.arrival_port = flight.arrival_port
+            aflight.arrival_name = flight.arrival_port.sname
+            aflight.departure_name = flight.departure_port.sname
+            aflight.departure_time = flight.departure_time
+            aflight.arrival_time = flight.arrival_time
+            aflight.carrier = flight.carrier
+            aflight.flight_code = flight.flight_code
+            aflight.set_min_price()
+
+            aresult.first_flight = aflight
+            aresult.departure_time = flight.departure_time
+            aresult.arrival_time = flight.arrival_time
+
+            # Xác định xem có tồn tại list chặng bay tiếp theo hay không
+            have_2_lst = False
+            # print '-------------------- SOS ---------------------'
+            for f in sec_lst_bf_filter:
+                # loại các chuyến có điểm đến không phải là đích
+                # print f.arrival_port.code
+                if transit_tmp != des:
+                    continue
+                # print '-------------------- SOS ---------------------'
+                # loại các chuyến có thời gian cất cánh sớm hơn thời gian chuyến đầu hạ cánh
+                if f.departure_time < flight.arrival_time + td(minutes=45):
+                    continue
+                lst_ticket_2 = self.get_ticket_list(f.carrier, f.ticket)
+                asflight = AFlight()
+                # for seat in ticket_lst_2:
+                asflight.seat_list = lst_ticket_2
+                asflight.departure_port = f.departure_port
+                asflight.arrival_port = f.arrival_port
+                asflight.arrival_name = f.arrival_port.sname
+                asflight.departure_name = f.departure_port.sname
+                asflight.departure_time = f.departure_time
+                asflight.arrival_time = f.arrival_time
+                asflight.carrier = f.carrier
+                asflight.flight_code = f.flight_code
+                asflight.set_min_price()
+
+                aresult.end_port = asflight.arrival_name
+                aresult.second_flight.append(asflight)
+                have_2_lst = True
+            aresult.set_price()
+
+            # Nếu không tồn tại list chặng bay kế tiếp, next
+            if not have_2_lst:
+                continue
+
+            if mode == 1:
+                self.outward_list.append(aresult)
+            else:
+                self.return_list.append(aresult)
+            # self.outward_list.append(aresult)
+
+        return None
     # get ticket in VN
     def get_ticket_list(self, carrier, id):
         return_lst = []
@@ -321,6 +606,10 @@ class Main(object):
         self.way = data['way']
         self.dep_port = data['departure']
         self.arr_port = data['arrival']
+
+        med_price = 0
+        is_med = False
+
         td = datetime.timedelta
         # num_passenger = self.num_adult + self.num_child + self.num_infan
         transit_list = MiddlePort.objects.get(depart_port=self.dep_port, arrival_port=self.arr_port)
@@ -371,6 +660,14 @@ class Main(object):
                 self.outward_list.append(aresult)
         # check transit list
         # *note : now we just check if flight trip is exist in database
+        if len(self.outward_list):
+            is_med = True
+            for item in self.outward_list:
+                med_price += item.total_price
+            med_price /= len(self.outward_list)
+            print med_price
+            med_price = med_price*2
+            tmp_price = 0
         if transit_list:
             # get transit port,which is stored in db at string, then split them into list.
             lst_transit_port = transit_list.middle_port.split(',')
@@ -408,9 +705,17 @@ class Main(object):
                             aflight.flight_code = flight.flight_code
                             aflight.set_min_price()
 
+                            if is_med:
+                                tmp_price = aflight.total_price_min
+                                if aflight.total_price_min > med_price:
+                                    continue
+
                             aresult.first_flight = aflight
                             aresult.departure_time = flight.departure_time
                             aresult.arrival_time = flight.arrival_time
+
+                            if is_med:
+                                count_2_flight = 0
 
                             for second_flight in second_flight_lst:
                                 lst_ticket_2 = self.get_ticket_list(second_flight.carrier, second_flight.ticket)
@@ -428,9 +733,16 @@ class Main(object):
                                 asflight.flight_code = second_flight.flight_code
                                 asflight.set_min_price()
 
+                                if is_med:
+                                    if tmp_price + asflight.total_price_min > med_price:
+                                      continue 
+
+                                    count_2_flight += 1
                                 aresult.end_port = asflight.arrival_name
                                 aresult.second_flight.append(asflight)
-
+                            if is_med:
+                                if count_2_flight == 0:
+                                    continue
                             aresult.set_price()
 
                             self.outward_list.append(aresult)
@@ -446,6 +758,7 @@ class Main(object):
                                                    datetime.datetime.combine(self.return_day, datetime.time.max))
                                                )
             # direct return flight
+            is_med = False
             if flight_lst:
                 for flight in flight_lst:
                     lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
@@ -471,6 +784,14 @@ class Main(object):
 
                     # Thêm kết quả tìm được vào list kết quả
                     self.return_list.append(aresult)
+            if len(self.return_list):
+                is_med = True
+                for item in self.outward_list:
+                    med_price += item.total_price
+                med_price /= len(self.return_list)
+                print med_price
+                med_price = med_price*2
+                tmp_price = 0
             # transit return flight
             if transit_list:
                 lst_transit_port = transit_list.middle_port.split(',')
@@ -508,6 +829,13 @@ class Main(object):
                                 aflight.flight_code = flight.flight_code
                                 aflight.set_min_price()
 
+                                if is_med:
+                                    tmp_price = aflight.total_price_min
+                                    if aflight.total_price_min > med_price:
+                                        continue
+
+                                    count_2_flight = 0
+
                                 aresult.first_flight = aflight
                                 aresult.departure_time = flight.departure_time
                                 aresult.arrival_time = flight.arrival_time
@@ -528,9 +856,17 @@ class Main(object):
                                     asflight.flight_code = second_flight.flight_code
                                     asflight.set_min_price()
 
+                                    if is_med:
+                                        if tmp_price + asflight.total_price_min > med_price:
+                                            continue 
+                                        count_2_flight += 1
+
                                     aresult.end_port = asflight.arrival_name
                                     aresult.second_flight.append(asflight)
 
+                                if is_med:
+                                    if count_2_flight == 0:
+                                        continue
                                 aresult.set_price()
 
                                 self.return_list.append(aresult)
@@ -1013,7 +1349,7 @@ class Main(object):
 
                     aresult.set_price()
                     if insert:
-                        self.return_day.append(aresult)
+                        self.return_list.append(aresult)
             # - 2 transit
             # -- TODO - make 2 transit
             # Summarized:

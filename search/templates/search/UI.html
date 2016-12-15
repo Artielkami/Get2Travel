@@ -537,14 +537,14 @@
         {% endif %}
         <!-- Return -->
         {% if return_list %}
-            {% with detail_id=0 detail_code='outward' %}
+            {% with detail_id=0 detail_code='return' %}
             <div id="outward-list-result-header">
-                <span class="span-color-white">Đi:</span>
-                <button id="outward-sort-btn">Sort</button>
+                <span class="span-color-white">Về:</span>
+                {% comment %}<button id="outward-sort-btn">Sort</button>{% endcomment %}
             </div>
             <table class="table-result-layout">
             <tbody>
-            {% for flight in outward_list %}
+            {% for flight in return_list %}
                 {% increment detail_id %}
                 <tr>
                     <td>
