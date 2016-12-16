@@ -480,6 +480,7 @@ class Main(object):
                                     num_child=self.num_child,
                                     num_babe=self.num_infan)
             # special deal
+
             ticket_vnasd = SeatFlight(ticket_type='vna_sd',
                                       adult_price=ticket_lst.sd_adult_price,
                                       child_price=ticket_lst.sd_child_price,
@@ -496,7 +497,8 @@ class Main(object):
             return_lst.append(ticket_vnaef)
             return_lst.append(ticket_vnaes)
             return_lst.append(ticket_vnaesa)
-            return_lst.append(ticket_vnasd)
+            if ticket_lst.special_deal_num > 0:
+                return_lst.append(ticket_vnasd)
         elif carrier == 'vja':
             ticket_lst = VJATicket.objects.get(id=id)
             # promo

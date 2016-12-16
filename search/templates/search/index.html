@@ -685,10 +685,10 @@
             makeday(go_d, '#outbound');
             var rt_d = new Date('{{ sform.rt_day }}');
             makeday(rt_d, '#return');
-            $('#type-ticket').val('{{ sform.ttype }}');
-            $('#adult').val('{{ quan.adult }}');
-            $('#child').val('{{ quan.child }}');
-            $('#babe').val('{{ quan.babe }}');
+            // $('#type-ticket').val('{{ sform.ttype }}');
+            $("#adult").val("{{ quan.adult }}").trigger("chosen:updated");
+            $('#child').val('{{ quan.child }}').trigger("chosen:updated");
+            $('#babe').val('{{ quan.babe }}').trigger("chosen:updated");
         {% else %}
             test();
             rt_day();
