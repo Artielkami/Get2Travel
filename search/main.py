@@ -248,6 +248,7 @@ def get_transit_middle(org, des):
             rs_lst.append(item)
     return rs_lst
 
+
 class Main(object):
     """Lõi xử lý chính"""
     def __init__(self):
