@@ -34,10 +34,10 @@
                     <li><a id="a-domestic-page" title="Các chuyến bay nội địa" href="{% url 'search:domestic' %}">Domestic</a>
                     </li>
                     <li><a href="{% url 'search:int_search' %}">International</a></li>
-                    <li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">Insert</a></li>
+                    {% comment %}<li><a id="a-internal-page" href="{% url 'search:insert_db_ticket' %}">Insert</a></li>
                     <li><a id="a-ud-routes" title="Update the routes"
                            href="{% url 'search:update_routes' %}">Upgrade</a></li>
-                    <li><a id="a-del-page" title="Delete all ticket" href="{% url 'search:delete' %}">Delete</a></li>
+                    <li><a id="a-del-page" title="Delete all ticket" href="{% url 'search:delete' %}">Delete</a></li>{% endcomment %}
                     <li><a id="a-about-page" title="Trang About" href="{% url 'search:about' %}">About</a></li>
                     <li><a id="a-contact-page" title="Trang Contact" href="{% url 'search:contact' %}">Contact</a></li>
                 </ul>

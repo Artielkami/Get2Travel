@@ -198,7 +198,9 @@ def update_routes(request):
 
 
 def insert_db_ticket(request):
-    DataAdapter.make_some_db_2()
+    # DataAdapter.make_some_db_2()
+    # DataAdapter.make_sticket_domestic()
+    DataAdapter.make_some_db()
     return redirect('/domestic')
 
 
