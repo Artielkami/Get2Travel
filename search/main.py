@@ -124,8 +124,8 @@ def get_transit_airport(org, des, stop=1):
     """ origin and destination,
         only use for international
     """
-    transit = IntConnectingMap.objects.get(departure_port=self.dep_port,
-                                           arrival_port=self.arr_port)
+    transit = IntConnectingMap.objects.get(departure_port=org,
+                                           arrival_port=des)
     if not transit:
         lst = make_transit(org, des, stop)
         return lst
@@ -146,6 +146,7 @@ def get_transit_airport(org, des, stop=1):
         return transit.route_transit_twice.split(',')
     # make_transit(org, des, stop)
 
+
 def make_transit(org, des, stop=1, objects=None):
     """ temp """
     port_org = IntAirport.objects.get(code=org)
@@ -158,7 +159,7 @@ def make_transit(org, des, stop=1, objects=None):
         # airport_list = IntAirport.objects.all()
         for item in transit:
             air_port = IntAirport.objects.get(code=item)
-            if des in airport.router:
+            if des in air_port.router:
                 rs_lst_1.append(item)
         
         rto = ','.join(rs_lst_1)
@@ -167,7 +168,7 @@ def make_transit(org, des, stop=1, objects=None):
         if objects:
             objects.route_transit_once = rto
             objects.save()
-            return rs_lst
+            return rs_lst_1
         have_direct = False
         transit = port_org.router.split(',')
         if des in transit:
@@ -183,20 +184,20 @@ def make_transit(org, des, stop=1, objects=None):
                                   is_deleted=0
                                   )
         new_cn.save()
-        return rs_lst
+        return rs_lst_1
     # final_result = IntConnectingMap.objects.get(departure_port=org,
     #                                             arrival_port=des)
     rs_lst_2 = []
     for item in transit:
         air_port = IntAirport.objects.get(code=item)
-        transit_2 = airport.router.split(',')
+        transit_2 = air_port.router.split(',')
         for place in transit_2:
             if get_transit_airport(place, des):
                 rs_lst_2.append(place)
     if objects:
         if rs_lst_2:
             rtt = ','.join(rs_lst_2)
-            objects.route_transit_twice=stt
+            objects.route_transit_twice=rtt
             objects.save()
             return rs_lst_2
         objects.route_transit_twice='1'
@@ -209,7 +210,7 @@ def make_transit(org, des, stop=1, objects=None):
         have_direct = True
     for item in transit:
         air_port = IntAirport.objects.get(code=item)
-        if des in airport.router:
+        if des in air_port.router:
             rs_lst_1.append(item)
     rto = ','.join(rs_lst_1)
     rtt = ','.join(rs_lst_2)
@@ -228,6 +229,7 @@ def make_transit(org, des, stop=1, objects=None):
 
     return rs_lst_2
 
+
 def get_transit_middle(org, des):
     port_org = IntAirport.objects.get(code=org)
     # port_des = IntAirport.objects.get(code=des)
@@ -244,7 +246,7 @@ def get_transit_middle(org, des):
     # airport_list = IntAirport.objects.all()
     for item in transit:
         air_port = IntAirport.objects.get(code=item)
-        if des in airport.router:
+        if des in air_port.router:
             rs_lst.append(item)
     return rs_lst
 
@@ -295,6 +297,7 @@ class Main(object):
         if flight_lst:
             for flight in flight_lst:
                 # get list ticket suitable with carrier
+                # print '---------------', flight.ticket
                 lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
 
                 # - initial
@@ -354,6 +357,7 @@ class Main(object):
             filter_lst = []
             # - initial
             # -- ResultFlight: 1 ket qua tra ve
+            # print flight.carrier, flight.ticket
             lst_ticket = self.get_ticket_list(flight.carrier, flight.ticket)
             aresult = ResultFlight(transit=transit_tmp)
             # -- Aflight: 1 chuyến bay kết quả trả về
@@ -384,7 +388,9 @@ class Main(object):
             for f in sec_lst_bf_filter:
                 # loại các chuyến có điểm đến không phải là đích
                 # print f.arrival_port.code
-                if transit_tmp != des:
+                if transit_tmp == des:
+                    continue
+                if f.arrival_port != des:
                     continue
                 # print '-------------------- SOS ---------------------'
                 # loại các chuyến có thời gian cất cánh sớm hơn thời gian chuyến đầu hạ cánh
