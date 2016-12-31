@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'search/default.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/default.date.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/chosen.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'search/bootstrap-slider.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'search/fonts.css' %}">
     <script src="{% static 'search/js/jquery-1.12.4.js' %}"></script>
@@ -24,7 +25,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="fa fa-bars fa-2x"></span>
                 </button>
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="/">
                     <img src="{% static 'search/images/can.png' %}" alt="logo hình lá cần">
                     <span class="span-header-for-middle">Get Hi Travel</span>
                 </a>
@@ -138,6 +139,11 @@
                 <div class="form-group col-xs-12">
                     <label class="control-label" for="outbound">Ngày đi:</label>
                     <input type="text" class="form-control datepicker" id="outbound" name="go_day" placeholder="Ngày đi">
+                    <label class="control-label" for="outhours">Giờ đi:</label>
+                    <div class="slider-outer">
+                        <input id="outhours" type="text" value="" data-slider-min="0" data-slider-max="24" data-slider-step="1" data-slider-value="[0,24]"/>
+                    </div>
+
                 </div>
                 <div class="form-group col-xs-12" id="way">
                     <label class="radio-inline"><input type="radio" name="way" value="1" checked>Một chiều</label>
@@ -146,6 +152,10 @@
                 <div class="form-group col-xs-12" id="inbound">
                     <label class="control-label" for="return">Ngày về:</label>
                     <input type="text" class="form-control datepicker" id="return" name="rt_day" placeholder="Ngày về">
+                    <label class="control-label" for="inhours">Giờ đến:</label>
+                    <div class="slider-outer">
+                        <input id="inhours" type="text" value="" data-slider-min="0" data-slider-max="24" data-slider-step="1" data-slider-value="[0,24]"/>
+                    </div>
                 </div>
             </div>
             <div class="group-item col-xs-12 col-sm-4">
@@ -201,6 +211,13 @@
                         <option value="business">Thương gia</option>
                         <option value="first">Hạng nhất</option>
                     </select>
+                </div>
+                <div class="title-col col-xs-12">
+                    <span class="number">4</span>
+                    <span class="title">Giá tiền</span>
+                </div>
+                <div class="form-group slider-outer">
+                    <input id="price-slider" type="text" data-slider-ticks="[0, 1000, 2000, 3000, 4000, 5000]" data-slider-ticks-snap-bounds="100000" data-slider-ticks-labels='["0", "1 triệu", "2 triệu", "3 triệu", "4 triệu", "5 triệu"]' data-slider-value="0"/>
                 </div>
             </div>
         </div>
@@ -650,6 +667,7 @@
 <script src="{% static 'search/js/picker.date.js' %}"></script>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <script src="{% static 'search/js/chosen.jquery.min.js' %}"></script>
+<script src="{% static 'search/js/bootstrap-slider.min.js' %}"></script>
 <script src="{% static 'search/js/main.js' %}"></script>
 
 <script type="text/javascript">
