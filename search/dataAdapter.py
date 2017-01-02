@@ -222,7 +222,7 @@ class DataAdapter(object):
     def make_some_db():
         """Create fake data for test"""
         day = 27
-        date = datetime.datetime(year=2017, month=1, day=day,
+        date = datetime.datetime(year=2017, month=1, day=10,
                                  hour=0, minute=0, second=0)
         td = datetime.timedelta
         # type = ['standard', 'save', 'flex']
@@ -235,14 +235,14 @@ class DataAdapter(object):
         ap = Airport.objects.get
         rc = random.choice
         rr = random.randrange
-        for x in xrange(1, 500):
+        for x in xrange(1, 2):
             print 'make_tk', x
-            in1 = rr(1, 21)
-            in2 = rr(1, 21)
+            in1 = 11  # rr(1, 21)
+            in2 = 14  # rr(1, 21)
             while in2 == in1:
                 in2 = rr(1, 21)
-            td1 = td(hours=rr(0, 23), minutes=5 * rr(0, 11))
-            td2 = td1 + td(hours=rr(0, 23), minutes=5 * rr(0, 11))
+            td1 = td(hours=16, minutes=35)
+            td2 = td1 + td(hours=17, minutes=35)
             # sit = rc(sit_class)
             # typ = rc(type)
             # if sit == 'first' or sit == 'save':
