@@ -616,6 +616,22 @@ class Main(object):
         self.dep_port = data['departure']
         self.arr_port = data['arrival']
 
+        stops = data['stops']
+
+        price_tmp = int(data['maxprice'])
+        # print price_tmp 
+
+        if price_tmp == 0:
+            max_price = 0
+        else:
+            max_price = price_tmp/1000
+
+        ohs = data['outhours'].split(',')
+        outward_hour = [int(ohs[0]), 24-int(ohs[1])]
+        # print outward_hour
+        ohs = data['inhours'].split(',')
+        return_hour = [int(ohs[0]), 24-int(ohs[1])]
+
         med_price = 0
         is_med = False
 
@@ -626,8 +642,8 @@ class Main(object):
         flight_lst = Ticket.objects.filter(departure_port=self.dep_port,
                                            arrival_port=self.arr_port,
                                            departure_time__range=(
-                                               datetime.datetime.combine(self.outward_day, datetime.time.min),
-                                               datetime.datetime.combine(self.outward_day, datetime.time.max))
+                                               datetime.datetime.combine(self.outward_day, datetime.time.min) + td(hours=outward_hour[0]),
+                                               datetime.datetime.combine(self.outward_day, datetime.time.max) - td(hours=outward_hour[1]))
                                            )
         # TODO --------- search method ---------
         # - OUTWARD
@@ -658,6 +674,9 @@ class Main(object):
                 aflight.flight_code = flight.flight_code
                 aflight.set_min_price()
 
+                if max_price != 0 and aflight.total_price_min > max_price:
+                    continue
+
                 # add first flight to result
                 # second flight = none, because this is direct flight
                 aresult.first_flight = aflight
@@ -671,13 +690,20 @@ class Main(object):
         # *note : now we just check if flight trip is exist in database
         if len(self.outward_list):
             is_med = True
-            for item in self.outward_list:
-                med_price += item.total_price
-            med_price /= len(self.outward_list)
-            print med_price
-            med_price = med_price*2
+            if max_price != 0:
+                med_price = max_price
+            else:
+                for item in self.outward_list:
+                    med_price += item.total_price
+                med_price /= len(self.outward_list)
+                print med_price
+                med_price = med_price*2
             tmp_price = 0
-        if transit_list:
+        else:
+            if max_price != 0:
+                is_med = True
+                med_price = max_price
+        if transit_list and stops == 0:
             # get transit port,which is stored in db at string, then split them into list.
             lst_transit_port = transit_list.middle_port.split(',')
             for transit in lst_transit_port:
@@ -685,9 +711,9 @@ class Main(object):
                                                          arrival_port=transit,
                                                          departure_time__range=(
                                                              datetime.datetime.combine(self.outward_day,
-                                                                                       datetime.time.min),
+                                                                                       datetime.time.min) + td(hours=outward_hour[0]),
                                                              datetime.datetime.combine(self.outward_day,
-                                                                                       datetime.time.max))
+                                                                                       datetime.time.max) - td(hours=outward_hour[1]))
                                                          )
                 if first_flight_lst:
                     for flight in first_flight_lst:
@@ -763,8 +789,8 @@ class Main(object):
             flight_lst = Ticket.objects.filter(departure_port=self.arr_port,
                                                arrival_port=self.dep_port,
                                                departure_time__range=(
-                                                   datetime.datetime.combine(self.return_day, datetime.time.min),
-                                                   datetime.datetime.combine(self.return_day, datetime.time.max))
+                                                   datetime.datetime.combine(self.return_day, datetime.time.min) + td(hours=return_hour[0]),
+                                                   datetime.datetime.combine(self.return_day, datetime.time.max) - td(hours=return_hour[1]))
                                                )
             # direct return flight
             is_med = False
@@ -786,6 +812,9 @@ class Main(object):
                     aflight.flight_code = flight.flight_code
                     aflight.set_min_price()
 
+                    if max_price != 0 and aflight.total_price_min > max_price:
+                        continue
+
                     aresult.first_flight = aflight
                     aresult.departure_time = flight.departure_time
                     aresult.arrival_time = flight.arrival_time
@@ -793,25 +822,40 @@ class Main(object):
 
                     # Thêm kết quả tìm được vào list kết quả
                     self.return_list.append(aresult)
+            # if len(self.return_list):
+            #     is_med = True
+            #     for item in self.outward_list:
+            #         med_price += item.total_price
+            #     med_price /= len(self.return_list)
+            #     print med_price
+            #     med_price = med_price*2
+            #     tmp_price = 0
             if len(self.return_list):
                 is_med = True
-                for item in self.outward_list:
-                    med_price += item.total_price
-                med_price /= len(self.return_list)
-                print med_price
-                med_price = med_price*2
+                if max_price != 0:
+                    med_price = max_price
+                else:
+                    for item in self.return_list:
+                        med_price += item.total_price
+                    med_price /= len(self.return_list)
+                    print med_price
+                    med_price = med_price*2
                 tmp_price = 0
+            else:
+                if max_price != 0:
+                    is_med = True
+                    med_price = max_price
             # transit return flight
-            if transit_list:
+            if transit_list and stops == 0:
                 lst_transit_port = transit_list.middle_port.split(',')
                 for transit in lst_transit_port:
                     first_flight_lst = Ticket.objects.filter(departure_port=self.arr_port,
                                                              arrival_port=transit,
                                                              departure_time__range=(
                                                                  datetime.datetime.combine(self.return_day,
-                                                                                           datetime.time.min),
+                                                                                           datetime.time.min) + td(hours=return_hour[0]),
                                                                  datetime.datetime.combine(self.return_day,
-                                                                                           datetime.time.max))
+                                                                                           datetime.time.max) - td(hours=return_hour[1]))
                                                              )
                     if first_flight_lst:
                         for flight in first_flight_lst:

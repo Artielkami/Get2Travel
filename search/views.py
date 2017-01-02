@@ -154,7 +154,10 @@ def domestic(request):
                      'stop': clean_data['stops'],
                      'go_day': clean_data['go_day'],
                      'rt_day': clean_data['rt_day'],
-                     'ttype': clean_data['ttype']}
+                     'ttype': clean_data['ttype'],
+                     'outhours': clean_data['outhours'],
+                     'inhours': clean_data['inhours'],
+                     'maxprice': clean_data['maxprice']}
             if main.outward_list:
                 return render(request,
                               'search/index.html',
@@ -165,17 +168,19 @@ def domestic(request):
                                   'dates': dates,
                                   'places': places,
                                   'quan': quantity,
-                                  'base_data': basic_data
+                                  'base_data': basic_data,
+                                  'visible': True,
                               })
             else:
-                return_msg = 'Không tìm thấy kết quả.'
+                return_msg = 'Không tìm thấy kết quả phù hợp.'
                 return render(request,
                               'search/index.html',
                               {
                                   'sform': sform,
                                   'quan': quantity,
                                   'base_data': basic_data,
-                                  'return_msg': return_msg
+                                  'return_msg': return_msg,
+                                  'visible': True,
                               })
         else:
             return redirect('/domestic')

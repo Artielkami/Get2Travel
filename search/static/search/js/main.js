@@ -58,6 +58,7 @@ $(document).ready(function () {
     var inHours = new Slider('#inhours', {
         tooltip: 'always'
     });
+
     var priceSlider = new Slider("#price-slider", {
         ticks: [0, 1000000, 2000000, 3000000, 4000000, 5000000],
         ticks_labels: ['0', '1 triệu', '2 triệu', '3 triệu', '4 triệu', '5 triệu'],

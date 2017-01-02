@@ -87,7 +87,7 @@ body {
     visibility: hidden;
 }
 .slider-outer {
-    padding: 0 3rem;
+    padding: 0 4rem;
 }
 .slider-outer > .slider-horizontal {
     width: 100%;
@@ -170,7 +170,6 @@ body {
     margin-bottom: 0;
 }
 #result {
-    visibility: hidden;
     margin-top: 20px;
     background-color: #3e3535;
     padding: 15px 0 15px 0;
